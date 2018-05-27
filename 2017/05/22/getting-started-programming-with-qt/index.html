@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.3.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.3.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.3.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '6.3.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="文章翻译自 Qt 文档里的一个教程，原文地址为 http://doc.qt.io/qt-4.8/gettingstartedqt.html . 欢迎来到 Qt ──一个跨平台 GUI 工具集── 的世界。在这个新手教程里，我们将通过实现一个简单的 Notepad 应用程序来教授基本的 Qt 知识。在完成这个引导之后，你应该可以通过自己查阅我们的概述和 API 文档来找到开发你自己应用所需要的信息。">
+<meta name="keywords" content="translation,qt,tutorial">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[译]开始使用 Qt 编程">
+<meta property="og:url" content="http://feng-qi.github.io/2017/05/22/getting-started-programming-with-qt/index.html">
+<meta property="og:site_name" content="feng 言 feng 语">
+<meta property="og:description" content="文章翻译自 Qt 文档里的一个教程，原文地址为 http://doc.qt.io/qt-4.8/gettingstartedqt.html . 欢迎来到 Qt ──一个跨平台 GUI 工具集── 的世界。在这个新手教程里，我们将通过实现一个简单的 Notepad 应用程序来教授基本的 Qt 知识。在完成这个引导之后，你应该可以通过自己查阅我们的概述和 API 文档来找到开发你自己应用所需要的信息。">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://doc.qt.io/qt-4.8/images/gs1.png">
+<meta property="og:image" content="http://doc.qt.io/qt-4.8/images/gs2.png">
+<meta property="og:image" content="http://doc.qt.io/qt-4.8/images/gs3.png">
+<meta property="og:image" content="http://doc.qt.io/qt-4.8/images/gs4.png">
+<meta property="og:image" content="http://doc.qt.io/qt-4.8/images/gs5.png">
+<meta property="og:updated_time" content="2017-12-24T16:32:29.188Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[译]开始使用 Qt 编程">
+<meta name="twitter:description" content="文章翻译自 Qt 文档里的一个教程，原文地址为 http://doc.qt.io/qt-4.8/gettingstartedqt.html . 欢迎来到 Qt ──一个跨平台 GUI 工具集── 的世界。在这个新手教程里，我们将通过实现一个简单的 Notepad 应用程序来教授基本的 Qt 知识。在完成这个引导之后，你应该可以通过自己查阅我们的概述和 API 文档来找到开发你自己应用所需要的信息。">
+<meta name="twitter:image" content="http://doc.qt.io/qt-4.8/images/gs1.png">
+
+
+
+
+
+
+  <link rel="canonical" href="http://feng-qi.github.io/2017/05/22/getting-started-programming-with-qt/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>[译]开始使用 Qt 编程 | feng 言 feng 语</title>
+  
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-116135841-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-116135841-1');
+</script>
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?78d4d070f33fe0f3b3b515cf9dcf714a";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">feng 言 feng 语</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />Home</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+  
+  
+  
+    
+      
+    
+    <a href="https://github.com/feng-qi" class="github-corner" target="_blank" title="Follow me on GitHub" aria-label="Follow me on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#222; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg>
+    
+      </a>
+    
+
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://feng-qi.github.io/2017/05/22/getting-started-programming-with-qt/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="fengqi">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="feng 言 feng 语">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">[译]开始使用 Qt 编程
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2017-05-22 23:28:33" itemprop="dateCreated datePublished" datetime="2017-05-22T23:28:33+08:00">2017-05-22</time>
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>文章翻译自 Qt 文档里的一个教程，原文地址为 <a href="http://doc.qt.io/qt-4.8/gettingstartedqt.html" target="_blank" rel="noopener">http://doc.qt.io/qt-4.8/gettingstartedqt.html</a> .</p>
+<p>欢迎来到 Qt ──一个跨平台 GUI 工具集── 的世界。在这个新手教程里，我们将通过实现一<br>个简单的 Notepad 应用程序来教授基本的 Qt 知识。在完成这个引导之后，你应该可以通<br>过自己查阅我们的概述和 API 文档来找到开发你自己应用所需要的信息。</p>
+<a id="more"></a>
+<style>table th:first-of-type { width: 250px; }</style>
+
+<p>这个教程里的代码在你 Qt 安装目录下的<code>examples/tutorials/gettingStarted/gsQt</code>。如<br>果你正在使用 Qt SDK，你会在<code>Examples/4.7/tutorials/gettingStarted/gsQt</code>下找到它<br>（如果你用的 Qt 版本比较新，把 4.7 改为相应的值）。</p>
+<h1 id="Hello-Notepad"><a href="#Hello-Notepad" class="headerlink" title="Hello Notepad"></a>Hello Notepad</h1><p>在这第一个例子中，我们只是在桌面上简单地建立并显示一个窗口(window frame)，里面是<br>一个文本框(text edit)。这展示了有 GUI 的最简单的 Qt 程序。</p>
+<p><img src="http://doc.qt.io/qt-4.8/images/gs1.png" alt="part1"></p>
+<p>代码如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;QApplication&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;QTextEdit&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argv, <span class="keyword">char</span> *args[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="function">QApplication <span class="title">app</span><span class="params">(argv, args)</span></span>;</span><br><span class="line"></span><br><span class="line">    QTextEdit textEdit;</span><br><span class="line">    textEdit.show();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> app.exec();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>让我们一行一行地来看一看。前两行中，我们包含了<code>QApplication</code>和<code>QTextEdit</code>所需要<br>的头文件，我们的例子中要用到这两个类。所有的 Qt 类都有一个根据它命令的头文件。</p>
+<p>第 6 行新建了一个<code>QApplication</code>对象。这个对象管理整个应用(application-wide)的资<br>源并且是所有有 GUI 的 Qt 程序必需的。因为 Qt 接受一些命令行参数所以需要<code>argv</code>和<br><code>args</code>。</p>
+<p>第 8 行新建了一个<code>QTextEdit</code>对象。文本框(text edit)是 GUI 里的一个可见元素。在<br>Qt 中，我们把这样的元素叫做<code>widget</code>。其他的 widget 还包括滚动条(scroll bar)，标<br>签(label)和单选按钮(radio button)。一个 widget 也可以包含其他 widget 的容器，比<br>如对话框(dialog)或者主程序窗口(main application window)。</p>
+<p>第 9 行显示一个处于窗口中的文本框。由于widget也有容器的功能（比如一个QMainWindow<br>会包含工具栏，菜单，状栏和其他一些 widget），使得让一个 widget 在它自己的窗口中<br>显示也是可能的。Widget 默认不可见，函数<code>show()</code>可以使它们可见。</p>
+<p>第 11 行使得 QApplication 进入它的事件循环。当一个 Qt 程序运行时，会有事件产生并<br>被发送给程序的 widget。按下鼠标和键盘按键都是事件。当你在文本框中输入文本时，它<br>会收到按键按下的事件并以画出输入的文本作为响应。</p>
+<p>要运行这个程序，打开一个命令窗口，进入 .cpp 文件所在的那个目录。以下的 shell 命<br>令会构建这个程序。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">qmake -project</span><br><span class="line">qmake</span><br><span class="line">make</span><br></pre></td></tr></table></figure>
+<p>这会在<code>part1</code>目录下生成一个可执行文件（在 Windows 下，你可能要使用 nmake 而非<br>make。且可执行文件会被放在<code>part1\debug</code>或<code>part1\release</code>目录下（这些目录在运行<br>make时生成））。<code>qmake</code>是Qt的构建工具，它需要一个配置文件。如果指定了<br><code>-project</code>选项的话<code>qmake</code>会为我们生成。给定了配置文件（后缀为 .pro），<code>qmake</code>会<br>生成一个给<code>make</code>命令使用的文件，它会帮你构建这个程序。我们会在以后讲解编写自己的<br>.pro 文件。</p>
+<h1 id="Learn-More"><a href="#Learn-More" class="headerlink" title="Learn More"></a>Learn More</h1><table>
+<thead>
+<tr>
+<th>About</th>
+<th>Here</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Widgets and Window Geometry</td>
+<td><a href="http://doc.qt.io/qt-4.8/application-windows.html" target="_blank" rel="noopener">Window and Dialog Widgets</a></td>
+</tr>
+<tr>
+<td>Events and event handling</td>
+<td><a href="http://doc.qt.io/qt-4.8/eventsandfilters.html" target="_blank" rel="noopener">The Event System</a></td>
+</tr>
+</tbody>
+</table>
+<h1 id="添加退出按钮-Adding-a-Quit-Button"><a href="#添加退出按钮-Adding-a-Quit-Button" class="headerlink" title="添加退出按钮 Adding a Quit Button"></a>添加退出按钮 Adding a Quit Button</h1><p>在一个真实的程序里，通常会需要不止一个 widget。我们现在将要在文本框下面添加一个<br><code>QPushButton</code>。这个按钮在被按下时会退出 Notepad 程序。</p>
+<p><img src="http://doc.qt.io/qt-4.8/images/gs2.png" alt="part2"></p>
+<p>先看一眼代码。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;QtGui&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argv, <span class="keyword">char</span> *args[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="function">QApplication <span class="title">app</span><span class="params">(argv, args)</span></span>;</span><br><span class="line"></span><br><span class="line">    QTextEdit *textedit = <span class="keyword">new</span> QTextEdit;</span><br><span class="line">    QPushButton *quitButton = <span class="keyword">new</span> QPushButton(<span class="string">"&amp;Quit"</span>);</span><br><span class="line"></span><br><span class="line">    QObject::connect(quitButton, SIGNAL(clicked()), qApp, SLOT(quit()));</span><br><span class="line"></span><br><span class="line">    QVBoxLayout *layout = <span class="keyword">new</span> QVBoxLayout;</span><br><span class="line">    layout-&gt;addWidget(textedit);</span><br><span class="line">    layout-&gt;addWidget(quitButton);</span><br><span class="line"></span><br><span class="line">    QWidget window;</span><br><span class="line">    window.setLayout(layout);</span><br><span class="line"></span><br><span class="line">    window.show();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> app.exec();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>第 1 行包含了 <code>QtGui</code>，里面包括了所有的 Qt 的 GUI 类。</p>
+<p>第 10 行使用了 Qt 的 Signal/Slot 机制使得当退出按钮被按下时程序能够退出。Slot 是<br>一个在运行时可以通过名字(作为字符串)被调用的函数。Signal 是一个函数，被调用时会<br>调用与之注册的 Slots；我们把这称为‘关联 slot 和 signal’以及‘产生 signal’。</p>
+<p><code>quit()</code>是<code>QApplication</code>退出程序的 slot。<code>clicked()</code>是<code>QPushButton</code>被按下时发出<br>的 signal。静态方法<code>QObject::connect()</code>将 slot 和 signal 关联起来。<code>SIGNAL()</code>和<br><code>SLOT()</code>是两个宏，它们接受要关联的 signal 和 slot 的函数签名。我们还需要给定发出<br>和接受信号的对象的指针。</p>
+<p>第 12 行创建了一个<code>QVBoxLayout</code>。正如前面所说，widget 可以包含其他 widget。直接<br>设置一个子 widget 的边界(位置和大小)是可以的，但使用 layout 通常更简单。layout<br>会管理子 widget 的边界。<code>QVBoxLayout</code>会将子 widget 放在一竖列上。</p>
+<p>第 13~14 行把文本框和按钮添加到 layout 里。在 17 行中，我们将设置了一个 widget<br>的 layout。</p>
+<h1 id="Learn-More-1"><a href="#Learn-More-1" class="headerlink" title="Learn More"></a>Learn More</h1><table>
+<thead>
+<tr>
+<th>About</th>
+<th>Here</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Signals and Slots</td>
+<td><a href="http://doc.qt.io/qt-4.8/signalsandslots.html" target="_blank" rel="noopener">Signals &amp; Slots</a></td>
+</tr>
+<tr>
+<td>Layouts</td>
+<td><a href="http://doc.qt.io/qt-4.8/layout.html" target="_blank" rel="noopener">Layout Management, Widgets and Layouts, Layout examples</a></td>
+</tr>
+<tr>
+<td>The widgets that come with Qt</td>
+<td><a href="http://doc.qt.io/qt-4.8/examples-widgets.html" target="_blank" rel="noopener">Qt Widget Gallery, Widget Examples</a></td>
+</tr>
+</tbody>
+</table>
+<h1 id="Subclassing-QWidget"><a href="#Subclassing-QWidget" class="headerlink" title="Subclassing QWidget"></a>Subclassing QWidget</h1><p>当用户想要退出程序时，你可能想要弹出一个对话框请求确认。在这个例子里，我们创建一<br>个<code>QWidget</code>的子类并添加一个我们关联到退出按钮的 slot。</p>
+<p><img src="http://doc.qt.io/qt-4.8/images/gs3.png" alt="Notepad"></p>
+<p>请看代码：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Notepad</span> :</span> <span class="keyword">public</span> QWidget</span><br><span class="line">&#123;</span><br><span class="line">    Q_OBJECT</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    Notepad();</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> slots:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">quit</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    QTextEdit *textEdit;</span><br><span class="line">    QPushButton *quitButton;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p><code>Q_OBJECT</code>宏必须在类定义的第一行从而将类声明为<code>QObject</code>(自然地，它必须也继承自<br><code>QObject</code>)。<code>QObject</code>为普通的 C++ 类增加了些许功能。重要地功能如，类名和 slot 名<br>可以在运行时被查询。查询一个 slot 的参数类型并调用它也是可行的。</p>
+<p>第 9 行声明了 slot <code>quit()</code>。使用 <code>slots</code>宏可以很简单地做到。<code>quit()</code>这个 slot<br>可以被关联到 signal 了。我们一会儿再做这件事。</p>
+<p>这次我们不再 main() 函数中设置 GUI 和关联 slot 了，而是使用 Notepad 的构造函数。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">Notepad::Notepad()</span><br><span class="line">&#123;</span><br><span class="line">    textEdit = <span class="keyword">new</span> QTextEdit;</span><br><span class="line">    quitButton = <span class="keyword">new</span> QPushButton(tr(<span class="string">"Quit"</span>));</span><br><span class="line"></span><br><span class="line">    connect(quitButton, SIGNAL(clicked()), <span class="keyword">this</span>, SLOT(quit()));</span><br><span class="line"></span><br><span class="line">    QVBoxLayout *layout = <span class="keyword">new</span> QVBoxLayout;</span><br><span class="line">    layout-&gt;addWidget(textEdit);</span><br><span class="line">    layout-&gt;addWidget(quitButton);</span><br><span class="line"></span><br><span class="line">    setLayout(layout);</span><br><span class="line"></span><br><span class="line">    setWindowTitle(tr(<span class="string">"Notepad"</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如你在类定义中所见，我们使用了指向<code>QObject</code>(textEdit 和 quitButton)的指针。作为<br>规定，你应该总是在堆上分配<code>QObject</code>且永不复制它们。</p>
+<p>我们使用函数<code>tr()</code>处理用户可见字符串。当你想为你的程序提供不止一种语言的支持（如<br>英语和汉语）时就是必需的。我们不会在此详述，你可以点击 Learn more 表中的链接查看<br>更多信息。</p>
+<p>下面是 slot <code>quit()</code>的代码：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> Notepad::quit()</span><br><span class="line">&#123;</span><br><span class="line">    QMessageBox messageBox;</span><br><span class="line">    messageBox.setWindowTitle(tr(<span class="string">"Notepad"</span>));</span><br><span class="line">    messageBox.setText(tr(<span class="string">"Do you really want to quit?"</span>));</span><br><span class="line">    messageBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);</span><br><span class="line">    messageBox.setDefaultButton(QMessageBox::No);</span><br><span class="line">    <span class="keyword">if</span> (messageBox.exec() == QMessageBox::Yes)</span><br><span class="line">        qApp-&gt;quit();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们使用<code>QMessageBox</code>类来显示一个对话框询问用户是否确认退出。</p>
+<h1 id="Learn-More-2"><a href="#Learn-More-2" class="headerlink" title="Learn More"></a>Learn More</h1><table>
+<thead>
+<tr>
+<th>About</th>
+<th>Here</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>tr() and internationlization</td>
+<td><a href="http://doc.qt.io/qt-4.8/linguist-manual.html" target="_blank" rel="noopener">Qt Linguist Manual</a>, <a href="http://doc.qt.io/qt-4.8/i18n-source-translation.html" target="_blank" rel="noopener">Writing Source Code for Translation</a>, <a href="http://doc.qt.io/qt-4.8/qt-linguist-hellotr-example.html" target="_blank" rel="noopener">Hello tr()</a> Example, <a href="http://doc.qt.io/qt-4.8/internationalization.html" target="_blank" rel="noopener">Internationalization with Qt</a></td>
+</tr>
+<tr>
+<td>QObjects and the Qt Object model (This is essential to understand Qt)</td>
+<td><a href="http://doc.qt.io/qt-4.8/object.html" target="_blank" rel="noopener">Object Model</a></td>
+</tr>
+<tr>
+<td>qmake and the Qt build system</td>
+<td><a href="http://doc.qt.io/qt-4.8/qmake-manual.html" target="_blank" rel="noopener">qmake Manual</a></td>
+</tr>
+</tbody>
+</table>
+<h1 id="建立-pro-文件"><a href="#建立-pro-文件" class="headerlink" title="建立 .pro 文件"></a>建立 .pro 文件</h1><p>在这个例子中，我们会创建自己的 .pro 文件，而不是使用 qmake 的 -project 选项自动<br>生成。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">HEADERS = notepad.h</span><br><span class="line">SOURCES = notepad.cc \</span><br><span class="line">          main.cc</span><br></pre></td></tr></table></figure>
+<h1 id="使用-QMainWindow"><a href="#使用-QMainWindow" class="headerlink" title="使用 QMainWindow"></a>使用 QMainWindow</h1><p>很多应用程序可以从<code>QMainWindow</code>中获益，它有自己的 layout，你可以向其中添加菜单栏，<br>widget，工具栏和状态栏。QMainWindow 有一个中间区域，任何 widget 都可以使用。在我<br>们的例子中，我们会把文本框放在那儿。</p>
+<p><img src="http://doc.qt.io/qt-4.8/images/gs4.png" alt="Notepad"></p>
+<p>让我们来看看新的 Notepad 类定义。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;QtGui&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Notepad</span> :</span> <span class="keyword">public</span> QMainWindow</span><br><span class="line">&#123;</span><br><span class="line">    Q_OBJECT</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    Notepad();</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> slots:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">open</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">save</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">quit</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    QTextEdit *textEdit:</span><br><span class="line"></span><br><span class="line">    QAction *openAction;</span><br><span class="line">    QAction *saveAction;</span><br><span class="line">    QAction *exitAction;</span><br><span class="line"></span><br><span class="line">    QMenu *fileMenu;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>我们多包含了两个 slot 用来保存和打开文档。我们会在下一节实现他们。</p>
+<p>在一个主窗口中，相同的 slot 经常会被多个 widget 调用。比如菜单项和工具栏上的按钮。<br>为了使这种情况变得简单，Qt 提供了<code>QAction</code>，它可以被多个 widget 拥有，并且被关联<br>到同一个 slot 上。例如，<code>QMenu</code>和<code>QToolBar</code>都可以从相同的 QAction 创建菜单项或工<br>具按钮。我们马上就会看到这怎么做到。</p>
+<p>像以前一样，我们使用 Notepad 构建函数来设置 GUI。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"notepad.h"</span></span></span><br><span class="line"></span><br><span class="line">Notepad::Notepad()</span><br><span class="line">&#123;</span><br><span class="line">    openAction = <span class="keyword">new</span> AQction(tr(<span class="string">"&amp;Open"</span>), <span class="keyword">this</span>);</span><br><span class="line">    saveAction = <span class="keyword">new</span> AQction(tr(<span class="string">"&amp;Save"</span>), <span class="keyword">this</span>);</span><br><span class="line">    exitAction = <span class="keyword">new</span> AQction(tr(<span class="string">"&amp;Exit"</span>), <span class="keyword">this</span>);</span><br><span class="line"></span><br><span class="line">    connect(openAction, SIGNAL(triggered()), <span class="keyword">this</span>, SLOT(open()));</span><br><span class="line">    connect(saveAction, SIGNAL(triggered()), <span class="keyword">this</span>, SLOT(save()));</span><br><span class="line">    connect(exitAction, SIGNAL(triggered()), qApp, SLOT(quit()));</span><br><span class="line"></span><br><span class="line">    fileMenu = menuBar()-&gt;addMenu(tr(<span class="string">"&amp;File"</span>));</span><br><span class="line">    fileMenu-&gt;addAction(openAction);</span><br><span class="line">    fileMenu-&gt;addAction(saveAction);</span><br><span class="line">    fileMenu-&gt;addSeparator();</span><br><span class="line">    fileMenu-&gt;addAction(exitAction);</span><br><span class="line"></span><br><span class="line">    textEdit = <span class="keyword">new</span> QTextEdit;</span><br><span class="line">    setCentralWidget(textEdit);</span><br><span class="line"></span><br><span class="line">    setWindowTitle(tr(<span class="string">"Notepad"</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>QAction 应该在创建时给定它们在其它 widget（我们用的是菜单项）上应该显示的文字。<br>如果我们还想把它添加到工具栏上，我们还可以指定图标。</p>
+<p>现在当一个菜单项被点击时，就会触发相应的行为，对应的 slot 也会被调用。</p>
+<h1 id="Learn-More-3"><a href="#Learn-More-3" class="headerlink" title="Learn More"></a>Learn More</h1><table>
+<thead>
+<tr>
+<th>About</th>
+<th>Here</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Main Windows and main window classes</td>
+<td><a href="http://doc.qt.io/qt-4.8/mainwindow.html" target="_blank" rel="noopener">Application Main Window</a>, <a href="http://doc.qt.io/qt-4.8/examples-mainwindow.html" target="_blank" rel="noopener">Main Window Examples</a></td>
+</tr>
+<tr>
+<td>MDI applications</td>
+<td><a href="http://doc.qt.io/qt-4.8/qmdiarea.html" target="_blank" rel="noopener">QMdiArea</a>, <a href="http://doc.qt.io/qt-4.8/qt-mainwindows-mdi-example.html" target="_blank" rel="noopener">MDI Example</a></td>
+</tr>
+</tbody>
+</table>
+<h1 id="保存和载入"><a href="#保存和载入" class="headerlink" title="保存和载入"></a>保存和载入</h1><p>在这个例子中，我们会实现前面例子中添加的<code>open()</code>和<code>save()</code>两个 slot 的功能。</p>
+<p><img src="http://doc.qt.io/qt-4.8/images/gs5.png" alt="Open File"></p>
+<p>我们从<code>open()</code>开始：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> Notepad::open()</span><br><span class="line">&#123;</span><br><span class="line">    QString fileName = QFileDialog::getOpenFileName(<span class="keyword">this</span>, tr(<span class="string">"Open File"</span>), <span class="string">""</span>,</span><br><span class="line">                         tr(<span class="string">"Text File (*.txt);;C++ Files (*.cpp *.h)"</span>));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (fileName != <span class="string">""</span>) &#123;</span><br><span class="line">        <span class="function">QFile <span class="title">file</span><span class="params">(filename)</span></span>;</span><br><span class="line">        <span class="keyword">if</span> (!file.open(QIODevice::ReadOnly)) &#123;</span><br><span class="line">            QMessageBox::critical(<span class="keyword">this</span>, tr(<span class="string">"Error"</span>), tr(<span class="string">"Could not open file"</span>));</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="function">QTextStream <span class="title">in</span><span class="params">(&amp;file)</span></span>;</span><br><span class="line">        textEdit-&gt;setText(in.readAll());</span><br><span class="line">        file.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>第一步是询问用户要打开的文件名。Qt 提供了<code>QFileDialog</code>，用户可以通过它选择一个文<br>件。上面的图片展示的是 Kubuntu 上的对话框。静态方法<code>getOpenFileName()</code>会展示一个<br>文件对话框。它会返回所选文件的路径，如果用户取消了对话框则返回空字符串。</p>
+<p>如果我们有一个文件名，我们就使用<code>open()</code>打开它，如果可以打开会返回 true。我们在<br>这里不会深入错误处理，你可以点击查看更多处的链接了解更多。如果文件不能打开，我们<br>用 QMessageBox 显示一个带错误信息的对话框（查看 <a href="http://doc.qt.io/qt-4.8/porting4.html#qmessagebox" target="_blank" rel="noopener">QMessageBox</a><br>类描述可以了解更多）。</p>
+<p>现在我们再来看看<code>save()</code>。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> Notepad::save()</span><br><span class="line">&#123;</span><br><span class="line">    QString fileName = QFileDialog::getSaveFileName(<span class="keyword">this</span>, tr(<span class="string">"Save File"</span>), <span class="string">""</span>,</span><br><span class="line">                         tr(<span class="string">"Text Files (*.txt);;C++ Files (*.cpp *.h)"</span>));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (fileName != <span class="string">""</span>) &#123;</span><br><span class="line">        <span class="function">QFile <span class="title">file</span><span class="params">(fileName)</span></span>;</span><br><span class="line">        <span class="keyword">if</span> (!file.open(QIODevice::WriteOnly)) &#123;</span><br><span class="line">            <span class="comment">// error message</span></span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            QTextStream stream(&amp;file);</span><br><span class="line">            stream &lt;&lt; textEdit-&gt;toPlainText();</span><br><span class="line">            stream.flush();</span><br><span class="line">            file.close();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们把文本框内容写入文件时，又用到了 QTextStream 类。QTextStream 还可以使用 &lt;&lt;<br>操作符把 QString 写入文件。</p>
+<h1 id="Learn-More-4"><a href="#Learn-More-4" class="headerlink" title="Learn More"></a>Learn More</h1><table>
+<thead>
+<tr>
+<th>About</th>
+<th>Here</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Files and I/O devices</td>
+<td><a href="http://doc.qt.io/qt-4.8/qfile.html" target="_blank" rel="noopener">QFile</a>, <a href="http://doc.qt.io/qt-4.8/porting4.html#qiodevice" target="_blank" rel="noopener">QIODevice</a></td>
+</tr>
+</tbody>
+</table>
+<h1 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h1><p>原以为翻译完这篇就知道个大概了，谁知道官方的教程这么不友好，后面的代码不完整，没<br>有 main 函数，完全不知道怎么使用定义好的类，真是无语了。</p>
+<p>后面自己查了一些资料，好像也不太难，不过怎么也是面向新手的，不能这样吧。大概可以这样使用：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"notepad.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;QApplication&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="function">QApplication <span class="title">app</span><span class="params">(argc, argv)</span></span>;</span><br><span class="line">    Notepad notepad;</span><br><span class="line">    notepad.show();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> app.exec();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>编译运行方式与前面相同。</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/translation/" rel="tag"># translation</a>
+          
+            <a href="/tags/qt/" rel="tag"># qt</a>
+          
+            <a href="/tags/tutorial/" rel="tag"># tutorial</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/05/20/hack-spacemacs-go-mode-ret-indent/" rel="next" title="Spacemacs 在 go-mode 下的缩进问题">
+                <i class="fa fa-chevron-left"></i> Spacemacs 在 go-mode 下的缩进问题
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/05/25/cmake-tutorial/" rel="prev" title="[译]CMake 教程">
+                [译]CMake 教程 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/uploads/avatar.jpg"
+                alt="fengqi" />
+            
+              <p class="site-author-name" itemprop="name">fengqi</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">75</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">55</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/feng-qi" target="_blank" title="GitHub"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://stackoverflow.com/users/7961156/fengqi" target="_blank" title="StackOverflow"><i class="fa fa-fw fa-stack-overflow"></i>StackOverflow</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Hello-Notepad"><span class="nav-number">1.</span> <span class="nav-text">Hello Notepad</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Learn-More"><span class="nav-number">2.</span> <span class="nav-text">Learn More</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#添加退出按钮-Adding-a-Quit-Button"><span class="nav-number">3.</span> <span class="nav-text">添加退出按钮 Adding a Quit Button</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Learn-More-1"><span class="nav-number">4.</span> <span class="nav-text">Learn More</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Subclassing-QWidget"><span class="nav-number">5.</span> <span class="nav-text">Subclassing QWidget</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Learn-More-2"><span class="nav-number">6.</span> <span class="nav-text">Learn More</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#建立-pro-文件"><span class="nav-number">7.</span> <span class="nav-text">建立 .pro 文件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用-QMainWindow"><span class="nav-number">8.</span> <span class="nav-text">使用 QMainWindow</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Learn-More-3"><span class="nav-number">9.</span> <span class="nav-text">Learn More</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#保存和载入"><span class="nav-number">10.</span> <span class="nav-text">保存和载入</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Learn-More-4"><span class="nav-number">11.</span> <span class="nav-text">Learn More</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#后记"><span class="nav-number">12.</span> <span class="nav-text">后记</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">fengqi</span>
+
+  
+
+  
+</div>
+
+
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> v3.7.1</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/theme-next/hexo-theme-next">NexT.Pisces</a> v6.3.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.3.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.3.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.3.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.3.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.3.0"></script>
+
+
+
+  
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

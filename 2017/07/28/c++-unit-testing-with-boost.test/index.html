@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.3.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.3.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.3.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '6.3.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="&amp;#x539F;&amp;#x6587;&amp;#x4E3A;&amp;#x8FD9;&amp;#x7BC7;&amp;#x6587;&amp;#x7AE0;&amp;#xFF0C;&amp;#x7B2C;&amp;#x4E00;&amp;#x6BB5;&amp;#x89C9;&amp;#x5F97;&amp;#x6CA1;&amp;#x4EC0;&amp;#x4E48;&amp;#x7528;&amp;#xFF0C;&amp;#x5C31;&amp;#x6CA1;&amp;#x6709;&amp;#x7FFB;&amp;#x8BD1;&amp;#x3002;&amp;#x5B8">
+<meta name="keywords" content="translation,boost,unit test,c++">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[译]C++ Unit Testing With Boost.Test">
+<meta property="og:url" content="http://feng-qi.github.io/2017/07/28/c++-unit-testing-with-boost.test/index.html">
+<meta property="og:site_name" content="feng 言 feng 语">
+<meta property="og:description" content="&amp;#x539F;&amp;#x6587;&amp;#x4E3A;&amp;#x8FD9;&amp;#x7BC7;&amp;#x6587;&amp;#x7AE0;&amp;#xFF0C;&amp;#x7B2C;&amp;#x4E00;&amp;#x6BB5;&amp;#x89C9;&amp;#x5F97;&amp;#x6CA1;&amp;#x4EC0;&amp;#x4E48;&amp;#x7528;&amp;#xFF0C;&amp;#x5C31;&amp;#x6CA1;&amp;#x6709;&amp;#x7FFB;&amp;#x8BD1;&amp;#x3002;&amp;#x5B8">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2017-12-24T16:32:29.192Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[译]C++ Unit Testing With Boost.Test">
+<meta name="twitter:description" content="&amp;#x539F;&amp;#x6587;&amp;#x4E3A;&amp;#x8FD9;&amp;#x7BC7;&amp;#x6587;&amp;#x7AE0;&amp;#xFF0C;&amp;#x7B2C;&amp;#x4E00;&amp;#x6BB5;&amp;#x89C9;&amp;#x5F97;&amp;#x6CA1;&amp;#x4EC0;&amp;#x4E48;&amp;#x7528;&amp;#xFF0C;&amp;#x5C31;&amp;#x6CA1;&amp;#x6709;&amp;#x7FFB;&amp;#x8BD1;&amp;#x3002;&amp;#x5B8">
+
+
+
+
+
+
+  <link rel="canonical" href="http://feng-qi.github.io/2017/07/28/c++-unit-testing-with-boost.test/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>[译]C++ Unit Testing With Boost.Test | feng 言 feng 语</title>
+  
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-116135841-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-116135841-1');
+</script>
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?78d4d070f33fe0f3b3b515cf9dcf714a";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">feng 言 feng 语</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />Home</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+  
+  
+  
+    
+      
+    
+    <a href="https://github.com/feng-qi" class="github-corner" target="_blank" title="Follow me on GitHub" aria-label="Follow me on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#222; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg>
+    
+      </a>
+    
+
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://feng-qi.github.io/2017/07/28/c++-unit-testing-with-boost.test/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="fengqi">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="feng 言 feng 语">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">[译]C++ Unit Testing With Boost.Test
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2017-07-28 22:17:00" itemprop="dateCreated datePublished" datetime="2017-07-28T22:17:00+08:00">2017-07-28</time>
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <div id="content">
+<p>
+&#x539F;&#x6587;&#x4E3A;<a href="http://www.alittlemadness.com/2009/03/31/c-unit-testing-with-boosttest/" target="_blank" rel="noopener">&#x8FD9;&#x7BC7;&#x6587;&#x7AE0;</a>&#xFF0C;&#x7B2C;&#x4E00;&#x6BB5;&#x89C9;&#x5F97;&#x6CA1;&#x4EC0;&#x4E48;&#x7528;&#xFF0C;&#x5C31;&#x6CA1;&#x6709;&#x7FFB;&#x8BD1;&#x3002;&#x5B89;&#x88C5;&#x90E8;&#x5206;&#x4E5F;&#x6709;&#x90E8;&#x5206;&#x6CA1;&#x6709;&#x7FFB;&#x8BD1;&#xFF0C;&#x5176;&#x4F59;&#x57FA;
+&#x672C;&#x90FD;&#x7FFB;&#x8BD1;&#x4E86;&#x3002;
+</p>
+
+<div id="outline-container-orgc4bb923" class="outline-2">
+<h2 id="orgc4bb923">&#x5B89;&#x88C5;</h2>
+<div class="outline-text-2" id="text-orgc4bb923">
+<p>
+&#x5728; Linux &#x4E0B;&#x6700;&#x7B80;&#x5355;&#x7684;&#x65B9;&#x5F0F;&#x662F;&#x4F7F;&#x7528;&#x5305;&#x7BA1;&#x7406;&#x7CFB;&#x7EDF;&#xFF0C;Ubuntu &#x4E0B;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;&#x5982;&#x4E0B;&#x547D;&#x4EE4;&#xFF1A;
+</p>
+
+<div class="org-src-container">
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install libboost-test-dev</span><br></pre></td></tr></table></figure>
+</div>
+
+<p>
+&#x8FD9;&#x79CD;&#x65B9;&#x6CD5;&#x7684;&#x7F3A;&#x70B9;&#x5C31;&#x662F;&#x7248;&#x672C;&#x53EF;&#x80FD;&#x6709;&#x4E9B;&#x8001;&#x65E7;&#x3002;
+</p>
+
+<a id="more"></a>
+</div>
+</div>
+
+<div id="outline-container-org92f249c" class="outline-2">
+<h2 id="org92f249c">&#x9009;&#x62E9;&#x7F16;&#x8BD1;&#x6A21;&#x578B;</h2>
+<div class="outline-text-2" id="text-org92f249c">
+<p>
+&#x548C;&#x5176;&#x4ED6;&#x591A;&#x6570; Boost &#x5E93;&#x4E0D;&#x4E00;&#x6837;&#xFF0C;Boost.Test &#x5305;&#x542B;&#x4E86;&#x4E00;&#x4E2A;&#x9700;&#x8981;&#x94FE;&#x63A5;&#x7684;&#x8FD0;&#x884C;&#x65F6;&#x7EC4;&#x4EF6;&#xFF1A;&#x201C;Program
+Execution Monitor&#x201D;&#xFF08;&#x5176;&#x4ED6;&#x7684;&#x591A;&#x6570;&#x90FD;&#x5B8C;&#x5168;&#x5B9E;&#x73B0;&#x4E3A;&#x5934;&#x6587;&#x4EF6;&#xFF09;&#x3002;&#x8FD9;&#x4E2A;&#x7EC4;&#x4EF6;(component)&#x5305;&#x542B;&#x4E86;
+&#x8FD0;&#x884C;&#x6D4B;&#x8BD5;&#x7684;&#x4E3B;&#x5165;&#x53E3;&#x70B9;&#x548C;&#x5176;&#x4ED6;&#x4E00;&#x4E9B;&#x4E1C;&#x897F;&#x3002;&#x5982;&#x679C;&#x4F60;&#x662F;&#x4ECE;&#x6E90;&#x7801;&#x5B89;&#x88C5;&#x7684;&#xFF0C;&#x8FD8;&#x9700;&#x8981;&#x4F7F;&#x7528; <code>bjam</code> &#x6765;&#x6784;
+&#x5EFA;&#x5E93;&#x3002;&#x9759;&#x6001;&#x6216;&#x52A8;&#x6001;&#x94FE;&#x63A5;&#x90FD;&#x53EF;&#x4EE5;&#xFF0C;&#x4F46;&#x9700;&#x8981; configure your includes and build appropriately.
+</p>
+
+<p>
+&#x4ECE;&#x7F16;&#x5199;&#x548C;&#x6784;&#x5EFA;&#x6D4B;&#x8BD5;&#x7684;&#x89D2;&#x5EA6;&#x6765;&#x770B;&#xFF0C;&#x6700;&#x4E3B;&#x8981;&#x7684;&#x4E8B;&#x662F;&#x5728;&#x6E90;&#x6587;&#x4EF6;&#x4E2D;&#x5305;&#x542B;&#x6B63;&#x786E;&#x7684;&#x5B9A;&#x4E49;&#x5E76;&#x5728;&#x94FE;&#x63A5;&#x65F6;&#x6DFB;&#x52A0;
+&#x6B63;&#x786E;&#x7684;&#x9009;&#x9879;(flags)&#x3002;&#x6211;&#x9009;&#x62E9;&#x52A8;&#x6001;&#x94FE;&#x63A5;&#x5230;&#x4F7F;&#x7528;&#x5305;&#x7BA1;&#x7406;&#x5B89;&#x88C5;&#x7684;&#x9884;&#x7F16;&#x8BD1;&#x597D;&#x7684;&#x5E93;&#x4E0A;&#x3002;&#x8FD9;&#x6837;&#x505A;&#x9700;&#x8981;
+&#x505A;&#x4EE5;&#x4E0B;&#x4E24;&#x4EF6;&#x4E8B;&#xFF1A;
+</p>
+
+<ol class="org-ol">
+<li>To define <code>BOOST_TEST_DYN_LINK</code> before including the Boost.Test headers in my
+source file.</li>
+<li>The addition of: <code>-lboost_unit_test_framework</code> to my linker flags.</li>
+</ol>
+
+<p>
+&#x5B8C;&#x6210;&#x4EE5;&#x4E0A;&#x5C31;&#x53EF;&#x4EE5;&#x5F00;&#x59CB;&#x6D4B;&#x8BD5;&#x4E86;&#x3002;
+</p>
+</div>
+</div>
+<div id="outline-container-orgb339a8e" class="outline-2">
+<h2 id="orgb339a8e">&#x7B2C;&#x4E00;&#x4E2A;&#x6D4B;&#x8BD5;&#x7528;&#x4F8B;</h2>
+<div class="outline-text-2" id="text-orgb339a8e">
+<p>
+&#x5148;&#x968F;&#x4FBF;&#x5199;&#x4E00;&#x4E2A;&#x5C06;&#x4E24;&#x4E2A;&#x6574;&#x578B;&#x76F8;&#x52A0;&#x7684;&#x51FD;&#x6570;&#xFF0C;&#x5E76;&#x6DFB;&#x52A0;&#x4E00;&#x4E2A;&#x6D4B;&#x8BD5;&#x7528;&#x4F8B;&quot;universeInOrder&quot;&#x6765;&#x6D4B;&#x8BD5;&#x5B83;&#xFF1A;
+</p>
+<div class="org-src-container">
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="preprocessor">#<span class="keyword">define</span> BOOST_TEST_DYN_LINK</span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">define</span> BOOST_TEST_MODULE Hello</span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;boost/test/unit_test.hpp&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> i, <span class="keyword">int</span> j)</span></span><br><span class="line"></span>{</span><br><span class="line">    <span class="keyword">return</span> i + j;</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">BOOST_AUTO_TEST_CASE(universeInOrder)</span><br><span class="line">{</span><br><span class="line">    BOOST_CHECK(add(<span class="number">2</span>, <span class="number">2</span>) == <span class="number">4</span>);</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+</div>
+
+<p>
+&#x6CE8;&#x610F;&#x9664;&#x4E86; <code>BOOST_TEST_DYN_LINK</code> &#x6211;&#x8FD8;&#x901A;&#x8FC7; <code>BOOST_TEST_MODULE</code> &#x7ED9;&#x6D4B;&#x8BD5;&#x6A21;&#x5757;&#x5B9A;&#x4E49;&#x4E86;&#x540D;
+&#x5B57;&#x3002;&#x6D4B;&#x8BD5;&#x672C;&#x8EAB;&#x662F;&#x4F7F;&#x7528;&#x5B8F; <code>BOOST_AUTO_TEST_CASE</code> &#x5B9A;&#x4E49;&#x7684;&#xFF0C;&#x53C2;&#x6570;&#x4E3A;&#x7528;&#x4F8B;&#x540D;&#x79F0;<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup>&#x3002;&#x6700;&#x7EC8;
+&#x65AD;&#x8A00;&#x4F7F;&#x7528;&#x4E86;&#x5B8F; <code>BOOST_CHECK</code> &#x3002;&#x7F16;&#x8BD1;&#x8FD0;&#x884C;&#x5982;&#x4E0B;&#xFF1A;
+</p>
+
+<div class="org-src-container">
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ g++ -ohello -lboost_unit_test_framework hello.cpp
+$ ./hello
+Running 1 test case...
+
+*** No errors detected</span><br></pre></td></tr></table></figure>
+</div>
+
+<p>
+&#x5F88;&#x7B80;&#x5355;&#xFF0C;&#x6D4B;&#x8BD5;&#x901A;&#x8FC7;&#x4E86;&#x3002;&#x5982;&#x679C;&#x628A; 4 &#x6539;&#x6210; 5,&#x6545;&#x610F;&#x4F7F;&#x6D4B;&#x8BD5;&#x5931;&#x8D25;&#x7684;&#x8BDD;&#xFF0C;&#x4F1A;&#x5F97;&#x5230;&#xFF1A;
+</p>
+
+<pre class="example">
+$ ./hello
+Running 1 test case...
+hello.cpp(12): error in &quot;universeInOrder&quot;: check add(2, 2) == 5 failed
+
+*** 1 failure detected in test suite &quot;Hello&quot;</pre>
+
+<p>
+&#x8FD9;&#x91CC;&#x5E93;&#x7684;&#x597D;&#x5904;&#x5C31;&#x5F00;&#x59CB;&#x663E;&#x73B0;&#x4E86;&#xFF1A;&#x6F02;&#x4EAE;&#x7684;&#x9519;&#x8BEF;&#x4FE1;&#x606F;&#xFF0C;&#x8FD8;&#x6709;&#x884C;&#x53F7;&#x548C;&#x76F8;&#x5E94;&#x7684;&#x8868;&#x8FBE;&#x5F0F;&#x3002;
+</p>
+</div>
+</div>
+<div id="outline-container-orge46efe1" class="outline-2">
+<h2 id="orge46efe1">&#x66F4;&#x591A;&#x65AD;&#x8A00;</h2>
+<div class="outline-text-2" id="text-orge46efe1">
+<p>
+&#x548C;&#x5F88;&#x591A;&#x5176;&#x4ED6;&#x7684;&#x6D4B;&#x8BD5;&#x5E93;&#x4E2D;&#x7684;&#x65AD;&#x8A00;&#x4E0D;&#x540C;&#xFF0C;&#x4E00;&#x4E2A;&#x5931;&#x8D25;&#x7684; <code>BOOST_CHECK</code> &#x4E0D;&#x4F1A;&#x7ACB;&#x5373;&#x9000;&#x51FA;&#x6D4B;&#x8BD5;&#xFF0C;&#x800C;
+&#x662F;&#x8BB0;&#x5F55;&#x95EE;&#x9898;&#x5E76;&#x7EE7;&#x7EED;&#x6D4B;&#x8BD5;&#x3002;&#x5982;&#x679C;&#x60F3;&#x8981;&#x7ACB;&#x5373;&#x9000;&#x51FA;&#xFF0C;&#x53EF;&#x4EE5;&#x4F7F;&#x7528; <code>BOOST_REQUIRE</code>:
+</p>
+
+<div class="org-src-container">
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">BOOST_AUTO_TEST_CASE(universeInOrder)</span><br><span class="line">{</span><br><span class="line">    BOOST_REQUIRE(add(<span class="number">2</span>, <span class="number">2</span>) == <span class="number">4</span>);</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+</div>
+
+<p>
+&#x53EA;&#x9700;&#x8981;&#x6253;&#x5370; warning &#x800C;&#x4E0D;&#x8981;&#x4F7F;&#x6D4B;&#x8BD5;&#x5931;&#x8D25;&#x65F6;&#xFF0C;&#x53EF;&#x4EE5;&#x4F7F;&#x7528; <code>BOOST_WARN</code>. &#x4E8B;&#x5B9E;&#x4E0A;&#xFF0C;&#x8BB8;&#x591A;
+Boost.Test &#x65AD;&#x8A00;&#x90FD;&#x6709;&#x4E09;&#x79CD;&#x53D8;&#x4F53;&#xFF1A;CHECK, REQUIRE, WARN.
+</p>
+
+<p>
+&#x529F;&#x80FD;&#x66F4;&#x4E30;&#x5BCC;&#x7684;&#x65AD;&#x8A00;&#x4E5F;&#x6709;&#xFF0C;&#x5E38;&#x7528;&#x7684;&#x6709;&#xFF1A;
+</p>
+
+<ul class="org-ul">
+<li><code>BOOST_CHECK_MESSAGE</code>: &#x53EF;&#x4EE5;&#x6307;&#x5B9A;&#x4E00;&#x6761;&#x9519;&#x8BEF;&#x4FE1;&#x606F;&#x4E3A;&#x7B2C;&#x4E8C;&#x4E2A;&#x53C2;&#x6570;&#x3002;&#x53EF;&#x4EE5;&#x4F20;&#x9012; string&#xFF0C;&#x4E0D;
+&#x8FC7;&#x4EFB;&#x4F55;&#x652F;&#x6301;&#x64CD;&#x4F5C;&#x7B26;&quot;&lt;&lt;&quot;&#x7684;&#x90FD;&#x53EF;&#x4EE5;&#x3002;</li>
+<li><code>BOOST_CHECK_EQUAL</code>: &#x4F7F;&#x7528;&quot;==&quot;&#x68C0;&#x67E5;&#x76F8;&#x7B49;&#x6027;&#x3002;&#x6BD4;&#x4E0A;&#x9762;&#x4F8B;&#x5B50;&#x4E2D;&#x666E;&#x901A;&#x7684; check &#x597D;&#x7684;&#x5730;&#x65B9;&#x662F;
+&#x65AD;&#x8A00;&#x5931;&#x8D25;&#x65F6;&#x53EF;&#x4EE5;&#x663E;&#x793A;&#x51FA;&#x771F;&#x5B9E;&#x503C;&#x3002;</li>
+<li><code>BOOST_CHECK_THROW</code>: &#x68C0;&#x67E5;&#x4E00;&#x6761;&#x8868;&#x8FBE;&#x5F0F;&#x4F1A;&#x5F15;&#x8D77;&#x7279;&#x5B9A;&#x7C7B;&#x578B;&#x7684;&#x5F02;&#x5E38;&#x88AB;&#x629B;&#x51FA;&#x3002;</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org15e294d" class="outline-2">
+<h2 id="org15e294d">&#x6D4B;&#x8BD5;&#x5957;&#x4EF6;(Suites)</h2>
+<div class="outline-text-2" id="text-org15e294d">
+<p>
+&#x5F53;&#x6D4B;&#x8BD5;&#x7528;&#x4F8B;&#x7684;&#x6570;&#x91CF;&#x591A;&#x8D77;&#x6765;&#x4E4B;&#x540E;&#xFF0C;&#x4F60;&#x9700;&#x8981;&#x628A;&#x5B83;&#x4EEC;&#x7EC4;&#x7EC7;&#x5230; Suites &#x91CC;&#x3002;&#x6CE8;&#x610F;&#x6BCF;&#x4E2A;&#x6A21;&#x5757;(&#x4F7F;&#x7528;
+<code>BOOST_TEST_MODULE</code> &#x5B9A;&#x4E49;)&#x5DF2;&#x7ECF;&#x6709;&#x4E86;&#x4E00;&#x4E2A;&#x540C;&#x540D;&#x7684;&#x9876;&#x7EA7; suite&#x3002;&#x4E3A;&#x4E86;&#x5206;&#x7C7B;&#x53EF;&#x4EE5;&#x6839;&#x636E;&#x9700;&#x8981;&#x5728;
+&#x6A21;&#x5757;&#x5B9A;&#x4E49;&#x65B0;&#x7684; suites&#x3002;&#x6700;&#x7B80;&#x5355;&#x7684;&#x65B9;&#x6CD5;&#x662F;&#x4F7F;&#x7528; auto-registration module&#xFF0C;&#x5C06; test case
+&#x7528;&#x65B0;&#x7684;&#x5B8F;&#x5305;&#x8D77;&#x6765;&#x5373;&#x53EF;&#xFF1A;
+</p>
+
+<div class="org-src-container">
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="preprocessor">#<span class="keyword">define</span> BOOST_TEST_DYN_LINK</span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">define</span> BOOST_TEST_MODULE Suites</span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;boost/test/unit_test.hpp&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> i, <span class="keyword">int</span> j)</span></span><br><span class="line"></span>{</span><br><span class="line">    <span class="keyword">return</span> i + j;</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">BOOST_AUTO_TEST_SUITE(Maths)</span><br><span class="line"></span><br><span class="line">BOOST_AUTO_TEST_CASE(universeInOrder)</span><br><span class="line">{</span><br><span class="line">    BOOST_CHECK(add(<span class="number">2</span>, <span class="number">2</span>) == <span class="number">4</span>);</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">BOOST_AUTO_TEST_SUITE_END()</span><br><span class="line"></span><br><span class="line">BOOST_AUTO_TEST_SUITE(Physics)</span><br><span class="line"></span><br><span class="line">BOOST_AUTO_TEST_CASE(specialTheory)</span><br><span class="line">{</span><br><span class="line">    <span class="keyword">int</span> e = <span class="number">32</span>;</span><br><span class="line">    <span class="keyword">int</span> m = <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">int</span> c = <span class="number">4</span>;</span><br><span class="line"></span><br><span class="line">    BOOST_CHECK(e == m * c * c);</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">BOOST_AUTO_TEST_SUITE_END()</span><br></pre></td></tr></table></figure>
+</div>
+
+<p>
+&#x5728;&#x4E00;&#x822C;&#x60C5;&#x51B5;&#x4E0B;&#xFF0C;&#x4F60;&#x4E0D;&#x4F1A;&#x770B;&#x5230;&#x6D4B;&#x8BD5;&#x88AB;&#x5206;&#x7C7B;&#x3002;&#x8981;&#x5728;&#x8F93;&#x51FA;&#x4E2D;&#x663E;&#x793A; suites&#xFF0C;&#x4F60;&#x53EF;&#x4EE5;&#x5C06; log level
+&#x8C03;&#x6574;&#x4E3A; <code>test_suite</code>:
+</p>
+
+<pre class="example">
+$ ./suites --log_level=test_suite
+Running 2 test cases...
+Entering test suite &quot;Suites&quot;
+Entering test suite &quot;Maths&quot;
+Entering test case &quot;universeInOrder&quot;
+Leaving test case &quot;universeInOrder&quot;
+Leaving test suite &quot;Maths&quot;
+Entering test suite &quot;Physics&quot;
+Entering test case &quot;specialTheory&quot;
+Leaving test case &quot;specialTheory&quot;
+Leaving test suite &quot;Physics&quot;
+Leaving test suite &quot;Suites&quot;
+
+*** No errors detected</pre>
+</div>
+</div>
+<div id="outline-container-org7e7c1f0" class="outline-2">
+<h2 id="org7e7c1f0">&#x5939;&#x5177;(Fixtures)</h2>
+<div class="outline-text-2" id="text-org7e7c1f0">
+<p>
+&#x8981;&#x6DFB;&#x52A0;&#x901A;&#x7528;&#x7684;&#x8BBE;&#x7F6E;&#x548C;&#x6536;&#x5C3E;&#x4EE3;&#x7801;&#x7684;&#x8BDD;&#xFF0C;Boost.Test &#x4E5F;&#x652F;&#x6301; fixtures&#x3002;&#x8FD9;&#x4F7F;&#x7528;&#x4E86; C++ &#x7684;&#x6784;
+&#x9020;&#x53CA;&#x6790;&#x6784;&#x673A;&#x5236;&#x3002;&#x5F53;&#x7136;&#x4F60;&#x53EF;&#x4EE5;&#x81EA;&#x5DF1;&#x901A;&#x8FC7;&#x9002;&#x5F53;&#x5730;&#x6784;&#x9020;&#x548C;&#x6790;&#x6784;&#x51FD;&#x6570;&#x6765;&#x5B9E;&#x73B0;&#x76F8;&#x5173;&#x529F;&#x80FD;&#xFF0C;&#x4E0D;&#x8FC7;&#x8FD9;&#x7ECF;&#x5E38;
+&#x91CD;&#x590D;&#xFF0C;&#x800C;&#x4E14;&#x4E0D;&#x76F4;&#x89C2;&#x3002;&#x6839;&#x636E;&#x6211;&#x7684;&#x7ECF;&#x9A8C;&#xFF0C;&#x6700;&#x597D;&#x7684;&#x65B9;&#x5F0F;&#x662F;&#x5C06;&#x6D4B;&#x8BD5;&#x7528; suite &#x8FDB;&#x884C;&#x7EC4;&#x7EC7;&#xFF0C;&#x8FD9;&#x6837;&#x4F60;&#x53EF;
+&#x4EE5;&#x4E3A;&#x6BCF;&#x4E2A; suite &#x4F7F;&#x7528; fixture&#xFF0C;&#x7136;&#x540E;&#x53EA;&#x9700;&#x8981;&#x5C06; <code>BOOST_AUTO_TEST_SUITE</code> &#x66FF;&#x6362;&#x4E3A;
+<code>BOOST_FIXTURE_TEST_SUITE</code>:
+</p>
+
+<div class="org-src-container">
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="preprocessor">#<span class="keyword">define</span> BOOST_TEST_DYN_LINK</span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">define</span> BOOST_TEST_MODULE Fixtures</span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;boost/test/unit_test.hpp&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> Massive</span><br><span class="line">{</span><br><span class="line">    <span class="keyword">int</span> m;</span><br><span class="line"></span><br><span class="line">    Massive() : m(<span class="number">2</span>)</span><br><span class="line">    {</span><br><span class="line">	BOOST_TEST_MESSAGE(<span class="string">&quot;setup mass&quot;</span>);</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    ~Massive()</span><br><span class="line">    {</span><br><span class="line">	BOOST_TEST_MESSAGE(<span class="string">&quot;teardown mass&quot;</span>);</span><br><span class="line">    }</span><br><span class="line">};</span><br><span class="line"></span><br><span class="line">BOOST_FIXTURE_TEST_SUITE(Physics, Massive)</span><br><span class="line"></span><br><span class="line">BOOST_AUTO_TEST_CASE(specialTheory)</span><br><span class="line">{</span><br><span class="line">    <span class="keyword">int</span> e = <span class="number">32</span>;</span><br><span class="line">    <span class="keyword">int</span> c = <span class="number">4</span>;</span><br><span class="line"></span><br><span class="line">    BOOST_CHECK(e == m * c * c);</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">BOOST_AUTO_TEST_CASE(newton2)</span><br><span class="line">{</span><br><span class="line">    <span class="keyword">int</span> f = <span class="number">10</span>;</span><br><span class="line">    <span class="keyword">int</span> a = <span class="number">5</span>;</span><br><span class="line"></span><br><span class="line">    BOOST_CHECK(f == m * a);</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">BOOST_AUTO_TEST_SUITE_END()</span><br></pre></td></tr></table></figure>
+</div>
+
+<p>
+&#x6CE8;&#x610F; test cases &#x53EF;&#x4EE5;&#x76F4;&#x63A5;&#x8BBF;&#x95EE; fixture &#x7684; public &#x6210;&#x5458; &quot;m&quot;&#xFF0C;&#x8FD9;&#x80CC;&#x540E;&#x4F7F;&#x7528;&#x4E86;&#x7EE7;&#x627F;&#x673A;&#x5236;&#xFF0C;
+&#x6240;&#x4EE5; protected &#x6210;&#x5458;&#x4E5F;&#x53EF;&#x4EE5;&#x76F4;&#x63A5;&#x8BBF;&#x95EE;&#x3002;&#x5982;&#x679C;&#x4F7F;&#x7528; logging&#xFF0C;&#x5C31;&#x53EF;&#x4EE5;&#x770B;&#x5230; fixture &#x5728;&#x6BCF;&#x4E2A;
+case &#x90FD;&#x8FD0;&#x884C;&#x4E86;&#xFF1A;
+</p>
+
+<pre class="example">
+$ ./fixtures --log_level=test_suite
+Running 2 test cases...
+Entering test suite &quot;Fixtures&quot;
+Entering test suite &quot;Physics&quot;
+Entering test case &quot;specialTheory&quot;
+setup mass
+teardown mass
+Leaving test case &quot;specialTheory&quot;
+Entering test case &quot;newton2&quot;
+setup mass
+teardown mass
+Leaving test case &quot;newton2&quot;
+Leaving test suite &quot;Physics&quot;
+Leaving test suite &quot;Fixtures&quot;
+
+*** No errors detected</pre>
+</div>
+</div>
+<div id="outline-container-org7a0c210" class="outline-2">
+<h2 id="org7a0c210">&#x7ED3;&#x675F;</h2>
+<div class="outline-text-2" id="text-org7a0c210">
+<p>
+&#x6211;&#x671F;&#x671B;&#x8FD9;&#x7ED9;&#x4E86;&#x4F60;&#x4F7F;&#x7528; Boost.Test &#x4E00;&#x4E2A;&#x597D;&#x7684;&#x5F00;&#x59CB;&#x3002;&#x6211;&#x5F00;&#x5934;&#x4E5F;&#x63D0;&#x5230;&#x6587;&#x6863;&#x5176;&#x5B9E;&#x662F;&#x5F88;&#x591A;&#x7684;&#x2500;&#x2500;&#x800C;&#x4E5F;
+&#x56E0;&#x4E3A;&#x592A;&#x591A;&#x800C;&#x8BA9;&#x4EBA;&#x754F;&#x60E7;&#x3002;&#x6D4B;&#x8BD5;&#x5A31;&#x5FEB;&#xFF01;
+</p>
+</div>
+</div>
+<div id="outline-container-org5f68aa1" class="outline-2">
+<h2 id="org5f68aa1">&#x66F4;&#x65B0;</h2>
+<div class="outline-text-2" id="text-org5f68aa1">
+<p>
+&#x4F8B;&#x5B50;&#x7684;&#x4EE3;&#x7801;&#x73B0;&#x5728;&#x53EF;&#x4EE5;&#x4ECE;<a href="https://github.com/jsankey/boost.test-examples/" target="_blank" rel="noopener">GitHub</a>&#x4E0A;&#x83B7;&#x5F97;&#x3002;
+</p>
+</div>
+</div>
+<div id="footnotes">
+<h2 class="footnotes">Footnotes: </h2>
+<div id="text-footnotes">
+
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1">1</a></sup> <div class="footpara"><p class="footpara">
+&#x4E5F;&#x53EF;&#x4EE5;&#x5B9A;&#x4E49;&#x51FD;&#x6570;&#x5BB9;&#x7EB3;&#x4F60;&#x7684;&#x6D4B;&#x8BD5;&#x5E76;&#x642C;&#x8FD0;&#x6CE8;&#x518C;&#xFF0C;&#x4E0D;&#x8FC7;&#x6211;&#x89C9;&#x5F97;&#x81EA;&#x52A8;&#x7684;&#x65B9;&#x6CD5;&#x66F4;&#x7B80;&#x5355;&#x3002;
+</p></div></div>
+
+
+</div>
+</div></div>
+<div id="postamble" class="status">
+Last Updated 2018-05-26 Sat 14:12.<br>Render by <a href="https://github.com/coldnew/hexo-renderer-org" target="_blank" rel="noopener">hexo-renderer-org</a> with <a href="https://www.gnu.org/software/emacs/" target="_blank" rel="noopener">Emacs</a> 25.2.2 (<a href="https://orgmode.org" target="_blank" rel="noopener">Org</a> mode 9.1.13)
+</div>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/translation/" rel="tag"># translation</a>
+          
+            <a href="/tags/boost/" rel="tag"># boost</a>
+          
+            <a href="/tags/unit-test/" rel="tag"># unit test</a>
+          
+            <a href="/tags/c/" rel="tag"># c++</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/07/06/ubuntu-install-utorrent/" rel="next" title="Install uTorrent in Ubuntu">
+                <i class="fa fa-chevron-left"></i> Install uTorrent in Ubuntu
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/08/07/boost-static-link/" rel="prev" title="Boost.Test 静态链接 (Static Link)">
+                Boost.Test 静态链接 (Static Link) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/uploads/avatar.jpg"
+                alt="fengqi" />
+            
+              <p class="site-author-name" itemprop="name">fengqi</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">75</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">55</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/feng-qi" target="_blank" title="GitHub"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://stackoverflow.com/users/7961156/fengqi" target="_blank" title="StackOverflow"><i class="fa fa-fw fa-stack-overflow"></i>StackOverflow</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#orgc4bb923"><span class="nav-number">1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#org92f249c"><span class="nav-number">2.</span> <span class="nav-text">选择编译模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#orgb339a8e"><span class="nav-number">3.</span> <span class="nav-text">第一个测试用例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#orge46efe1"><span class="nav-number">4.</span> <span class="nav-text">更多断言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#org15e294d"><span class="nav-number">5.</span> <span class="nav-text">测试套件(Suites)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#org7e7c1f0"><span class="nav-number">6.</span> <span class="nav-text">夹具(Fixtures)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#org7a0c210"><span class="nav-number">7.</span> <span class="nav-text">结束</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#org5f68aa1"><span class="nav-number">8.</span> <span class="nav-text">更新</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">9.</span> <span class="nav-text">Footnotes: </span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">fengqi</span>
+
+  
+
+  
+</div>
+
+
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> v3.7.1</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/theme-next/hexo-theme-next">NexT.Pisces</a> v6.3.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.3.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.3.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.3.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.3.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.3.0"></script>
+
+
+
+  
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

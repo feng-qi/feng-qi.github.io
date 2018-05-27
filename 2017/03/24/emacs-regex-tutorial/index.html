@@ -1,0 +1,1102 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.3.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.3.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.3.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '6.3.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="原文地址：Emacs: Regex Tutorial 这篇文章是 emacs 正则表达式的教程。正则表达式可以帮助你找到特定模式的字符串。">
+<meta name="keywords" content="translation,emacs,regex">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[译]Emacs: 正则表达式教程">
+<meta property="og:url" content="http://feng-qi.github.io/2017/03/24/emacs-regex-tutorial/index.html">
+<meta property="og:site_name" content="feng 言 feng 语">
+<meta property="og:description" content="原文地址：Emacs: Regex Tutorial 这篇文章是 emacs 正则表达式的教程。正则表达式可以帮助你找到特定模式的字符串。">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2017-12-24T16:32:29.184Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[译]Emacs: 正则表达式教程">
+<meta name="twitter:description" content="原文地址：Emacs: Regex Tutorial 这篇文章是 emacs 正则表达式的教程。正则表达式可以帮助你找到特定模式的字符串。">
+
+
+
+
+
+
+  <link rel="canonical" href="http://feng-qi.github.io/2017/03/24/emacs-regex-tutorial/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>[译]Emacs: 正则表达式教程 | feng 言 feng 语</title>
+  
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-116135841-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-116135841-1');
+</script>
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?78d4d070f33fe0f3b3b515cf9dcf714a";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">feng 言 feng 语</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />Home</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+  
+  
+  
+    
+      
+    
+    <a href="https://github.com/feng-qi" class="github-corner" target="_blank" title="Follow me on GitHub" aria-label="Follow me on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#222; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg>
+    
+      </a>
+    
+
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://feng-qi.github.io/2017/03/24/emacs-regex-tutorial/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="fengqi">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="feng 言 feng 语">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">[译]Emacs: 正则表达式教程
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2017-03-24 23:04:30" itemprop="dateCreated datePublished" datetime="2017-03-24T23:04:30+08:00">2017-03-24</time>
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>原文地址：<a href="http://ergoemacs.org/emacs/emacs_regex.html" target="_blank" rel="noopener">Emacs: Regex Tutorial</a></p>
+<p>这篇文章是 emacs 正则表达式的教程。正则表达式可以帮助你找到特定模式的字符串。<br><a id="more"></a></p>
+<h1 id="正则表达式相关的命令"><a href="#正则表达式相关的命令" class="headerlink" title="正则表达式相关的命令"></a>正则表达式相关的命令</h1><p>使用正则表达式的时候最常见的命令就是<code>query-replace-regexp</code>。参考<a href="http://ergoemacs.org/emacs/emacs_find_replace.html" target="_blank" rel="noopener">Emacs: Find and Replace Commands</a>。</p>
+<p>其他一些常用的有：</p>
+<ul>
+<li><code>dired-do-query-replace-regexp</code>。参考<a href="http://ergoemacs.org/emacs/find_replace_inter.html" target="_blank" rel="noopener">Emacs: Find Replace Text in Directory</a></li>
+<li><code>list-matching-lines</code>。参考<a href="http://ergoemacs.org/emacs/emacs_search_current_word.html" target="_blank" rel="noopener">Emacs: Search / Highlight Words</a></li>
+</ul>
+<p>当然还有很多其他的，想要把它们全部罗列出来可以执行<code>apropos-command</code>，然后输入“regex”。</p>
+<h1 id="Emacs-正则表达式语法"><a href="#Emacs-正则表达式语法" class="headerlink" title="Emacs 正则表达式语法"></a>Emacs 正则表达式语法</h1><p>以下是经常使用的模式：</p>
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th>Matches</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>.</code></td>
+<td>除换行(“\n”)以外的所有字符</td>
+</tr>
+<tr>
+<td><code>\.</code></td>
+<td>一个点</td>
+</tr>
+<tr>
+<td><code>[0-9]+</code></td>
+<td>一个或多个数字</td>
+</tr>
+<tr>
+<td><code>[^0-9]+</code></td>
+<td>一个或多个非数字</td>
+</tr>
+<tr>
+<td><code>[A-Za-z]+</code></td>
+<td>一个或多个字母</td>
+</tr>
+<tr>
+<td><code>[-A-Za-z0-9]+</code></td>
+<td>一个或多个{字母，数字，连字符}</td>
+</tr>
+<tr>
+<td><code>[_A-Za-z0-9]+</code></td>
+<td>一个或多个{字母，数字，下划线}</td>
+</tr>
+<tr>
+<td><code>[-_A-Za-z0-9]+</code></td>
+<td>一个或多个{字母，数字，连字符，下划线}</td>
+</tr>
+<tr>
+<td><code>[[:ascii:]]+</code></td>
+<td>一个或多个 ASCII 字符(码位从 0 到 127, 包括 0 和 127)</td>
+</tr>
+<tr>
+<td><code>[[:nonascii:]]+</code></td>
+<td>一个或多个非 ASCII 字符 (比如， <a href="http://ergoemacs.org/emacs/emacs_n_unicode.html" target="_blank" rel="noopener">Unicode 字符</a>)</td>
+</tr>
+<tr>
+<td><code>[\n\t ]+</code></td>
+<td>一个或多个{换行符，制表符，空格}</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th>Matches</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>&quot;\([^&quot;]+\)&quot;</code></td>
+<td>捕获双引号中的文本</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th>Matches</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>+</code></td>
+<td>匹配一次或多次前一个模式</td>
+</tr>
+<tr>
+<td><code>*</code></td>
+<td>匹配零次或多次前一个模式</td>
+</tr>
+<tr>
+<td><code>?</code></td>
+<td>匹配零次或一次前一个模式</td>
+</tr>
+<tr>
+<td><code>+?</code></td>
+<td>匹配一次或多次前一个模式，但使用最小匹配（即，非贪婪模式）</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th>Matches</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>^…</code></td>
+<td>{行，字符串，buffer}的开头</td>
+</tr>
+<tr>
+<td><code>…$</code></td>
+<td>{行，字符串，buffer}的开头</td>
+</tr>
+<tr>
+<td><code>\`…</code></td>
+<td>{字符串，buffer}的开头</td>
+</tr>
+<tr>
+<td><code>…\&#39;</code></td>
+<td>{字符串，buffer}的结尾</td>
+</tr>
+<tr>
+<td><code>\b</code></td>
+<td>单词边界标记</td>
+</tr>
+</tbody>
+</table>
+<p>Unicode 字符可以使用字面量，比如说，→将会查找到右箭头字符。</p>
+<p>你也可以用编码来表示任意字符，如<code>\u2192</code>。参考<a href="http://ergoemacs.org/emacs/elisp_unicode_representation_in_string.html" target="_blank" rel="noopener">Emacs Lisp: Unicode Representation in String</a></p>
+<p>完整的正则表达式语法列表参见<a href="http://ergoemacs.org/emacs_manual/elisp/Syntax-of-Regexps.html" target="_blank" rel="noopener">(info “(elisp) Syntax of Regexps”)</a></p>
+<h1 id="换行符和制表符"><a href="#换行符和制表符" class="headerlink" title="换行符和制表符"></a>换行符和制表符</h1><p>当在命令交互的时候，emacs 不会识别<code>\n</code>和<code>\t</code>。</p>
+<ul>
+<li>要输入一个换行符，按下【<code>Ctrl</code>+<code>q</code> <code>Ctrl</code>+<code>j</code>】</li>
+<li>要输入一个制表符，按下【<code>Ctrl</code>+<code>q</code> <code>Tab ⇥</code>】</li>
+</ul>
+<p>(详细解释请参考<a href="http://ergoemacs.org/emacs/keystroke_rep.html" target="_blank" rel="noopener">Emacs’s Key Syntax Explained</a>)</p>
+<h1 id="区分大小写"><a href="#区分大小写" class="headerlink" title="区分大小写"></a>区分大小写</h1><p>当使用<code>[a-z]</code>时，默认不区分大小写。是否区分大小写由变量<code>case-fold-search</code>控制。<br>执行<code>toggle-case-fold-search</code>来开启它。记得用完改回原值。因为 <code>case-fold-search</code><br>也被包括 isearch 在内的几乎所有搜索或查找替换命令使用。</p>
+<p>不要使用<code>[A-z]</code>，因为它会匹配到一些标点。使用<code>[A-Za-z]</code>。</p>
+<h1 id="JavaScript-和-Emacs-正则表达式比较"><a href="#JavaScript-和-Emacs-正则表达式比较" class="headerlink" title="JavaScript 和 Emacs 正则表达式比较"></a>JavaScript 和 Emacs 正则表达式比较</h1><p>大多数语言的正则表达式都相似，比如 JavaScript，Python，Ruby，Perl 等。Emacs 的<br>和它们不同。</p>
+<p>以下是一些实际中常见的不同：</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>JavaScript</th>
+<th>emacs lisp</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Capture(捕获)</td>
+<td><code>(…)</code></td>
+<td><code>\(…\)</code></td>
+</tr>
+<tr>
+<td>digit(数字)</td>
+<td><code>\d</code></td>
+<td><code>[[:digit:]]</code></td>
+</tr>
+<tr>
+<td>word(字母)</td>
+<td><code>\w</code></td>
+<td><code>[[:word:]]</code></td>
+</tr>
+<tr>
+<td>whitespace(空白符)</td>
+<td><code>\s</code></td>
+<td><code>[[:space:]]</code></td>
+</tr>
+</tbody>
+</table>
+<p>例如，JavaScript 中的<code>\d+</code>在 emacs 里是<code>[[:digit:]]+</code>。</p>
+<p>注意：emacs 中字符类的含义根据当前主模式(major mode)的语法不同而不同。例如，什么<br>字符被认为符合<code>[[:word:]]</code>依赖于它当前主模式的语法表中怎么定义。但实际使用中通常<br>是你所期望的。</p>
+<p>展示其中不同之处的一个例子可以参考<a href="http://ergoemacs.org/emacs/elisp_regex_and_syntax_table.html" target="_blank" rel="noopener">Emacs Lisp: Regex Patterns and Syntax Table</a>。</p>
+<p>语法表很难处理，使用它的正则表达式可能匹配到的结果难以预料。最好是将你想匹配的字符<br>明确地写到正则表达式里，如<code>[A-Za-z]</code>。</p>
+<h1 id="交互式-Emacs-正则表达式"><a href="#交互式-Emacs-正则表达式" class="headerlink" title="交互式 Emacs 正则表达式"></a>交互式 Emacs 正则表达式</h1><p>Emacs 有一个交互式的正则表达式模式。它在你输入的同时进行匹配。要进入这个模式，<br>调用<code>regexp-builder</code>。（我并不用它）</p>
+<p>另外也可以调用<code>query-replace-regexp</code>来测试你的模式(pattern)。我更喜欢这个方式。</p>
+<h1 id="Emacs-Lisp-代码中的正则表达式"><a href="#Emacs-Lisp-代码中的正则表达式" class="headerlink" title="Emacs Lisp 代码中的正则表达式"></a>Emacs Lisp 代码中的正则表达式</h1><p><a href="http://ergoemacs.org/emacs/elisp_regex.html" target="_blank" rel="noopener">Emacs Lisp: Regex Tutorial</a></p>
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ul>
+<li><a href="http://ergoemacs.org/emacs_manual/emacs/Regexps.html" target="_blank" rel="noopener">(info “(emacs) Regexps”)</a></li>
+</ul>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/translation/" rel="tag"># translation</a>
+          
+            <a href="/tags/emacs/" rel="tag"># emacs</a>
+          
+            <a href="/tags/regex/" rel="tag"># regex</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/03/14/shell-tips/" rel="next" title="Shell 的一些使用技巧">
+                <i class="fa fa-chevron-left"></i> Shell 的一些使用技巧
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/04/15/emacs-function-insert-file-name/" rel="prev" title="Emacs 插入文件名函数">
+                Emacs 插入文件名函数 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/uploads/avatar.jpg"
+                alt="fengqi" />
+            
+              <p class="site-author-name" itemprop="name">fengqi</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">75</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">55</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/feng-qi" target="_blank" title="GitHub"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://stackoverflow.com/users/7961156/fengqi" target="_blank" title="StackOverflow"><i class="fa fa-fw fa-stack-overflow"></i>StackOverflow</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#正则表达式相关的命令"><span class="nav-number">1.</span> <span class="nav-text">正则表达式相关的命令</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Emacs-正则表达式语法"><span class="nav-number">2.</span> <span class="nav-text">Emacs 正则表达式语法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#换行符和制表符"><span class="nav-number">3.</span> <span class="nav-text">换行符和制表符</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#区分大小写"><span class="nav-number">4.</span> <span class="nav-text">区分大小写</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#JavaScript-和-Emacs-正则表达式比较"><span class="nav-number">5.</span> <span class="nav-text">JavaScript 和 Emacs 正则表达式比较</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#交互式-Emacs-正则表达式"><span class="nav-number">6.</span> <span class="nav-text">交互式 Emacs 正则表达式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Emacs-Lisp-代码中的正则表达式"><span class="nav-number">7.</span> <span class="nav-text">Emacs Lisp 代码中的正则表达式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Reference"><span class="nav-number">8.</span> <span class="nav-text">Reference</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">fengqi</span>
+
+  
+
+  
+</div>
+
+
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> v3.7.1</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/theme-next/hexo-theme-next">NexT.Pisces</a> v6.3.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.3.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.3.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.3.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.3.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.3.0"></script>
+
+
+
+  
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

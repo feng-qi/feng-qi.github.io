@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.3.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.3.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.3.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '6.3.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="&amp;#x5728;&amp;#x770B; Emacs &amp;#x51FD;&amp;#x6570;&amp;#x7684;&amp;#x65F6;&amp;#x5019;&amp;#x7ECF;&amp;#x5E38;&amp;#x770B;&amp;#x5230; interactive&amp;#xFF0C;&amp;#x5B83;&amp;#x7684;&amp;#x7528;&amp;#x5904;&amp;#x5C31;&amp;#x662F;&amp;#x5C06;&amp;#x51FD;&amp;#x6570;&amp;#x53D8;&amp;#x">
+<meta name="keywords" content="emacs,lisp">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Emacs 中 interactive 的参数含义">
+<meta property="og:url" content="http://feng-qi.github.io/2017/06/15/emacs-interactive-argument/index.html">
+<meta property="og:site_name" content="feng 言 feng 语">
+<meta property="og:description" content="&amp;#x5728;&amp;#x770B; Emacs &amp;#x51FD;&amp;#x6570;&amp;#x7684;&amp;#x65F6;&amp;#x5019;&amp;#x7ECF;&amp;#x5E38;&amp;#x770B;&amp;#x5230; interactive&amp;#xFF0C;&amp;#x5B83;&amp;#x7684;&amp;#x7528;&amp;#x5904;&amp;#x5C31;&amp;#x662F;&amp;#x5C06;&amp;#x51FD;&amp;#x6570;&amp;#x53D8;&amp;#x">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2018-05-27T08:24:44.023Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Emacs 中 interactive 的参数含义">
+<meta name="twitter:description" content="&amp;#x5728;&amp;#x770B; Emacs &amp;#x51FD;&amp;#x6570;&amp;#x7684;&amp;#x65F6;&amp;#x5019;&amp;#x7ECF;&amp;#x5E38;&amp;#x770B;&amp;#x5230; interactive&amp;#xFF0C;&amp;#x5B83;&amp;#x7684;&amp;#x7528;&amp;#x5904;&amp;#x5C31;&amp;#x662F;&amp;#x5C06;&amp;#x51FD;&amp;#x6570;&amp;#x53D8;&amp;#x">
+
+
+
+
+
+
+  <link rel="canonical" href="http://feng-qi.github.io/2017/06/15/emacs-interactive-argument/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Emacs 中 interactive 的参数含义 | feng 言 feng 语</title>
+  
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-116135841-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-116135841-1');
+</script>
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?78d4d070f33fe0f3b3b515cf9dcf714a";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">feng 言 feng 语</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />Home</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+  
+  
+  
+    
+      
+    
+    <a href="https://github.com/feng-qi" class="github-corner" target="_blank" title="Follow me on GitHub" aria-label="Follow me on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#222; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg>
+    
+      </a>
+    
+
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://feng-qi.github.io/2017/06/15/emacs-interactive-argument/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="fengqi">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="feng 言 feng 语">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Emacs 中 interactive 的参数含义
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2017-06-15 22:39:00" itemprop="dateCreated datePublished" datetime="2017-06-15T22:39:00+08:00">2017-06-15</time>
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <div id="content">
+<p>
+&#x5728;&#x770B; Emacs &#x51FD;&#x6570;&#x7684;&#x65F6;&#x5019;&#x7ECF;&#x5E38;&#x770B;&#x5230; interactive&#xFF0C;&#x5B83;&#x7684;&#x7528;&#x5904;&#x5C31;&#x662F;&#x5C06;&#x51FD;&#x6570;&#x53D8;&#x4E3A;&#x53EF;&#x8C03;&#x7528;&#x7684;&#xFF0C;&#x5373;&#x53EF;
+&#x4EE5;&#x901A;&#x8FC7; <code>M-x</code> &#x8FDB;&#x884C;&#x8C03;&#x7528;&#x3002;&#x53EA;&#x662F;&#x521A;&#x5F00;&#x59CB;&#x4E86;&#x89E3;&#x5B83;&#x7684;&#x65F6;&#x5019;&#x5BF9;&#x5B83;&#x7684;&#x53C2;&#x6570;&#x4E0D;&#x592A;&#x7406;&#x89E3;&#xFF0C;&#x6BD4;&#x5982;&#x6587;&#x6863;&#x4E2D;&#x51FA;&#x73B0;
+&#x4E86;&#x4E00;&#x4E2A;&#x793A;&#x4F8B;&#x4E2D;&#x6709; <code>(interactive &quot;P\nbbuffer: &quot;)</code> &#xFF0C;&#x611F;&#x89C9;&#x53C2;&#x6570;&#x8DDF;&#x4E71;&#x7801;&#x4E00;&#x6837;&#x3002;&#x4E0D;&#x8FC7;&#x6700;&#x8FD1;&#x7A81;&#x7136;
+&#x5BF9;&#x8FD9;&#x4E2A;&#x53C2;&#x6570;&#x7406;&#x89E3;&#x4E86;&#xFF0C;&#x8FD9;&#x91CC;&#x8BB0;&#x5F55;&#x4E00;&#x4E0B;&#x3002;
+</p>
+
+<a id="more"></a>
+
+<div id="outline-container-org1790b14" class="outline-2">
+<h2 id="org1790b14">&#x53C2;&#x6570;&#x4E3A; string</h2>
+<div class="outline-text-2" id="text-org1790b14">
+<p>
+&#x8FD9;&#x4E2A;&#x53C2;&#x6570;&#x7528;&#x6765;&#x9650;&#x5236;&#x53C2;&#x6570;&#x7C7B;&#x578B;&#x53CA;&#x7ED9;&#x51FA;&#x63D0;&#x793A;&#x4FE1;&#x606F;&#xFF0C;&#x53C2;&#x6570;&#x683C;&#x5F0F;&#x4E3A;&#x4E00;&#x4E2A; <code>code letter</code> &#x52A0;&#x4E0A;&#x63D0;&#x793A;&#x4FE1;
+&#x606F;&#xFF0C;&#x591A;&#x4E2A;&#x53C2;&#x6570;&#x7528; <code>\n</code> &#x5206;&#x9694;&#xFF08;&#x611F;&#x89C9;&#x5C31;&#x662F;&#x8F93;&#x5165;&#x5B8C;&#x6BCF;&#x4E2A;&#x53C2;&#x6570;&#x7528;&#x56DE;&#x8F66;&#x786E;&#x8BA4;&#xFF09;&#x3002;&#x53EF;&#x7528;&#x7684; <code>code
+letter</code> &#x6709;&#xFF1A;
+</p>
+
+<pre class="example">
+a -- Function name: symbol with a function definition.
+b -- Name of existing buffer.
+B -- Name of buffer, possibly nonexistent.
+c -- Character (no input method is used).
+C -- Command name: symbol with interactive function definition.
+d -- Value of point as number.  Does not do I/O.
+D -- Directory name.
+e -- Parameterized event (i.e., one that&apos;s a list) that invoked this command.
+     If used more than once, the Nth `e&apos; returns the Nth parameterized event.
+     This skips events that are integers or symbols.
+f -- Existing file name.
+F -- Possibly nonexistent file name.
+G -- Possibly nonexistent file name, defaulting to just directory name.
+i -- Ignored, i.e. always nil.  Does not do I/O.
+k -- Key sequence (downcase the last event if needed to get a definition).
+K -- Key sequence to be redefined (do not downcase the last event).
+m -- Value of mark as number.  Does not do I/O.
+M -- Any string.  Inherits the current input method.
+n -- Number read using minibuffer.
+N -- Numeric prefix arg, or if none, do like code `n&apos;.
+p -- Prefix arg converted to number.  Does not do I/O.
+P -- Prefix arg in raw form.  Does not do I/O.
+r -- Region: point and mark as 2 numeric args, smallest first.  Does no I/O.
+s -- Any string.  Does not inherit the current input method.
+S -- Any symbol.
+U -- Mouse up event discarded by a previous k or K argument.
+v -- Variable name: symbol that is `custom-variable-p&apos;.
+x -- Lisp expression read but not evaluated.
+X -- Lisp expression read and evaluated.
+z -- Coding system.
+Z -- Coding system, nil if no prefix arg.</pre>
+
+<p>
+&#x8FD9;&#x6837;&#x518D;&#x53BB;&#x7406;&#x89E3; <code>(interactive &quot;P\nbbuffer: &quot;)</code> &#x7684;&#x53C2;&#x6570;&#x5C31;&#x5F88;&#x7B80;&#x5355;&#x4E86;&#x3002;
+</p>
+
+<p>
+&#x9996;&#x5148;&#xFF0C;&#x53C2;&#x6570;&#x53EF;&#x4EE5;&#x5206;&#x89E3;&#x4E3A; <code>P</code> <code>\n</code> <code>bbuffer:</code> &#xFF0C;&#x8868;&#x793A;&#x6709;&#x4E24;&#x4E2A;&#x53C2;&#x6570;&#xFF0C;&#x5206;&#x522B;&#x4E3A;
+</p>
+
+<ul class="org-ul">
+<li><code>P</code>, &#x8868;&#x793A;&#x7531; <code>C-u</code> &#x63D0;&#x4F9B;&#xFF0C;&#x5E76;&#x8F6C;&#x6362;&#x6210;&#x6570;&#x5B57;&#x3002;&#x65E0;&#x63D0;&#x793A;&#x4FE1;&#x606F;;</li>
+<li><code>b</code>, &#x8868;&#x793A;&#x53C2;&#x6570;&#x4E3A;&#x4E00;&#x4E2A; buffer &#x7684;&#x540D;&#x5B57;&#x3002;&#x63D0;&#x793A;&#x4FE1;&#x606F;&#x4E3A; <code>buffer:</code>.</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgd90895f" class="outline-2">
+<h2 id="orgd90895f">&#x53C2;&#x6570;&#x4E3A; s-expression</h2>
+<div class="outline-text-2" id="text-orgd90895f">
+<p>
+&#x5F53;&#x53C2;&#x6570;&#x662F; s-expression &#x65F6;&#xFF0C;&#x8BE5;&#x8868;&#x8FBE;&#x5F0F;&#x4F1A;&#x5728;&#x51FD;&#x6570;&#x88AB;&#x8C03;&#x7528;&#x65F6;&#x6C42;&#x503C;&#xFF0C;&#x4EA7;&#x751F;&#x771F;&#x5B9E;&#x7684;&#x53C2;&#x6570;&#x3002;Emacs &#x4E5F;
+&#x63D0;&#x4F9B;&#x4E86;&#x5F88;&#x591A;&#x51FD;&#x6570;&#x6765;&#x5B9E;&#x73B0;&#x53C2;&#x6570;&#x7684;&#x8BFB;&#x53D6;&#xFF0C;&#x5982; <code>read-buffer</code> <code>read-string</code> &#x7B49;&#x3002;&#x4EE5;&#x4E0B;&#x793A;&#x4F8B;&#x662F;&#x4EE5;
+&#x4E0D;&#x540C;&#x65B9;&#x5F0F;&#x7ED9;&#x5B9A;&#x7684;&#x53C2;&#x6570;&#xFF0C;&#x4F46;&#x6548;&#x679C;&#x76F8;&#x540C;&#xFF1A;
+</p>
+
+<div class="org-src-container">
+<figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="list">(<span class="keyword">defun</span> bar <span class="list">(<span class="keyword">arg</span>)</span></span><br><span class="line">  <span class="list">(<span class="keyword">interactive</span> <span class="string">&quot;p&quot;</span>)</span></span><br><span class="line">  <span class="comment">;; ...</span></span><br><span class="line">  )</span></span><br><span class="line"><span class="list">(<span class="keyword">defun</span> bar <span class="list">(<span class="keyword">arg</span>)</span></span><br><span class="line">  <span class="list">(<span class="keyword">interactive</span></span><br><span class="line">   <span class="list">(<span class="keyword">list</span> <span class="list">(<span class="keyword">prefix-numeric-value</span> current-prefix-arg)</span>)</span>)</span></span><br><span class="line">   <span class="comment">;; ...</span></span><br><span class="line">   )</span></span><br><span class="line"></span><br><span class="line"><span class="list">(<span class="keyword">defun</span> foo <span class="list">(<span class="keyword">arg</span> buf)</span></span><br><span class="line">  <span class="list">(<span class="keyword">interactive</span> <span class="string">&quot;P\nbBuffer: &quot;</span>)</span></span><br><span class="line">  <span class="comment">;; ...</span></span><br><span class="line">  )</span></span><br><span class="line"><span class="list">(<span class="keyword">defun</span> foo <span class="list">(<span class="keyword">arg</span> buf)</span></span><br><span class="line">  <span class="list">(<span class="keyword">interactive</span></span><br><span class="line">   <span class="list">(<span class="keyword">list</span> current-prefix-arg</span><br><span class="line">	 <span class="list">(<span class="keyword">read-buffer</span> <span class="string">&quot;Buffer: &quot;</span> <span class="list">(<span class="keyword">current-buffer</span>)</span> <span class="literal">t</span>)</span>)</span>)</span></span><br><span class="line">  <span class="comment">;; ...</span></span><br><span class="line">  )</span></span><br></pre></td></tr></table></figure>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgfd098e5" class="outline-2">
+<h2 id="orgfd098e5">References</h2>
+<div class="outline-text-2" id="text-orgfd098e5">
+<ol class="org-ol">
+<li>Emacs &#x6587;&#x6863;</li>
+<li><a href="https://www.emacswiki.org/emacs/InteractiveFunction" target="_blank" rel="noopener">https://www.emacswiki.org/emacs/InteractiveFunction</a></li>
+</ol>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+Last Updated 2018-05-27 Sun 16:24.<br>Render by <a href="https://github.com/coldnew/hexo-renderer-org" target="_blank" rel="noopener">hexo-renderer-org</a> with <a href="https://www.gnu.org/software/emacs/" target="_blank" rel="noopener">Emacs</a> 25.2.2 (<a href="https://orgmode.org" target="_blank" rel="noopener">Org</a> mode 9.1.13)
+</div>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/emacs/" rel="tag"># emacs</a>
+          
+            <a href="/tags/lisp/" rel="tag"># lisp</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/06/14/clang-llvm-compile-command/" rel="next" title="clang 和 llvm 编译命令">
+                <i class="fa fa-chevron-left"></i> clang 和 llvm 编译命令
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/06/29/raspberry-setup-samba/" rel="prev" title="在树莓派下搭建 Samba 服务">
+                在树莓派下搭建 Samba 服务 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/uploads/avatar.jpg"
+                alt="fengqi" />
+            
+              <p class="site-author-name" itemprop="name">fengqi</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">75</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">55</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/feng-qi" target="_blank" title="GitHub"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://stackoverflow.com/users/7961156/fengqi" target="_blank" title="StackOverflow"><i class="fa fa-fw fa-stack-overflow"></i>StackOverflow</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#org1790b14"><span class="nav-number">1.</span> <span class="nav-text">参数为 string</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#orgd90895f"><span class="nav-number">2.</span> <span class="nav-text">参数为 s-expression</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#orgfd098e5"><span class="nav-number">3.</span> <span class="nav-text">References</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">fengqi</span>
+
+  
+
+  
+</div>
+
+
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> v3.7.1</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/theme-next/hexo-theme-next">NexT.Pisces</a> v6.3.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.3.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.3.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.3.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.3.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.3.0"></script>
+
+
+
+  
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

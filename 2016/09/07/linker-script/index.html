@@ -1,0 +1,1628 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.3.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.3.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.3.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '6.3.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="&amp;#x6982;&amp;#x5FF5;&amp;#x7406;&amp;#x89E3;   Linker script &amp;#x662F;&amp;#x7528;&amp;#x6765;&amp;#x63A7;&amp;#x5236;&amp;#x94FE;&amp;#x63A5;&amp;#x8FC7;&amp;#x7A0B;&amp;#x7684;&amp;#x811A;&amp;#x672C;&amp;#x3002;&amp;#x5B83;&amp;#x7684;&amp;#x4F5C;&amp;#x7528;&amp;#x4E3B;&amp;#x8">
+<meta name="keywords" content="linker">
+<meta property="og:type" content="article">
+<meta property="og:title" content="链接脚本的作用及格式">
+<meta property="og:url" content="http://feng-qi.github.io/2016/09/07/linker-script/index.html">
+<meta property="og:site_name" content="feng 言 feng 语">
+<meta property="og:description" content="&amp;#x6982;&amp;#x5FF5;&amp;#x7406;&amp;#x89E3;   Linker script &amp;#x662F;&amp;#x7528;&amp;#x6765;&amp;#x63A7;&amp;#x5236;&amp;#x94FE;&amp;#x63A5;&amp;#x8FC7;&amp;#x7A0B;&amp;#x7684;&amp;#x811A;&amp;#x672C;&amp;#x3002;&amp;#x5B83;&amp;#x7684;&amp;#x4F5C;&amp;#x7528;&amp;#x4E3B;&amp;#x8">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2018-05-27T08:15:39.579Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="链接脚本的作用及格式">
+<meta name="twitter:description" content="&amp;#x6982;&amp;#x5FF5;&amp;#x7406;&amp;#x89E3;   Linker script &amp;#x662F;&amp;#x7528;&amp;#x6765;&amp;#x63A7;&amp;#x5236;&amp;#x94FE;&amp;#x63A5;&amp;#x8FC7;&amp;#x7A0B;&amp;#x7684;&amp;#x811A;&amp;#x672C;&amp;#x3002;&amp;#x5B83;&amp;#x7684;&amp;#x4F5C;&amp;#x7528;&amp;#x4E3B;&amp;#x8">
+
+
+
+
+
+
+  <link rel="canonical" href="http://feng-qi.github.io/2016/09/07/linker-script/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>链接脚本的作用及格式 | feng 言 feng 语</title>
+  
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-116135841-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-116135841-1');
+</script>
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?78d4d070f33fe0f3b3b515cf9dcf714a";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">feng 言 feng 语</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />Home</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+  
+  
+  
+    
+      
+    
+    <a href="https://github.com/feng-qi" class="github-corner" target="_blank" title="Follow me on GitHub" aria-label="Follow me on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#222; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg>
+    
+      </a>
+    
+
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://feng-qi.github.io/2016/09/07/linker-script/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="fengqi">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="feng 言 feng 语">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">链接脚本的作用及格式
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2016-09-07 14:45:00" itemprop="dateCreated datePublished" datetime="2016-09-07T14:45:00+08:00">2016-09-07</time>
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <div id="content">
+
+<div id="outline-container-org913a226" class="outline-2">
+<h2 id="org913a226">&#x6982;&#x5FF5;&#x7406;&#x89E3;</h2>
+<div class="outline-text-2" id="text-org913a226">
+<p>
+Linker script &#x662F;&#x7528;&#x6765;&#x63A7;&#x5236;&#x94FE;&#x63A5;&#x8FC7;&#x7A0B;&#x7684;&#x811A;&#x672C;&#x3002;&#x5B83;&#x7684;&#x4F5C;&#x7528;&#x4E3B;&#x8981;&#x662F;&#x89C4;&#x5B9A;&#x5982;&#x4F55;&#x628A;&#x8F93;&#x5165;&#x6587;&#x4EF6;&#x5185;&#x7684;
+section &#x653E;&#x5165;&#x8F93;&#x51FA;&#x6587;&#x4EF6;&#x5185;&#xFF0C;&#x5E76;&#x63A7;&#x5236;&#x8F93;&#x5165;&#x6587;&#x4EF6;&#x5185;&#x5404;&#x90E8;&#x5206;&#x5728;&#x7A0B;&#x5E8F;&#x5730;&#x5740;&#x7A7A;&#x95F4;&#x5185;&#x7684;&#x5E03;&#x5C40;&#x3002;
+</p>
+
+<p>
+&#x94FE;&#x63A5;&#x5668;&#x6709;&#x4E2A;&#x9ED8;&#x8BA4;&#x7684;&#x5185;&#x7F6E;&#x94FE;&#x63A5;&#x811A;&#x672C;&#xFF0C;&#x53EF;&#x7528; <code>ld --verbose</code> &#x67E5;&#x770B;&#x3002;&#x94FE;&#x63A5;&#x9009;&#x9879; <b>-r</b> &#x548C; <b>-N</b>
+&#x53EF;&#x4EE5;&#x5F71;&#x54CD;&#x9ED8;&#x8BA4;&#x7684;&#x94FE;&#x63A5;&#x811A;&#x672C;&#x3002; -T &#x9009;&#x9879;&#x7528;&#x4EE5;&#x6307;&#x5B9A;&#x94FE;&#x63A5;&#x811A;&#x672C;&#x3002;
+</p>
+
+<a id="more"></a>
+
+<p>
+&#x94FE;&#x63A5;&#x5668;&#x628A;&#x4E00;&#x4E2A;&#x6216;&#x591A;&#x4E2A;&#x8F93;&#x5165;&#x6587;&#x4EF6;&#x5408;&#x6210;&#x4E00;&#x4E2A;&#x8F93;&#x51FA;&#x6587;&#x4EF6;&#x3002;&#x6709;&#x65F6;&#x628A;&#x8F93;&#x5165;&#x6587;&#x4EF6;&#x5185;&#x7684; section &#x79F0;&#x4E3A;
+<code>&#x8F93;&#x5165;section</code> (input section)&#xFF0C;&#x628A;&#x8F93;&#x51FA;&#x6587;&#x4EF6;&#x5185;&#x7684; section &#x79F0;&#x4E3A;
+<code>&#x8F93;&#x51FA;section</code> (output section)&#x3002;
+</p>
+
+<p>
+&#x76EE;&#x6807;&#x6587;&#x4EF6;&#x7684;&#x6BCF;&#x4E2A; section &#x81F3;&#x5C11;&#x5305;&#x542B;&#x4E24;&#x4E2A;&#x4FE1;&#x606F;&#xFF1A;&#x540D;&#x5B57;&#x548C;&#x5927;&#x5C0F;&#x3002;&#x6BB5;&#x5185;&#x90E8;&#x8FD8;&#x53EF;&#x80FD;&#x5305;&#x542B;&#x4E00;&#x4E9B;&#x6570;&#x636E;&#xFF0C;
+&#x88AB;&#x79F0;&#x4F5C;&#x6BB5;&#x5185;&#x5BB9;(section contents)&#x3002;&#x4E00;&#x4E2A; section &#x53EF;&#x88AB;&#x6807;&#x8BB0;&#x4E3A; loadable &#x6216;
+allocatable&#x3002;&#x4F8B;&#x5982; text &#x6BB5;&#x7684;&#x6807;&#x5FD7;&#x4E3A; loadable&#xFF0C;&#x8868;&#x793A;&#x8BE5;&#x6BB5;&#x7684;&#x6BB5;&#x5185;&#x5BB9;&#x5728;&#x8FD0;&#x884C;&#x7684;&#x65F6;&#x5019;&#x9700;&#x8981;
+&#x52A0;&#x8F7D;&#x5230;&#x5185;&#x5728;&#x4E2D;&#xFF1B;&#x8FD8;&#x6709;&#x4E00;&#x4E9B;&#x6BB5;&#xFF08;&#x6BD4;&#x5982; bss &#x6BB5;&#xFF09;&#x6CA1;&#x6709;&#x6BB5;&#x5185;&#x5BB9;&#xFF0C;&#x90A3;&#x4E48;&#x8FD9;&#x4E9B;&#x6BB5;&#x6807;&#x5FD7;&#x4E3A;
+allocatable&#xFF0C;&#x5373;&#x9700;&#x8981;&#x5206;&#x914D;&#x4E00;&#x4E9B;&#x5185;&#x5B58;&#x3002;
+</p>
+
+<p>
+&#x6BCF;&#x4E2A; loadable &#x6216; allocatable &#x8F93;&#x51FA; section &#x901A;&#x5E38;&#x5305;&#x542B;&#x4E24;&#x4E2A;&#x5730;&#x5740;&#xFF1A;VMA(virtual
+memory address) &#x548C; LMA(load memory address)&#x3002;&#x901A;&#x5E38;&#xFF0C;VMA &#x548C; LMA &#x662F;&#x76F8;&#x540C;&#x7684;&#x3002;&#x4F46;&#x5728;
+&#x5D4C;&#x5165;&#x5F0F;&#x7CFB;&#x7EDF;&#x4E2D;&#xFF0C;&#x7ECF;&#x5E38;&#x5B58;&#x5728;&#x52A0;&#x8F7D;&#x5730;&#x5740;&#x548C;&#x6267;&#x884C;&#x5730;&#x5740;&#x4E0D;&#x540C;&#x7684;&#x60C5;&#x51B5;&#xFF1A;&#x6BD4;&#x5982;&#x5C06;&#x8F93;&#x51FA;&#x6587;&#x4EF6;&#x52A0;&#x8F7D;&#x5230;&#x5F00;&#x53D1;
+&#x677F;&#x7684; flash &#x4E2D;(&#x7531; LMA)&#x6307;&#x5B9A;&#xFF0C;&#x800C;&#x5728;&#x8FD0;&#x884C;&#x65F6;&#x5C06;&#x4F4D;&#x4E8E; flash &#x4E2D;&#x7684;&#x8F93;&#x51FA;&#x6587;&#x4EF6;&#x590D;&#x5236;&#x5230; SDRAM&#x4E2D;
+(&#x7531; VMA &#x6307;&#x5B9A;)&#x3002;
+</p>
+
+<p>
+&#x7B26;&#x53F7;(symbol)&#xFF1A;&#x6BCF;&#x4E2A;&#x76EE;&#x6807;&#x6587;&#x4EF6;&#x90FD;&#x6709;&#x7B26;&#x53F7;&#x8868;(symbol table)&#xFF0C;&#x5305;&#x542B;&#x5DF2;&#x5B9A;&#x4E49;&#x7684;&#x7B26;&#x53F7;&#x548C;&#x672A;&#x5B9A;&#x4E49;
+&#x7684;&#x7B26;&#x53F7;&#x3002;&#xFF08;&#x5206;&#x522B;&#x662F;&#x4EC0;&#x4E48;&#xFF1F;&#xFF09;
+</p>
+
+<p>
+&#x7B26;&#x53F7;&#x503C;&#xFF1A;&#x6BCF;&#x4E2A;&#x7B26;&#x53F7;&#x5BF9;&#x5E94;&#x4E00;&#x4E2A;&#x5730;&#x5740;&#xFF0C;&#x5373;&#x7B26;&#x53F7;&#x503C;&#xFF08;&#x53EF;&#x7406;&#x89E3;&#x4E3A;&#x5730;&#x5740;&#xFF09;&#x3002;&#x53EF;&#x7528; nm &#x547D;&#x4EE4;&#x67E5;&#x770B;&#x5B83;&#x4EEC;&#x3002;
+</p>
+</div>
+</div>
+
+<div id="outline-container-org590da92" class="outline-2">
+<h2 id="org590da92">&#x811A;&#x672C;&#x683C;&#x5F0F;</h2>
+<div class="outline-text-2" id="text-org590da92">
+<p>
+&#x94FE;&#x63A5;&#x811A;&#x672C;&#x4E5F;&#x662F;&#x811A;&#x672C;&#xFF0C;&#x7531;&#x4E00;&#x7CFB;&#x5217;&#x547D;&#x4EE4;&#x7EC4;&#x6210;&#xFF0C;&#x6BCF;&#x4E2A;&#x547D;&#x4EE4;&#x7531;&#x4E00;&#x4E2A;&#x5173;&#x952E;&#x5B57;&#xFF08;&#x4E00;&#x822C;&#x5176;&#x540E;&#x7D27;&#x8DDF;&#x76F8;&#x5173;&#x53C2;
+&#x6570;&#xFF09;&#x6216;&#x4E00;&#x6761;&#x5BF9;&#x7B26;&#x53F7;&#x7684;&#x8D4B;&#x503C;&#x8BED;&#x53E5;&#x7EC4;&#x6210;&#x3002;&#x547D;&#x4EE4;&#x7531; <code>;</code> &#x5206;&#x9694;&#x5F00;&#x3002;&#x6587;&#x4EF6;&#x540D;&#x6216;&#x683C;&#x5F0F;&#x540D;&#x5185;&#x5982;&#x679C;&#x5305;&#x542B;&#x5206;
+&#x53F7; <code>;</code> &#x6216;&#x5176;&#x4ED6;&#x5206;&#x9694;&#x7B26;&#xFF0C;&#x5219;&#x8981;&#x7528;&#x53CC;&#x5F15;&#x53F7;&#x5C06;&#x540D;&#x5B57;&#x5168;&#x79F0;&#x5F15;&#x7528;&#x8D77;&#x6765;&#x3002;&#x65E0;&#x6CD5;&#x5904;&#x7406;&#x542B;&#x6709;&#x53CC;&#x5F15;&#x53F7;&#x7684;&#x6587;&#x4EF6;
+&#x540D;&#x3002;&#x6CE8;&#x91CA;&#x5199;&#x5728; <code>/* */</code> &#x4E4B;&#x95F4;&#x3002;
+</p>
+</div>
+</div>
+
+<div id="outline-container-org78be560" class="outline-2">
+<h2 id="org78be560">&#x5B9A;&#x4E49;&#x53D8;&#x91CF;&#x548C;&#x7B26;&#x53F7;&#x8D4B;&#x503C;</h2>
+<div class="outline-text-2" id="text-org78be560">
+</div>
+<div id="outline-container-org7b22b3d" class="outline-3">
+<h3 id="org7b22b3d">&#x5B9A;&#x4E49;&#x53D8;&#x91CF;</h3>
+<div class="outline-text-3" id="text-org7b22b3d">
+<p>
+Linker script &#x4E2D;&#x4E5F;&#x53EF;&#x4EE5;&#x5B9A;&#x4E49;&#x53D8;&#x91CF;&#xFF0C;&#x8FD9;&#x65F6;&#x53EA;&#x4F1A;&#x751F;&#x6210;&#x4E00;&#x4E2A; symbol &#x9879;&#xFF0C;&#x5E76;&#x4E0D;&#x4F1A;&#x5206;&#x914D;&#x5185;&#x5B58;&#x3002;
+&#x5728;&#x76EE;&#x6807;&#x6587;&#x4EF6;&#x5185;&#x5B9A;&#x4E49;&#x7684;&#x7B26;&#x53F7;&#x4E5F;&#x53EF;&#x4EE5;&#x5728;&#x94FE;&#x63A5;&#x811A;&#x672C;&#x5185;&#x88AB;&#x8D4B;&#x503C;&#x3002;&#xFF08;&#x6CE8;&#x610F;&#x548C; C &#x8BED;&#x8A00;&#x4E2D;&#x8D4B;&#x503C;&#x7684;&#x4E0D;&#x540C;&#xFF01;&#xFF09;
+&#x6B64;&#x65F6;&#x8BE5;&#x7B26;&#x53F7;&#x88AB;&#x5B9A;&#x4E49;&#x4E3A;&#x5168;&#x5C40;&#x7684;&#x3002;&#x6BCF;&#x4E2A;&#x7B26;&#x53F7;&#x90FD;&#x5BF9;&#x5E94;&#x4E86;&#x4E00;&#x4E2A;&#x5730;&#x5740;&#xFF0C;&#x6B64;&#x5904;&#x7684;&#x8D4B;&#x503C;&#x662F;&#x66F4;&#x6539;&#x8FD9;&#x4E2A;&#x7B26;&#x53F7;
+&#x5BF9;&#x5E94;&#x7684;&#x5730;&#x5740;&#x3002;
+</p>
+
+<p>
+&#x63D0;&#x793A;: Linux kernel &#x91CC;&#x6709;&#x65F6;&#x4F1A;&#x51FA;&#x73B0;&#x6765;&#x6E90;&#x4E0D;&#x660E;&#x7684;&#x53D8;&#x91CF;&#xFF0C;&#x5728; linker script &#x91CC;&#x5B9A;&#x4E49;&#x8D4B;&#x503C;&#x662F;
+&#x53EF;&#x80FD;&#x4E4B;&#x4E00;&#x3002;
+</p>
+
+<p>
+&#x4F8B; 1:
+</p>
+
+<div class="org-src-container">
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/* linker script */
+start_of_ROM   = .ROM;
+end_of_ROM     = .ROM + sizeof(.ROM) - 1;
+start_of_FLASH = .FLASH;</span><br></pre></td></tr></table></figure>
+</div>
+
+<p>
+&#x4E0A;&#x9762;&#x4E09;&#x4E2A;&#x53D8;&#x91CF;&#x662F;&#x5728; linker script &#x4E2D;&#x5B9A;&#x4E49;&#x7684;&#xFF0C;&#x5206;&#x522B;&#x6307;&#x5411; .ROM &#x6BB5;&#x7684;&#x5F00;&#x59CB;&#x7684;&#x7ED3;&#x5C3E;&#xFF0C;&#x4EE5;&#x53CA;
+.FLASH &#x6BB5;&#x7684;&#x5F00;&#x59CB;&#x3002;&#x73B0;&#x5728;&#x5728; C &#x4EE3;&#x7801;&#x4E2D;&#x60F3;&#x628A; .ROM &#x6BB5;&#x7684;&#x5185;&#x5BB9;&#x62F7;&#x8D1D;&#x5230; .FLASH &#x6BB5;&#x4E2D;&#xFF1A;
+</p>
+
+<div class="org-src-container">
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* c */</span></span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">char</span> start_of_ROM, end_of_ROM, start_of_FLASH;</span><br><span class="line"><span class="built_in">memcpy</span>(&amp;start_of_FLASH, &amp;start_of_ROM, (&amp;end_of_ROM - &amp;start_of_ROM));</span><br></pre></td></tr></table></figure>
+</div>
+
+<p>
+&#x6CE8;&#x610F;&#x5176;&#x4E2D;&#x7684;&#x53D6;&#x5730;&#x5740;&#x7B26;&#x53F7; <code>&amp;</code> &#x3002;C &#x4EE3;&#x7801;&#x4E2D;&#x53EA;&#x80FD;&#x901A;&#x8FC7;&#x8FD9;&#x79CD;&#x65B9;&#x5F0F;&#x6765;&#x4F7F;&#x7528; LS &#x4E2D;&#x5B9A;&#x4E49;&#x7684;&#x53D8;&#x91CF;.
+<code>start_of_ROM</code> &#x8FD9;&#x4E2A;&#x503C;&#x672C;&#x8EAB;&#x662F;&#x6CA1;&#x6709;&#x610F;&#x4E49;&#x7684;&#xFF0C;&#x53EA;&#x6709;&#x5B83;&#x7684;&#x5730;&#x5740;&#x624D;&#x6709;&#x610F;&#x4E49;&#x3002;&#x56E0;&#x4E3A;&#x5B83;&#x7684;&#x503C;&#x6CA1;&#x6709;
+&#x521D;&#x59CB;&#x5316;&#x3002;&#x5730;&#x5740;&#x5C31;&#x6307;&#x5411; .ROM &#x6BB5;&#x7684;&#x5F00;&#x5934;&#x3002;&#x8BF4;&#x767D;&#x4E86;&#xFF0C;LS &#x4E2D;&#x5B9A;&#x4E49;&#x7684;&#x53D8;&#x91CF;&#x5176;&#x5B9E;&#x5C31;&#x662F;&#x5730;&#x5740;&#x3002;
+</p>
+
+<p>
+&#x4F8B; 2:
+</p>
+
+<div class="org-src-container">
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* main.c */</span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> a = <span class="number">100</span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span><br><span class="line"></span>{</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;&amp;a = %p&quot;</span>, &amp;a);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+</div>
+
+<div class="org-src-container">
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/* link.lds */
+a = 3;</span><br></pre></td></tr></table></figure>
+</div>
+
+<div class="org-src-container">
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ gcc -Wall -o a_without_lds main.c
+$ gcc -Wall -o a_with_lds main.c link.lds
+$ ./a_without_lds
+&amp;a = 0x601040
+$ ./a_with_lds
+&amp;a = 0x3</span><br></pre></td></tr></table></figure>
+</div>
+
+<p>
+&#x6CE8;&#x610F;&#xFF1A;&#x5BF9;&#x7B26;&#x53F7;&#x7684;&#x8D4B;&#x503C;&#x53EA;&#x5BF9;&#x5168;&#x5C40;&#x53D8;&#x91CF;&#x8D77;&#x4F5C;&#x7528;
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgd453f0d" class="outline-3">
+<h3 id="orgd453f0d">&#x7B26;&#x53F7;&#x8D4B;&#x503C;</h3>
+<div class="outline-text-3" id="text-orgd453f0d">
+<p>
+symbol &#x8FD8;&#x53EF;&#x4EE5;&#x4F7F;&#x7528; C &#x8BED;&#x8A00;&#x4E2D;&#x8D4B;&#x503C;&#x7684;&#x64CD;&#x4F5C;&#xFF1A;
+</p>
+
+<div class="org-src-container">
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">SYMBOL = EXPRESSION ;</span><br><span class="line">SYMBOL += EXPRESSION ;</span><br><span class="line">SYMBOL -= EXPRESSION ;</span><br><span class="line">SYMBOL *= EXPRESSION ;</span><br><span class="line">SYMBOL /= EXPRESSION ;</span><br><span class="line">SYMBOL &lt;&lt;= EXPRESSION ;</span><br><span class="line">SYMBOL &gt;&gt;= EXPRESSION ;</span><br><span class="line">SYMBOL &amp;= EXPRESSION ;</span><br><span class="line">SYMBOL |= EXPRESSION ;</span><br></pre></td></tr></table></figure>
+</div>
+
+<p>
+&#x9664;&#x4E86;&#x7B2C;&#x4E00;&#x7C7B;&#x8868;&#x8FBE;&#x5F0F;&#x5916;&#xFF0C;&#x5176;&#x4ED6;&#x8868;&#x8FBE;&#x5F0F;&#x9700;&#x8981; SYMBOL &#x88AB;&#x5B9A;&#x4E49;&#x4E8E;&#x67D0;&#x76EE;&#x6807;&#x6587;&#x4EF6;&#x3002;
+</p>
+
+<p>
+<code>.</code> &#x662F;&#x4E00;&#x4E2A;&#x7279;&#x6B8A;&#x7B26;&#x53F7;&#xFF0C;&#x662F;&#x5B9A;&#x4F4D;&#x5668;&#xFF0C;&#x662F;&#x4E00;&#x4E2A;&#x4F4D;&#x7F6E;&#x6307;&#x9488;&#xFF0C;&#x6307;&#x5411;&#x7A0B;&#x5E8F;&#x5730;&#x5740;&#x7A7A;&#x95F4;&#x7684;&#x67D0;&#x4F4D;&#x7F6E;&#xFF08;&#x6216;&#x67D0;
+section &#x5185;&#x7684;&#x7279;&#x6B8A;&#x504F;&#x79FB;&#xFF0C;&#x5982;&#x679C;&#x5B83;&#x5728; <code>SECTIONS</code> &#x547D;&#x4EE4;&#x7684;&#x67D0; section &#x63CF;&#x8FF0;&#x5185;&#x7684;&#x8BDD;&#xFF09;&#xFF0C;&#x8BE5;
+&#x7B26;&#x53F7;&#x53EA;&#x80FD;&#x5728; <code>SECTIONS</code> &#x547D;&#x4EE4;&#x5185;&#x4F7F;&#x7528;&#x3002;
+</p>
+
+<p>
+&#x6CE8;&#x610F;&#xFF1A;&#x8D4B;&#x503C;&#x8BED;&#x53E5;&#x5305;&#x542B; 4 &#x4E2A;&#x8BED;&#x6CD5;&#x5143;&#x7D20;&#xFF1A;&#x7B26;&#x53F7;&#x540D;&#x3001;&#x64CD;&#x4F5C;&#x7B26;&#x3001;&#x8868;&#x8FBE;&#x5F0F;&#x3001;&#x5206;&#x53F7;&#xFF0C;&#x4E00;&#x4E2A;&#x4E5F;&#x4E0D;&#x80FD;&#x5C11;&#x3002;
+</p>
+
+<p>
+&#x8D4B;&#x503C;&#x8BED;&#x53E5;&#x53EF;&#x4EE5;&#x51FA;&#x73B0;&#x5728;&#x94FE;&#x63A5;&#x811A;&#x672C;&#x7684;&#x4E09;&#x4E2A;&#x4F4D;&#x7F6E;&#xFF1A;SECTIONS &#x547D;&#x4EE4;&#x5185;&#xFF0C;SECTIONS &#x547D;&#x4EE4;&#x5185;&#x7684;
+section &#x63CF;&#x8FF0;&#x7B26;&#x5185;&#x548C;&#x5168;&#x5C40;&#x4F4D;&#x7F6E;&#x3002;&#x5982;&#xFF1A;
+</p>
+
+<div class="org-src-container">
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">floating_point = 0; /* &#x5168;&#x5C40;&#x4F4D;&#x7F6E; */
+SECTIONS
+{
+  .text :
+  {
+    *(.text)
+    _etext = .; /* section&#x63CF;&#x8FF0;&#x5185; */
+  }
+  _bdata = (. + 3) &amp; ~ 4; /* SECTIONS&#x547D;&#x4EE4;&#x5185; */
+  .data : { *(.data) }
+}</span><br></pre></td></tr></table></figure>
+</div>
+
+<p>
+<code>PROVIDE</code> &#x5173;&#x952E;&#x5B57;
+</p>
+
+<p>
+&#x8BE5;&#x5173;&#x952E;&#x5B57;&#x7528;&#x4E8E;&#x5B9A;&#x4E49;&#x8FD9;&#x7C7B;&#x7B26;&#x53F7;&#xFF1A;&#x5728;&#x76EE;&#x6807;&#x6587;&#x4EF6;&#x5185;&#x88AB;&#x5F15;&#x7528;&#xFF0C;&#x4F46;&#x6CA1;&#x6709;&#x5728;&#x4EFB;&#x4F55;&#x76EE;&#x6807;&#x6587;&#x4EF6;&#x5185;&#x88AB;&#x5B9A;&#x4E49;&#x7684;
+&#x7B26;&#x53F7;&#x3002;&#x5982;&#xFF1A;
+</p>
+
+<div class="org-src-container">
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SECTIONS
+{
+  .text :
+  {
+    *(.text)
+    _etext = .;
+    PROVIDE(etext = .);
+  }
+}</span><br></pre></td></tr></table></figure>
+</div>
+
+<p>
+&#x5F53;&#x76EE;&#x6807;&#x6587;&#x4EF6;&#x5185;&#x5F15;&#x7528;&#x4E86; etext &#x7B26;&#x53F7;&#xFF0C;&#x5374;&#x6CA1;&#x6709;&#x5B9A;&#x4E49;&#x5B83;&#x65F6;&#xFF0C;etext &#x7B26;&#x53F7;&#x5BF9;&#x5E94;&#x7684;&#x5730;&#x5740;&#x88AB;&#x5B9A;&#x4E49;
+&#x4E3A; <code>.text</code> section &#x4E4B;&#x540E;&#x7684;&#x7B2C;&#x4E00;&#x4E2A;&#x5B57;&#x8282;&#x7684;&#x5730;&#x5740;&#x3002;
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org50ce06b" class="outline-2">
+<h2 id="org50ce06b">SECTIONS &#x547D;&#x4EE4;</h2>
+<div class="outline-text-2" id="text-org50ce06b">
+<p>
+<code>SECTIONS</code> &#x547D;&#x4EE4;&#x662F; linker script &#x91CC;&#x6700;&#x91CD;&#x8981;&#x7684;&#x547D;&#x4EE4;&#xFF0C;&#x7CBE;&#x786E;&#x5730;&#x63A7;&#x5236;&#x7740; input sections
+&#x5728; output sections &#x4E2D;&#x600E;&#x6837;&#x88AB;&#x653E;&#x7F6E;&#x3002;&#x5305;&#x62EC;&#x653E;&#x7F6E;&#x987A;&#x5E8F;&#xFF0C;&#x653E;&#x7F6E;&#x5728;&#x54EA;&#x4E2A; output sections &#x4E2D;&#x7B49;&#x3002;
+</p>
+
+<p>
+&#x4E00;&#x4E2A;&#x811A;&#x672C;&#x91CC;&#x6700;&#x591A;&#x53EA;&#x80FD;&#x6709;&#x4E00;&#x4E2A; SECTIONS &#x547D;&#x4EE4;&#xFF0C;&#x4F46;&#x5176;&#x4E2D;&#x7684;&#x8BED;&#x53E5;&#x6570;&#x91CF;&#x4E0D;&#x9650;&#x3002;SECTIONS &#x547D;&#x4EE4;&#x4E2D;
+&#x7684;&#x8BED;&#x53E5;&#x53EF;&#x4EE5;&#x505A;&#x4EE5;&#x4E0B;&#x4E09;&#x79CD;&#x4E8B;&#xFF1A;
+</p>
+
+<ol class="org-ol">
+<li>&#x5B9A;&#x4E49; entry point&#xFF1B;</li>
+<li>&#x7ED9;&#x7B26;&#x53F7;(symbol)&#x8D4B;&#x503C;&#xFF1B;</li>
+<li>&#x63CF;&#x8FF0;&#x600E;&#x6837;&#x653E;&#x7F6E;&#x4E00;&#x4E2A;&#x547D;&#x540D;&#x7684; output section&#xFF0C;&#x4EE5;&#x53CA;&#x5176;&#x4E2D;&#x653E;&#x7F6E;&#x54EA;&#x4E9B; input sections&#x3002;</li>
+</ol>
+
+<p>
+&#x76F8;&#x5E94;&#x5730; SECTIONS-COMMAND &#x6709;&#x56DB;&#x79CD;&#xFF1A;
+</p>
+
+<ol class="org-ol">
+<li>ENTRY &#x547D;&#x4EE4;</li>
+<li>&#x7B26;&#x53F7;&#x8D4B;&#x503C;&#x8BED;&#x53E5;</li>
+<li>&#x4E00;&#x4E2A;&#x8F93;&#x51FA; section &#x7684;&#x63CF;&#x8FF0;(output section description)</li>
+<li>&#x4E00;&#x4E2A; section &#x53E0;&#x52A0;&#x63CF;&#x8FF0;(overlay description)</li>
+</ol>
+
+<p>
+&#x8BE5;&#x547D;&#x4EE4;&#x683C;&#x5F0F;&#x5982;&#x4E0B;&#xFF1A;
+</p>
+
+<div class="org-src-container">
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SECTIONS
+{
+  SECTIONS-COMMAND
+  SECTIONS-COMMAND
+  /* ... */
+}</span><br></pre></td></tr></table></figure>
+</div>
+
+<p>
+&#x5982;&#x679C;&#x6574;&#x4E2A;&#x94FE;&#x63A5;&#x811A;&#x672C;&#x5185;&#x6CA1;&#x6709; <code>SECTIONS</code> &#x547D;&#x4EE4;&#xFF0C;&#x90A3;&#x4E48; ld &#x5C06;&#x6240;&#x6709;&#x540C;&#x540D;&#x8F93;&#x5165; section &#x5408;&#x6210;&#x4E3A;
+&#x4E00;&#x4E2A;&#x8F93;&#x51FA; section&#x5185;&#xFF0C;&#x5404;&#x8F93;&#x5165; section &#x7684;&#x987A;&#x5E8F;&#x4E3A;&#x5B83;&#x4EEC;&#x88AB;&#x94FE;&#x63A5;&#x5668;&#x53D1;&#x73B0;&#x7684;&#x987A;&#x5E8F;&#x3002;&#x5982;&#x679C;&#x67D0;&#x8F93;&#x5165;
+section &#x6CA1;&#x6709;&#x5728; <code>SECTIONS</code> &#x547D;&#x4EE4;&#x4E2D;&#x63D0;&#x5230;&#xFF0C;&#x90A3;&#x4E48;&#x8BE5; section &#x5C06;&#x88AB;&#x76F4;&#x63A5;&#x62F7;&#x8D1D;&#x6210;&#x8F93;&#x51FA;
+section&#x3002;
+</p>
+
+<p>
+&#x4F8B;&#x5B50;:
+</p>
+
+<div class="org-src-container">
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SECTIONS
+{
+  . = 0x10000;
+  .text : { *(.text) }
+  . = 0x80000000;
+
+  .data :
+  {
+    file1(.data)
+    . += 1000
+    file2(.data)
+  } = 0x1234
+
+  .bss : { *(.bss) }
+}</span><br></pre></td></tr></table></figure>
+</div>
+
+<p>
+&#x89E3;&#x91CA;&#xFF1A;
+</p>
+
+<p>
+<code>. = 0x10000</code>: &#x628A;&#x5B9A;&#x4F4D;&#x5668;&#x7B26;&#x53F7;(Location Counter(LC))&#x7F6E;&#x4E3A; 0x10000 (&#x82E5;&#x4E0D;&#x6307;&#x5B9A;&#xFF0C;&#x9ED8;&#x8BA4;&#x503C;&#x4E3A; 0).
+</p>
+
+<p>
+LC &#x603B;&#x662F;&#x5305;&#x542B;&#x5F53;&#x524D;&#x7684;&#x8F93;&#x51FA;&#x4F4D;&#x7F6E;&#xFF08;&#x5373;&#x5730;&#x5740;&#xFF09;&#xFF0C;&#x56E0;&#x4E3A; LC &#x603B;&#x662F;&#x6307;&#x5411; output section &#x7684;&#x4E00;&#x4E2A;&#x5730;
+&#x5740;&#xFF0C;&#x5B83;&#x5FC5;&#x987B;&#x603B;&#x662F;&#x5728; SECTIONS &#x547D;&#x4EE4;&#x4E2D;&#x7684;&#x67D0;&#x4E2A;&#x8868;&#x8FBE;&#x5F0F;&#x91CC;&#x3002;&#x56E0;&#x6B64;&#x6539;&#x53D8; LC &#x7684;&#x503C;&#x5C31;&#x4F1A;&#x5F71;&#x54CD;&#x5176;&#x540E;
+section &#x7684;&#x5185;&#x5B58;&#x4F4D;&#x7F6E;&#x3002;
+</p>
+
+<p>
+LC &#x7684;&#x503C;&#x53EA;&#x80FD;&#x589E;&#x52A0;&#x4E0D;&#x80FD;&#x51CF;&#x5C0F;&#x3002; LC &#x7684;&#x5730;&#x5740;&#x5E94;&#x8BE5;&#x662F;&#x6307; LMA&#x3002;
+</p>
+
+<p>
+<code>.text : { \*(.text) }</code>: &#x5C06;&#x6240;&#x6709;(*&#x8868;&#x793A;&#x4EFB;&#x610F;&#x8F93;&#x5165;&#x6587;&#x4EF6;)&#x8F93;&#x5165;&#x6587;&#x4EF6;&#x7684; .text section &#x5408;
+&#x5E76;&#x6210;&#x4E00;&#x4E2A; .text section&#xFF0C;&#x8BE5; section &#x7684;&#x5730;&#x5740;&#x7531;&#x5B9A;&#x4F4D;&#x5668;&#x7B26;&#x53F7;&#x7684;&#x503C;&#x6307;&#x5B9A;&#xFF0C;&#x5373; 0x10000.
+</p>
+
+<p>
+.data &#x63CF;&#x8FF0;&#x4E2D; LC &#x7684;&#x503C;&#x5728; file1 &#x4E4B;&#x540E;&#x589E;&#x52A0;&#x4E86; 1000, &#x4E4B;&#x540E;&#x624D;&#x662F; file2. &#x53F3;&#x5927;&#x62EC;&#x53F7;&#x540E;&#x9762;&#x7684;
+<code>=0x1234</code> &#x8868;&#x793A;&#x5176;&#x4E2D;&#x7684;&#x7A7A;&#x767D;&#x7531;&#x503C; 0x1234 &#x586B;&#x5145;&#x3002;
+</p>
+
+<p>
+&#x94FE;&#x63A5;&#x5668;&#x6BCF;&#x8BFB;&#x5B8C;&#x4E00;&#x4E2A; section &#x63CF;&#x8FF0;&#x540E;&#xFF0C;&#x5C06;&#x5B9A;&#x4F4D;&#x5668;&#x7B26;&#x53F7;&#x7684;&#x503C;&#x589E;&#x52A0;&#x8BE5; section &#x7684;&#x5927;&#x5C0F;&#x3002;
+&#x6CE8;&#x610F;&#xFF1A;&#x6B64;&#x5904;&#x6CA1;&#x6709;&#x8003;&#x8651;&#x5BF9;&#x9F50;&#x7EA6;&#x675F;&#x3002;
+</p>
+</div>
+
+<div id="outline-container-orga3e60d0" class="outline-3">
+<h3 id="orga3e60d0">&#x8F93;&#x51FA; section &#x63CF;&#x8FF0; (output section description)</h3>
+<div class="outline-text-3" id="text-orga3e60d0">
+<p>
+&#x8F93;&#x51FA; section &#x63CF;&#x8FF0;&#x5177;&#x6709;&#x5982;&#x4E0B;&#x683C;&#x5F0F;&#xFF1A;
+</p>
+
+<div class="org-src-container">
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SECTION [ADDRESS] [(TYPE)] : [AT(LMA)]
+{
+  OUTPUT-SECTION-COMMAND
+  OUTPUT-SECTION-COMMAND
+  /* ... */
+} [&gt;REGION] [AT&gt;LMA_REGION] [:PHDR :PHDR ...] [=FILLEXP]</span><br></pre></td></tr></table></figure>
+</div>
+
+<p>
+[]&#x5185;&#x7684;&#x5185;&#x5BB9;&#x4E3A;&#x53EF;&#x9009;&#xFF0C;&#x4E00;&#x822C;&#x4E0D;&#x9700;&#x8981;&#x3002;
+</p>
+
+<p>
+SECTION: section &#x540D;&#x5B57;
+</p>
+
+<p>
+SECTION &#x5DE6;&#x53F3;&#x7684;&#x7A7A;&#x767D;&#x3001;&#x5706;&#x62EC;&#x53F7;&#x3001;&#x5192;&#x53F7;&#x662F;&#x5FC5;&#x987B;&#x7684;&#xFF0C;&#x6362;&#x884C;&#x7B26;&#x548C;&#x5176;&#x4ED6;&#x7A7A;&#x683C;&#x662F;&#x53EF;&#x9009;&#x7684;&#x3002;&#x6BCF;&#x4E2A;
+OUTPUT-SECTION-COMMAND&#x4E3A;&#x4EE5;&#x4E0B;&#x56DB;&#x79CD;&#x4E4B;&#x4E00;&#xFF0C;
+</p>
+
+<ol class="org-ol">
+<li>&#x7B26;&#x53F7;&#x8D4B;&#x503C;&#x8BED;&#x53E5;</li>
+<li>&#x4E00;&#x4E2A;&#x8F93;&#x5165;section&#x63CF;&#x8FF0;</li>
+<li>&#x76F4;&#x63A5;&#x5305;&#x542B;&#x7684;&#x6570;&#x636E;&#x503C;</li>
+<li>&#x4E00;&#x4E2A;&#x7279;&#x6B8A;&#x7684;&#x8F93;&#x51FA; section &#x5173;&#x952E;&#x5B57;</li>
+</ol>
+
+<p>
+&#x8F93;&#x51FA; section &#x540D;&#x5B57; (SECTION):
+</p>
+
+<p>
+&#x540D;&#x5B57;&#x5FC5;&#x987B;&#x7B26;&#x5408;&#x8F93;&#x51FA;&#x6587;&#x4EF6;&#x683C;&#x5F0F;&#x8981;&#x6C42;&#xFF0C;&#x6BD4;&#x5982;&#xFF1A;a.out &#x683C;&#x5F0F;&#x7684;&#x6587;&#x4EF6;&#x53EA;&#x5141;&#x8BB8;&#x5B58;&#x5728; <code>.text</code>
+<code>.data</code> &#x548C; <code>.bss</code> section&#x540D;&#x3002;&#x800C;&#x6709;&#x7684;&#x683C;&#x5F0F;&#x53EA;&#x5141;&#x8BB8;&#x5B58;&#x5728;&#x6570;&#x5B57;&#x540D;&#x5B57;&#xFF0C;&#x90A3;&#x4E48;&#x6B64;&#x65F6;&#x5E94;&#x8BE5;&#x7528;&#x5F15;
+&#x53F7;&#x5C06;&#x6240;&#x6709;&#x540D;&#x5B57;&#x7684;&#x6570;&#x5B57;&#x7EC4;&#x5408;&#x5728;&#x4E00;&#x8D77;&#xFF1B;&#x53E6;&#x5916;&#xFF0C;&#x8FD8;&#x6709;&#x4E00;&#x4E9B;&#x683C;&#x5F0F;&#x5141;&#x8BB8;&#x4EFB;&#x4F55;&#x5E8F;&#x5217;&#x7684;&#x5B57;&#x7B26;&#x5B58;&#x5728;&#x4E8E;
+section &#x540D;&#x5B57;&#x5185;&#xFF0C;&#x6B64;&#x65F6;&#x5982;&#x679C;&#x540D;&#x5B57;&#x5185;&#x5305;&#x542B;&#x7279;&#x6B8A;&#x5B57;&#x7B26;&#xFF08;&#x6BD4;&#x5982;&#x7A7A;&#x683C;&#x9017;&#x53F7;&#x7B49;&#xFF09;&#xFF0C;&#x90A3;&#x4E48;&#x9700;&#x8981;&#x7528;&#x5F15;&#x53F7;
+&#x5C06;&#x5176;&#x7EC4;&#x5408;&#x5728;&#x4E00;&#x8D77;&#x3002;
+</p>
+
+<p>
+&#x8F93;&#x51FA; section &#x5730;&#x5740; (ADDRESS):
+</p>
+
+<p>
+ADDRESS &#x662F;&#x4E00;&#x4E2A;&#x8868;&#x8FBE;&#x5F0F;&#xFF0C;&#x5B83;&#x7684;&#x503C;&#x7528;&#x4E8E;&#x8BBE;&#x7F6E; VMA&#x3002;&#x5982;&#x679C;&#x6CA1;&#x6709;&#x8BE5;&#x9009;&#x9879;&#x4E14;&#x6709; REGION &#x9009;&#x9879;&#xFF0C;&#x90A3;
+&#x4E48;&#x94FE;&#x63A5;&#x5668;&#x5C06;&#x6839;&#x636E;&#x5B9A;&#x4F4D;&#x7B26;&#x53F7; <code>.</code> &#x7684;&#x503C;&#x8BBE;&#x7F6E;&#x8BE5; section &#x7684; VMA&#xFF0C;&#x5C06;&#x5B9A;&#x4F4D;&#x7B26;&#x53F7;&#x7684;&#x503C;&#x9AD8;&#x901F;&#x5230;&#x6EE1;
+&#x8DB3;&#x8F93;&#x51FA; section &#x5BF9;&#x9F50;&#x8981;&#x6C42;&#x540E;&#x7684;&#x503C;&#xFF0C;&#x8F93;&#x51FA; section &#x7684;&#x5BF9;&#x9F50;&#x8981;&#x6C42;&#x4E3A;&#xFF1A;&#x8BE5;&#x8F93;&#x51FA; section &#x63CF;
+&#x8FF0;&#x5185;&#x7528;&#x5230;&#x7684;&#x6240;&#x6709;&#x8F93;&#x5165; section &#x7684;&#x5BF9;&#x9F50;&#x8981;&#x6C42;&#x4E2D;&#x6700;&#x4E25;&#x683C;&#x7684;&#x3002;
+</p>
+
+<p>
+&#x4F8B;&#x5B50;&#xFF1A;
+</p>
+
+<div class="org-src-container">
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.text . : { *(.text)}</span><br></pre></td></tr></table></figure>
+</div>
+
+<p>
+&#x548C;
+</p>
+
+<div class="org-src-container">
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.text : { *(.text)}</span><br></pre></td></tr></table></figure>
+</div>
+
+<p>
+&#x8FD9;&#x4E24;&#x4E2A;&#x63CF;&#x8FF0;&#x662F;&#x622A;&#x7136;&#x4E0D;&#x540C;&#x7684;&#xFF0C;&#x7B2C;&#x4E00;&#x4E2A;&#x5C06; <code>.text</code> section &#x7684; VMA &#x8BBE;&#x7F6E;&#x4E3A;&#x5B9A;&#x4F4D;&#x7B26;&#x53F7;&#x7684;&#x503C;&#xFF0C;
+&#x800C;&#x7B2C;&#x4E8C;&#x4E2A;&#x5219;&#x662F;&#x8BBE;&#x7F6E;&#x6210;&#x6EE1;&#x8DB3;&#x5BF9;&#x9F50;&#x8981;&#x6C42;&#x540E;&#x7684;&#x5B9A;&#x4F4D;&#x7B26;&#x53F7;&#x7684;&#x4FEE;&#x8C03;&#x503C;&#x3002;
+</p>
+
+<p>
+ADDRESS &#x53EF;&#x4EE5;&#x662F;&#x4E00;&#x4E2A;&#x4EFB;&#x610F;&#x8868;&#x8FBE;&#x5F0F;&#xFF0C;&#x6BD4;&#x5982; <code>ALIGN(0x10)</code> &#x5C06;&#x8BE5; section &#x7684; VMA &#x8BBE;&#x7F6E;&#x6210;
+&#x5B9A;&#x4F4D;&#x7B26;&#x53F7;&#x6EE1;&#x8DB3;16 &#x5B57;&#x8282;&#x540E;&#x7684;&#x4FEE;&#x8C03;&#x503C;&#x3002;
+</p>
+
+<p>
+&#x6CE8;&#x610F;&#xFF1A;&#x8BBE;&#x7F6E; ADDRESS &#x7684;&#x503C;&#x5C06;&#x4F1A;&#x6539;&#x53D8;&#x5B9A;&#x4F4D;&#x7B26;&#x53F7;&#x7684;&#x503C;&#x3002;
+</p>
+
+<blockquote>
+<p>
+More on ALIGN(exp)
+</p>
+
+<p>
+<code>ALIGN(exp)</code> &#x6839;&#x636E; exp &#x5BF9;&#x9F50;&#x540E;&#x7684;&#x4F4D;&#x7F6E;&#x8FD4;&#x56DE;&#x5F53;&#x524D; LC(&#x5B9A;&#x4F4D;&#x7B26;)&#x3002;exp &#x5FC5;&#x987B;&#x662F; 2 &#x7684;&#x6307;&#x6570;&#x3002;
+ALIGN &#x7B49;&#x4EF7;&#x4E8E;&#xFF1A;
+</p>
+
+<p>
+<code>(. + exp - 1) &amp; ~(exp - 1)</code>
+</p>
+
+<p>
+ALIGN(exp) &#x672C;&#x8EAB;&#x5E76;&#x4E0D;&#x6539;&#x53D8; LC &#x7684;&#x503C;&#xFF0C;&#x53EA;&#x662F;&#x6839;&#x636E;&#x5B83;&#x7684;&#x503C;&#x8FDB;&#x884C;&#x7B97;&#x672F;&#x8FD0;&#x7B97;&#x3002;&#x7528;&#x6CD5;&#x53C2;&#x8003;&#x4EE5;&#x4E0B;&#x4F8B;&#x5B50;&#x3002;
+</p>
+</blockquote>
+
+<div class="org-src-container">
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SECTIONS {
+  /* ... */
+  .data ALIGN(0x2000): {
+    *(.data)
+    variable = ALIGN(0x8000);
+  }
+  /* ... */
+}</span><br></pre></td></tr></table></figure>
+</div>
+
+<p>
+&#x6709;&#x4E00;&#x4E2A;&#x7279;&#x6B8A;&#x7684; output section &#x662F; <code>DISCARD</code>, &#x7528;&#x6765;&#x4E22;&#x5F03; input sections&#xFF0C;&#x6240;&#x6709;&#x6307;&#x5B9A;
+&#x5230; <code>DISCARD</code> &#x7684; input section &#x90FD;&#x4E0D;&#x4F1A;&#x88AB;&#x5305;&#x542B;&#x5728;&#x8F93;&#x51FA;&#x6587;&#x4EF6;&#x91CC;&#x3002;
+</p>
+</div>
+</div>
+
+<div id="outline-container-org805080e" class="outline-3">
+<h3 id="org805080e">&#x8F93;&#x5165; section &#x63CF;&#x8FF0; (input section description)</h3>
+<div class="outline-text-3" id="text-org805080e">
+<p>
+&#x6700;&#x5E38;&#x89C1;&#x7684;&#x8F93;&#x51FA; section &#x63CF;&#x8FF0;&#x547D;&#x4EE4;&#x662F;&#x8F93;&#x5165; section &#x63CF;&#x8FF0;&#x3002;&#x8F93;&#x5165; section &#x63CF;&#x8FF0;&#x662F;&#x6700;&#x57FA;&#x672C;&#x7684;&#x94FE;&#x63A5;&#x811A;&#x672C;&#x63CF;&#x8FF0;&#xFF0C;
+&#x5176;&#x57FA;&#x672C;&#x7528;&#x6CD5;&#x5982;&#x4E0B;&#xFF1A;
+</p>
+
+<p>
+&#x57FA;&#x672C;&#x8BED;&#x6CD5;&#xFF1A;
+// TODO syntax is not clear
+</p>
+<div class="org-src-container">
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">FILENAME([EXCLUDE_FILE (FILENAME1 FILENAME2 ...)] SECTION1 SECTION2 ...)</span><br></pre></td></tr></table></figure>
+</div>
+
+<p>
+FILENAME &#x6587;&#x4EF6;&#x540D;&#xFF0C;&#x53EF;&#x4EE5;&#x662F;&#x4E00;&#x4E2A;&#x7279;&#x5B9A;&#x7684;&#x6587;&#x4EF6;&#x7684;&#x540D;&#x5B57;&#xFF0C;&#x4E5F;&#x53EF;&#x4EE5;&#x662F;&#x4E00;&#x4E2A;&#x5B57;&#x7B26;&#x4E32;&#x6A21;&#x5F0F;&#x3002;<br>
+SECTION &#x540D;&#x5B57;&#xFF0C;&#x53EF;&#x4EE5;&#x662F;&#x4E00;&#x4E2A;&#x7279;&#x5B9A;&#x7684; section &#x540D;&#x5B57;&#xFF0C;&#x4E5F;&#x53EF;&#x4EE5;&#x662F;&#x4E00;&#x4E2A;&#x5B57;&#x7B26;&#x4E32;&#x6A21;&#x5F0F;&#x3002;
+</p>
+
+<p>
+&#x4F8B;&#x5B50;&#xFF1A;
+</p>
+
+<p>
+<code>*(.text)</code>: &#x8868;&#x793A;&#x6240;&#x6709;&#x8F93;&#x5165;&#x6587;&#x4EF6;&#x7684; .text section
+</p>
+
+<p>
+<code>(*(EXCLUDE_FILE (*crtend.o *otherfile.o) .ctors))</code>: &#x8868;&#x793A;&#x9664; crtend.o&#x3001;
+otherfile.o &#x6587;&#x4EF6;&#x5916;&#x7684;&#x6240;&#x6709;&#x8F93;&#x5165;&#x6587;&#x4EF6;&#x7684; .ctors section&#x3002;
+</p>
+
+<p>
+<code>data.o(.data)</code>: &#x8868;&#x793A; data.o &#x6587;&#x4EF6;&#x7684; .data section
+</p>
+
+<p>
+<code>data.o</code>: &#x8868;&#x793A; data.o &#x6587;&#x4EF6;&#x7684;&#x6240;&#x6709; section
+</p>
+
+<p>
+<code>*(.text .data)</code>: &#x8868;&#x793A;&#x6240;&#x6709;&#x8F93;&#x5165;&#x6587;&#x4EF6;&#x7684; .text section &#x548C; .data section&#xFF0C;&#x987A;&#x5E8F;&#x662F;&#xFF1A;<br>
+&#x7B2C;&#x4E00;&#x4E2A;&#x6587;&#x4EF6;&#x7684; .text section&#xFF0C;&#x7B2C;&#x4E00;&#x4E2A;&#x6587;&#x4EF6;&#x7684; .data section&#xFF1B;<br>
+&#x7B2C;&#x4E8C;&#x4E2A;&#x6587;&#x4EF6;&#x7684; .text section&#xFF0C;&#x7B2C;&#x4E8C;&#x4E2A;&#x6587;&#x4EF6;&#x7684; .data section&#xFF1B;<br>
+&#x2026;
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgc915fb1" class="outline-2">
+<h2 id="orgc915fb1">&#x94FE;&#x63A5;&#x5668;&#x662F;&#x5982;&#x4F55;&#x627E;&#x5230;&#x5BF9;&#x5E94;&#x7684;&#x6587;&#x4EF6;&#x7684;</h2>
+<div class="outline-text-2" id="text-orgc915fb1">
+<p>
+&#x5F53; FILENAME &#x662F;&#x4E00;&#x4E2A;&#x7279;&#x5B9A;&#x7684;&#x6587;&#x4EF6;&#x540D;&#x65F6;&#xFF0C;&#x94FE;&#x63A5;&#x5668;&#x4F1A;&#x67E5;&#x770B;&#x5B83;&#x662F;&#x5426;&#x5728;&#x94FE;&#x63A5;&#x547D;&#x4EE4;&#x884C;&#x5185;&#x51FA;&#x73B0;&#x6216;&#x5728; INPUT &#x547D;&#x4EE4;&#x4E2D;&#x51FA;&#x73B0;&#x3002;<br>
+&#x5F53; FILENAME &#x662F;&#x4E00;&#x4E2A;&#x5B57;&#x7B26;&#x4E32;&#x6A21;&#x5F0F;&#x65F6;&#xFF0C;&#x94FE;&#x63A5;&#x5668;&#x4EC5;&#x4EC5;&#x67E5;&#x770B;&#x5B83;&#x662F;&#x5426;&#x5728;&#x94FE;&#x63A5;&#x547D;&#x4EE4;&#x5185;&#x51FA;&#x73B0;&#x3002;
+</p>
+
+<p>
+&#x6CE8;&#x610F;&#xFF1A;&#x5982;&#x679C;&#x94FE;&#x63A5;&#x5668;&#x53D1;&#x73B0;&#x67D0;&#x6587;&#x4EF6;&#x5728; INPUT &#x547D;&#x4EE4;&#x5185;&#x51FA;&#x73B0;&#xFF0C;&#x90A3;&#x4E48;&#x5B83;&#x4F1A;&#x5728; -L &#x6307;&#x5B9A;&#x7684;&#x8DEF;&#x5F84;&#x5185;&#x641C;&#x7D22;&#x8BE5;&#x6587;&#x4EF6;&#x3002;
+</p>
+
+<p>
+&#x5B57;&#x7B26;&#x4E32;&#x6A21;&#x5F0F;&#x5185;&#x53EF;&#x4EE5;&#x5B58;&#x5728;&#x4EE5;&#x4E0B;&#x901A;&#x914D;&#x7B26;<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup>(4.6.4.2. Input Section Wildcard Patterns)&#xFF1A;
+</p>
+
+<ul class="org-ul">
+<li><code>*</code>: &#x8868;&#x793A;&#x4EFB;&#x610F;&#x591A;&#x4E2A;&#x5B57;&#x7B26;</li>
+<li><code>?</code>: &#x8868;&#x793A;&#x4EFB;&#x610F;&#x4E00;&#x4E2A;&#x5B57;&#x7B26;</li>
+<li><code>[CHARS]</code>: &#x8868;&#x793A;&#x4EFB;&#x610F;&#x4E00;&#x4E2A; CHARS &#x5185;&#x7684;&#x5B57;&#x7B26;&#xFF0C;&#x53EF;&#x7528; - &#x53F7;&#x8868;&#x793A;&#x8303;&#x56F4;&#xFF0C;&#x5982; [a-z]</li>
+<li><code>\</code>: &#x8868;&#x793A;&#x5F15;&#x7528;&#x4E0B;&#x4E00;&#x4E2A;&#x7D27;&#x8DDF;&#x7684;&#x5B57;&#x7B26;</li>
+</ul>
+
+<p>
+&#x5728;&#x6587;&#x4EF6;&#x540D;&#x5185;&#xFF0C;&#x901A;&#x914D;&#x7B26;&#x4E0D;&#x5339;&#x914D;&#x6587;&#x4EF6;&#x5939;&#x5206;&#x9694;&#x7B26; <code>/</code> &#xFF0C;&#x4F46;&#x5F53;&#x5B57;&#x7B26;&#x4E32;&#x6A21;&#x5F0F;&#x4EC5;&#x5305;&#x542B; <code>*</code> &#x65F6;&#x9664;&#x5916;&#x3002;
+&#x4EFB;&#x4F55;&#x4E00;&#x4E2A;&#x6587;&#x4EF6;&#x7684;&#x4EFB;&#x610F; section &#x53EA;&#x80FD;&#x5728; SECTIONS &#x547D;&#x4EE4;&#x5185;&#x51FA;&#x73B0;&#x4E00;&#x6B21;&#x3002;&#x4F8B;&#x5982;&#xFF1A;
+</p>
+
+<div class="org-src-container">
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SECTIONS {
+  .data : { *(.data) }
+  .data1 : { data.o(.data) }
+}</span><br></pre></td></tr></table></figure>
+</div>
+
+<p>
+data.o &#x6587;&#x4EF6;&#x7684; <code>.data</code> section &#x5728;&#x7B2C;&#x4E00;&#x4E2A; <code>OUTPUT-SECTION-COMMAND</code> &#x547D;&#x4EE4;&#x5185;&#x88AB;&#x4F7F;&#x7528;&#x4E86;&#xFF0C;&#x90A3;&#x4E48;&#x5728;&#x7B2C;&#x4E8C;&#x4E2A;
+&#x547D;&#x4EE4;&#x5185;&#x5C06;&#x4E0D;&#x4F1A;&#x518D;&#x88AB;&#x4F7F;&#x7528;&#xFF0C;&#x4E5F;&#x5C31;&#x662F;&#x8BF4;&#x5373;&#x4F7F;&#x94FE;&#x63A5;&#x5668;&#x4E0D;&#x62A5;&#x9519;&#xFF0C;&#x8F93;&#x51FA;&#x6587;&#x4EF6;&#x7684; .data1 section &#x7684;&#x5185;&#x5BB9;&#x4E5F;&#x662F;&#x7A7A;&#x7684;&#x3002;
+</p>
+
+<p>
+&#x6CE8;&#x610F;&#xFF1A;&#x94FE;&#x63A5;&#x5668;&#x4F9D;&#x6B21;&#x626B;&#x63CF;&#x6BCF;&#x4E2A; <code>OUTPUT-SECTION-COMMAND</code> &#x547D;&#x4EE4;&#x5185;&#x7684;&#x6587;&#x4EF6;&#x540D;&#xFF0C;&#x4EFB;&#x4F55;&#x4E00;&#x4E2A;&#x6587;&#x4EF6;&#x7684;&#x4EFB;&#x4F55;&#x4E00;&#x4E2A;
+section &#x90FD;&#x53EA;&#x80FD;&#x4F7F;&#x7528;&#x4E00;&#x6B21;&#x3002;
+</p>
+
+<p>
+&#x8BFB;&#x8005;&#x53EF;&#x4EE5;&#x548C; <code>-M</code> &#x8FDE;&#x63A5;&#x547D;&#x4EE4;&#x9009;&#x9879;&#x6765;&#x4EA7;&#x751F;&#x4E00;&#x4E2A; map &#x6587;&#x4EF6;&#xFF0C;&#x5B83;&#x5305;&#x542B;&#x4E86;&#x6240;&#x6709;&#x8F93;&#x5165; section &#x5230;&#x8F93;&#x51FA; section &#x7684;&#x7EC4;&#x5408;&#x4FE1;&#x606F;&#x3002;
+</p>
+
+<p>
+&#x518D;&#x770B;&#x4E00;&#x4E2A;&#x4F8B;&#x5B50;&#xFF1A;
+</p>
+
+<div class="org-src-container">
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SECTIONS {
+  .text : { *(.text) }
+  .DATA : { [A-Z]*(.data) }
+  .data : { *(.data) }
+  .bss  : { *(.bss) }
+}</span><br></pre></td></tr></table></figure>
+</div>
+
+<p>
+&#x8FD9;&#x4E2A;&#x4F8B;&#x5B50;&#x4E2D;&#xFF0C;&#x6240;&#x6709;&#x6587;&#x4EF6;&#x7684;&#x8F93;&#x5165; <code>.text</code> section &#x7EC4;&#x6210;&#x8F93;&#x51FA; <code>.text</code> section&#xFF1B;&#x6240;&#x6709;&#x4EE5;&#x5927;&#x5199;&#x5B57;&#x6BCD;&#x5F00;&#x5934;&#x7684;&#x6587;&#x4EF6;&#x7684;
+<code>.data</code> section &#x7EC4;&#x6210;&#x8F93;&#x51FA; <code>.DATA</code> section&#xFF0C;&#x5176;&#x4ED6;&#x6587;&#x4EF6;&#x7684; <code>.data</code> section &#x7EC4;&#x6210;&#x8F93;&#x51FA; <code>.data</code> section&#xFF1B;
+&#x6240;&#x6709;&#x6587;&#x4EF6;&#x7684;&#x8F93;&#x5165; <code>.bss</code> section &#x7EC4;&#x6210;&#x8F93;&#x51FA; <code>.bss</code> section&#x3002;
+</p>
+
+<p>
+&#x53EF;&#x4EE5;&#x7528; SORT() &#x5173;&#x952E;&#x5B57;&#x5BF9;&#x6EE1;&#x8DB3;&#x5B57;&#x7B26;&#x4E32;&#x6A21;&#x5F0F;&#x7684;&#x6240;&#x6709;&#x540D;&#x5B57;&#x8FDB;&#x884C;&#x9012;&#x589E;&#x6392;&#x5E8F;&#xFF0C;&#x5982; SORT(.text*)&#x3002;
+</p>
+
+<p>
+&#x901A;&#x7528;&#x7B26;&#x53F7;(common symbol)&#x7684;&#x8F93;&#x5165; section:
+&#x5728;&#x8BB8;&#x591A;&#x76EE;&#x6807;&#x6587;&#x4EF6;&#x683C;&#x5F0F;&#x4E2D;&#xFF0C;&#x901A;&#x7528;&#x7B26;&#x53F7;&#x5E76;&#x6CA1;&#x6709;&#x5360;&#x7528;&#x4E00;&#x4E2A; section&#x3002;&#x94FE;&#x63A5;&#x5668;&#x8BA4;&#x4E3A;&#xFF1A;&#x8F93;&#x5165;&#x6587;&#x4EF6;&#x7684;&#x6240;&#x6709;&#x901A;&#x7528;&#x7B26;&#x53F7;&#x5728;&#x540D;&#x4E3A;
+COMMON &#x7684; section &#x5185;&#x3002;
+</p>
+
+<p>
+&#x4F8B;&#x5B50;&#xFF1A;
+</p>
+
+<div class="org-src-container">
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.bss { *(.bss) *(COMMON) }</span><br></pre></td></tr></table></figure>
+</div>
+
+<p>
+&#x8FD9;&#x4E2A;&#x4F8B;&#x5B50;&#x4E2D;&#x5C06;&#x6240;&#x6709;&#x8F93;&#x5165;&#x6587;&#x4EF6;&#x7684;&#x6240;&#x6709;&#x901A;&#x7528;&#x7B26;&#x53F7;&#x653E;&#x5165;&#x8F93;&#x51FA; <code>.bss</code> section &#x5185;&#x3002;&#x53EF;&#x4EE5;&#x770B;&#x5230; COMMON section
+&#x7684;&#x4F7F;&#x7528;&#x65B9;&#x6CD5;&#x8DDF;&#x5176;&#x4ED6; section &#x7684;&#x4F7F;&#x7528;&#x65B9;&#x6CD5;&#x662F;&#x4E00;&#x6837;&#x7684;&#x3002;&#x6709;&#x4E9B;&#x76EE;&#x6807;&#x6587;&#x4EF6;&#x683C;&#x5F0F;&#x628A;&#x901A;&#x7528;&#x7B26;&#x53F7;&#x5206;&#x6210;&#x51E0;&#x7C7B;&#x3002;
+</p>
+</div>
+</div>
+
+<div id="outline-container-org9e27e66" class="outline-2">
+<h2 id="org9e27e66">&#x5176;&#x4ED6;&#x811A;&#x672C;&#x547D;&#x4EE4;</h2>
+<div class="outline-text-2" id="text-org9e27e66">
+<ol class="org-ol">
+<li><p>
+<code>ENTRY(SYMBOL)</code>: &#x5C06;&#x7B26;&#x53F7; symbol &#x8BBE;&#x7F6E;&#x6210;&#x5165;&#x53E3;&#x5730;&#x5740;&#x3002;
+</p>
+
+<blockquote>
+<p>
+entry point(&#x5165;&#x53E3;&#x5730;&#x5740;)&#xFF1A;&#x8FDB;&#x7A0B;&#x6267;&#x884C;&#x7684;&#x7B2C;&#x4E00;&#x6761;&#x7528;&#x6237;&#x7A7A;&#x95F4;&#x7684;&#x6307;&#x4EE4;&#x5728;&#x8FDB;&#x7A0B;&#x5730;&#x5740;&#x7A7A;&#x95F4;&#x7684;&#x5730;&#x5740;&#x3002;
+</p>
+</blockquote>
+
+<p>
+ld &#x6709;&#x591A;&#x79CD;&#x65B9;&#x6CD5;&#x8BBE;&#x7F6E;&#x8FDB;&#x7A0B;&#x5165;&#x53E3;&#x5730;&#x5740;&#xFF1A;&#xFF08;&#x7F16;&#x53F7;&#x8D8A;&#x524D;&#xFF0C;&#x4F18;&#x5148;&#x7EA7;&#x8D8A;&#x9AD8;&#xFF09;
+</p>
+<ol class="org-ol">
+<li>ld &#x547D;&#x4EE4;&#x884C;&#x7684; -e &#x9009;&#x9879;</li>
+<li>&#x94FE;&#x63A5;&#x811A;&#x672C;&#x7684; ENTRY(SYMBOL) &#x547D;&#x4EE4;</li>
+<li>&#x5982;&#x679C;&#x5B9A;&#x4E49;&#x4E86; start &#x7B26;&#x53F7;&#xFF0C;&#x4F7F;&#x7528; start &#x7B26;&#x53F7;&#x503C;&#x3002;</li>
+<li>&#x5982;&#x679C;&#x5B58;&#x5728; .text section&#xFF0C;&#x4F7F;&#x7528; .text section &#x7684;&#x7B2C;&#x4E00;&#x5B57;&#x8282;&#x7684;&#x4F4D;&#x7F6E;&#x503C;&#x3002;</li>
+<li>&#x4F7F;&#x7528;&#x503C; 0</li>
+</ol></li>
+
+<li><p>
+<code>INCLUDE filename</code>: &#x5305;&#x542B;&#x540D;&#x4E3A; filename &#x7684;&#x94FE;&#x63A5;&#x811A;&#x672C;&#x3002;
+</p>
+
+<p>
+&#x76F8;&#x5F53;&#x4E8E; c &#x7A0B;&#x5E8F;&#x91CC;&#x7684; #include &#x5B8F;&#x6307;&#x4EE4;&#xFF0C;&#x7528;&#x4EE5;&#x5305;&#x542B;&#x53E6;&#x4E00;&#x4E2A;&#x94FE;&#x63A5;&#x811A;&#x672C;&#x3002;&#x811A;&#x672C;&#x641C;&#x7D22;&#x8DEF;&#x5F84;&#x7531; -L &#x884C;&#x671F;&#x6307;&#x5B9A;&#x3002;
+INCLUDE &#x6307;&#x4EE4;&#x53EF;&#x4EE5;&#x5D4C;&#x5957;&#x4F7F;&#x7528;&#xFF0C;&#x6700;&#x5927;&#x6DF1;&#x5EA6;&#x4E3A; 10.
+</p></li>
+
+<li><p>
+<code>INPUT(files)</code>: &#x5C06;&#x62EC;&#x53F7;&#x5185;&#x7684;&#x6587;&#x4EF6;&#x4F5C;&#x4E3A;&#x94FE;&#x63A5;&#x8FC7;&#x7A0B;&#x7684;&#x8F93;&#x5165;&#x6587;&#x4EF6;&#x3002;
+</p>
+
+<p>
+ld&#x547D;&#x4EE4;&#x9996;&#x5148;&#x5728;&#x5F53;&#x524D;&#x76EE;&#x5F55;&#x4E0B;&#x5BFB;&#x627E;&#x8BE5;&#x6587;&#x4EF6;&#xFF0C;&#x5982;&#x679C;&#x6CA1;&#x6709;&#x627E;&#x5230;&#xFF0C;&#x5219;&#x5728;&#x7531; -L &#x6307;&#x5B9A;&#x7684;&#x641C;&#x7D22;&#x8DEF;&#x5F84;&#x4E0B;&#x641C;
+&#x7D22;&#x3002;file &#x53EF;&#x4EE5;&#x4E3A; -lfile&#x5F62;&#x5F0F;&#xFF0C;&#x5C31;&#x8C61;&#x547D;&#x4EE4;&#x884C;&#x7684; -l &#x9009;&#x9879;&#x4E00;&#x6837;&#x3002;&#x5982;&#x679C;&#x8BE5;&#x547D;&#x4EE4;&#x51FA;&#x73B0;&#x5728;&#x6697;&#x542B;&#x7684;
+&#x811A;&#x672C;&#x5185;&#xFF0C;&#x5219;&#x8BE5;&#x547D;&#x4EE4;&#x5185;&#x7684; file &#x5728;&#x94FE;&#x63A5;&#x8FC7;&#x7A0B;&#x4E2D;&#x7684;&#x987A;&#x5E8F;&#x7531;&#x8BE5;&#x6697;&#x542B;&#x7684;&#x811A;&#x672C;&#x5728;&#x547D;&#x4EE4;&#x884C;&#x5185;&#x7684;&#x987A;&#x5E8F;&#x51B3;
+&#x5B9A;&#x3002;
+</p></li>
+
+<li><p>
+<code>GROUP(files)</code>: &#x6307;&#x5B9A;&#x9700;&#x8981;&#x91CD;&#x590D;&#x641C;&#x7D22;&#x7B26;&#x53F7;&#x5B9A;&#x4E49;&#x7684;&#x591A;&#x4E2A;&#x8F93;&#x5165;&#x6587;&#x4EF6;
+</p>
+
+<p>
+file &#x5FC5;&#x987B;&#x662F;&#x5E93;&#x6587;&#x4EF6;&#xFF0C;&#x4E14; file &#x6587;&#x4EF6;&#x4F5C;&#x4E3A;&#x4E00;&#x7EC4;&#x88AB; ld &#x91CD;&#x590D;&#x626B;&#x63CF;&#xFF0C;&#x76F4;&#x5230;&#x4E0D;&#x518D;&#x6709;&#x65B0;&#x7684;&#x672A;&#x5B9A;&#x4E49;&#x7684;&#x5F15;&#x7528;&#x51FA;&#x73B0;&#x3002;
+</p></li>
+
+<li><p>
+<code>OUTPUT(FILENAME)</code>: &#x5B9A;&#x4E49;&#x8F93;&#x51FA;&#x6587;&#x4EF6;&#x7684;&#x540D;&#x5B57;&#x3002;
+</p>
+
+<p>
+&#x540C; ld &#x7684; -o &#x9009;&#x9879;&#xFF0C;&#x4E0D;&#x8FC7; -o &#x884C;&#x671F;&#x7684;&#x4F18;&#x5148;&#x7EA7;&#x66F4;&#x9AD8;&#xFF0C;&#x6240;&#x4EE5;&#x5B83;&#x53EF;&#x4EE5;&#x7528;&#x6765;&#x5B9A;&#x4E49;&#x9ED8;&#x8BA4;&#x7684;&#x8F93;&#x51FA;&#x6587;&#x4EF6;&#x540D;&#xFF0C;&#x5982; a.out&#x3002;
+</p></li>
+
+<li><p>
+<code>SEARCH_DIR(PATH)</code>: &#x5B9A;&#x4E49;&#x641C;&#x7D22;&#x8DEF;&#x5F84;&#x3002;
+</p>
+
+<p>
+&#x540C; ld &#x7684; -L &#x884C;&#x671F;&#xFF0C;&#x4E0D;&#x8FC7;&#x7531; -L &#x6307;&#x5B9A;&#x7684;&#x8DEF;&#x5F84;&#x8981;&#x6BD4;&#x5B83;&#x5B9A;&#x4E49;&#x7684;&#x4F18;&#x5148;&#x88AB;&#x641C;&#x7D22;&#x3002;
+</p></li>
+
+<li><p>
+<code>STARTUP(filename)</code>: &#x6307;&#x5B9A; filename &#x4E3A;&#x7B2C;&#x4E00;&#x4E2A;&#x8F93;&#x5165;&#x6587;&#x4EF6;&#x3002;
+</p>
+
+<p>
+&#x5728;&#x94FE;&#x63A5;&#x8FC7;&#x7A0B;&#x4E2D;&#xFF0C;&#x6BCF;&#x4E2A;&#x8F93;&#x5165;&#x6587;&#x4EF6;&#x662F;&#x6709;&#x987A;&#x5E8F;&#x7684;&#xFF0C;&#x8BE5;&#x547D;&#x4EE4;&#x8BBE;&#x7F6E;&#x6587;&#x4EF6; filename &#x4E3A;&#x7B2C;&#x4E00;&#x4E2A;&#x8F93;&#x5165;&#x6587;&#x4EF6;&#x3002;
+</p></li>
+
+<li><p>
+<code>OUTPUT_FORMAT(DEFAULT,BIG,LITTLE)</code>: &#x5B9A;&#x4E49;&#x4E09;&#x79CD;&#x8F93;&#x51FA;&#x6587;&#x4EF6;&#x7684;&#x683C;&#x5F0F;&#xFF08;&#x5927;&#x5C0F;&#x7AEF;&#xFF09;
+</p>
+
+<p>
+&#x82E5;&#x6709;&#x547D;&#x4EE4;&#x884C;&#x9009;&#x9879; -EB&#xFF0C;&#x5219;&#x4F7F;&#x7528;&#x7B2C; 2 &#x4E2A; BFD &#x683C;&#x5F0F;&#xFF1B;&#x82E5;&#x6709;&#x547D;&#x4EE4;&#x884C;&#x9009;&#x9879; -EL&#xFF0C;&#x5219;&#x4F7F;&#x7528;&#x7B2C; 3
+&#x4E2A; BFD &#x683C;&#x5F0F;&#x3002;&#x5426;&#x5219;&#x9009;&#x62E9;&#x7B2C;&#x4E00;&#x4E2A; BFD &#x683C;&#x5F0F;&#x3002;
+</p></li>
+</ol>
+
+<p>
+&#x66F4;&#x591A;&#xFF1A;
+</p>
+
+<p>
+<code>ASSERT(EXP,MESSAGE)</code>: &#x5982;&#x679C; EXP &#x4E0D;&#x4E3A;&#x771F;&#xFF0C;&#x7EC8;&#x6B62;&#x94FE;&#x63A5;&#x8FC7;&#x7A0B;&#x3002;
+</p>
+
+<p>
+<code>EXTERN(SYMBOL SYMBOL ...)</code>: &#x5728;&#x8F93;&#x51FA;&#x6587;&#x4EF6;&#x4E2D;&#x556C;&#x672A;&#x5B9A;&#x4E49;&#x7684;&#x7B26;&#x53F7;&#xFF0C;&#x5982;&#x540C;&#x8FDE;&#x63A5;&#x5668;&#x9009;&#x9879; -u
+</p>
+
+<p>
+<code>FORCE\_COMMON\_ALLOCATION</code>: &#x4E3A; common symbol &#x5206;&#x914D;&#x7A7A;&#x95F4;&#xFF0C;&#x5373;&#x4F7F;&#x7528;&#x4E86; -r &#x94FE;&#x63A5;&#x884C;&#x671F;&#x4E5F;&#x4E3A;&#x5176;&#x5206;&#x914D;&#x3002;
+</p>
+
+<p>
+<code>NOCROSSREFS(SECTION SECTION ...)</code>: &#x68C0;&#x67E5;&#x5217;&#x51FA;&#x7684;&#x8F93;&#x51FA; section &#xFF0C;&#x5982;&#x679C;&#x53D1;&#x73B0;&#x4ED6;&#x4EEC;&#x4E4B;&#x95F4;&#x6709;&#x76F8;&#x4E92;&#x5F15;&#x7528;&#x5219;
+&#x62A5;&#x9519;&#x3002;&#x5BF9;&#x4E8E;&#x67D0;&#x4E9B;&#x7CFB;&#x7EDF;&#xFF0C;&#x7279;&#x522B;&#x662F;&#x5185;&#x5728;&#x8F83;&#x7D27;&#x5F20;&#x7684;&#x5D4C;&#x5165;&#x5F0F;&#x7CFB;&#x7EDF;&#xFF0C;&#x67D0;&#x4E9B; section &#x662F;&#x4E0D;&#x80FD;&#x540C;&#x65F6;&#x5B58;&#x5728;&#x5185;&#x5728;&#x4E2D;&#x7684;&#xFF0C;&#x6240;&#x4EE5;&#x4ED6;&#x4EEC;
+&#x4E4B;&#x95F4;&#x4E0D;&#x80FD;&#x76F8;&#x4E92;&#x5F15;&#x7528;&#x3002;
+</p>
+
+<p>
+<code>OUTPUT\_ARCH(BFDARCH)</code>: &#x8BBE;&#x7F6E;&#x8F93;&#x51FA;&#x6587;&#x4EF6;&#x7684; machine architecture(&#x4F53;&#x7CFB;&#x7ED3;&#x6784;)&#xFF0C;BFDARCH &#x4E3A;&#x88AB;
+BFD &#x5E93;&#x4F7F;&#x7528;&#x7684;&#x540D;&#x5B57;&#x5B89;&#x5B89;&#x9759;&#x9759;&#x3002;&#x53EF;&#x4EE5;&#x7528;&#x547D;&#x4EE4; objdump -f &#x67E5;&#x770B;&#x3002;
+</p>
+
+<p>
+tips: &#x53EF;&#x901A;&#x8FC7; `man ld` &#x67E5;&#x770B; ld &#x7684;&#x5E2E;&#x52A9;&#xFF0C;&#x91CC;&#x9762;&#x4E5F;&#x5305;&#x62EC;&#x4E86;&#x5BF9;&#x8FD9;&#x4E9B;&#x547D;&#x4EE4;&#x7684;&#x4ECB;&#x7ECD;&#xFF08;&#x4F46;&#x662F;&#x6211;&#x5E76;&#x6CA1;&#x6709;&#x641C;&#x5230;&#x2026;&#xFF09;&#x3002;
+</p>
+</div>
+</div>
+<div id="footnotes">
+<h2 class="footnotes">Footnotes: </h2>
+<div id="text-footnotes">
+
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1">1</a></sup> <div class="footpara"><p class="footpara">
+<a href="https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/4/html/Using_ld_the_GNU_Linker/sections.html" target="_blank" rel="noopener">Red Hat Enterprise Linux 4: Using ld, the Gnu Linker &#x2013; Chapter 4. Linker Scripts</a>
+</p></div></div>
+
+
+</div>
+</div></div>
+<div id="postamble" class="status">
+Last Updated 2018-05-27 Sun 16:15.<br>Render by <a href="https://github.com/coldnew/hexo-renderer-org" target="_blank" rel="noopener">hexo-renderer-org</a> with <a href="https://www.gnu.org/software/emacs/" target="_blank" rel="noopener">Emacs</a> 25.2.2 (<a href="https://orgmode.org" target="_blank" rel="noopener">Org</a> mode 9.1.13)
+</div>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/linker/" rel="tag"># linker</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/08/30/build-user-site/" rel="next" title="使用 GitHub Pages 建立个人站点">
+                <i class="fa fa-chevron-left"></i> 使用 GitHub Pages 建立个人站点
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/09/18/calling-conventions/" rel="prev" title="x86 函数调用约定 (calling conventions)">
+                x86 函数调用约定 (calling conventions) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/uploads/avatar.jpg"
+                alt="fengqi" />
+            
+              <p class="site-author-name" itemprop="name">fengqi</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">75</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">55</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/feng-qi" target="_blank" title="GitHub"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://stackoverflow.com/users/7961156/fengqi" target="_blank" title="StackOverflow"><i class="fa fa-fw fa-stack-overflow"></i>StackOverflow</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#org913a226"><span class="nav-number">1.</span> <span class="nav-text">概念理解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#org590da92"><span class="nav-number">2.</span> <span class="nav-text">脚本格式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#org78be560"><span class="nav-number">3.</span> <span class="nav-text">定义变量和符号赋值</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#org7b22b3d"><span class="nav-number">3.1.</span> <span class="nav-text">定义变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#orgd453f0d"><span class="nav-number">3.2.</span> <span class="nav-text">符号赋值</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#org50ce06b"><span class="nav-number">4.</span> <span class="nav-text">SECTIONS 命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#orga3e60d0"><span class="nav-number">4.1.</span> <span class="nav-text">输出 section 描述 (output section description)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#org805080e"><span class="nav-number">4.2.</span> <span class="nav-text">输入 section 描述 (input section description)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#orgc915fb1"><span class="nav-number">5.</span> <span class="nav-text">链接器是如何找到对应的文件的</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#org9e27e66"><span class="nav-number">6.</span> <span class="nav-text">其他脚本命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">7.</span> <span class="nav-text">Footnotes: </span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">fengqi</span>
+
+  
+
+  
+</div>
+
+
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> v3.7.1</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/theme-next/hexo-theme-next">NexT.Pisces</a> v6.3.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.3.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.3.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.3.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.3.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.3.0"></script>
+
+
+
+  
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
