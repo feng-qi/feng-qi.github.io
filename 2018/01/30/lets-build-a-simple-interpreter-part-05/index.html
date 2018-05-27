@@ -1302,7 +1302,7 @@ Last Updated 2018-05-26 Sat 14:12.<br>Render by <a href="https://github.com/cold
       <script type="text/javascript">
       function renderGitment(){
         var gitment = new Gitmint({
-            id: window.location.pathname,
+            id: decodeURI(window.location.pathname),
             owner: 'feng-qi',
             repo: 'gitment-comments',
             
