@@ -109,7 +109,7 @@
 
 
   <meta name="description" content="这篇小文章中尝试在汇编中调用简单的 C 语言函数，主要是为了加深对 C 语言调用约定的理解和记忆，也是对汇编编写简单程序的一次小尝试。程序非常简单，主要是尝试对这几天学习的知识进行运用。">
-<meta name="keywords" content="c,asm,learn_by_doing">
+<meta name="keywords" content="asm,c,learn_by_doing">
 <meta property="og:type" content="article">
 <meta property="og:title" content="汇编中调用 C 语言函数">
 <meta property="og:url" content="http://feng-qi.github.io/2016/10/09/asm-call-c-function/index.html">
@@ -363,6 +363,16 @@
 
           
             
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2016/10/09/asm-call-c-function/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">Comments: </span> <span class="post-comments-count gitment-comments-count" data-xid="/2016/10/09/asm-call-c-function/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
           
 
           
@@ -460,9 +470,9 @@ R9, XMM0–7</code>，所以将要传递的参数放在<code>edi</code>中。</p
       
         <div class="post-tags">
           
-            <a href="/tags/c/" rel="tag"># c</a>
-          
             <a href="/tags/asm/" rel="tag"># asm</a>
+          
+            <a href="/tags/c/" rel="tag"># c</a>
           
             <a href="/tags/learn-by-doing/" rel="tag"># learn_by_doing</a>
           
@@ -514,6 +524,13 @@ R9, XMM0–7</code>，所以将要传递的参数放在<code>edi</code>中。</p
 
           </div>
           
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
 
   
 
@@ -923,6 +940,43 @@ R9, XMM0–7</code>，所以将要传递的参数放在<code>edi</code>中。</p
 
 
 
+
+
+<!-- LOCAL: You can save these files to your site and update links -->
+    
+        
+        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
+        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
+    
+<!-- END LOCAL -->
+
+    
+
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: window.location.pathname,
+            owner: 'feng-qi',
+            repo: 'gitment-comments',
+            
+            lang: "" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: '0888b012b697a98831fa02f2df30e0b2d098d611',
+            
+                client_id: '95e0371ecb66982715e0'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      renderGitment();
+      
+      </script>
+    
 
 
 
