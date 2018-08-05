@@ -307,6 +307,163 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://feng-qi.github.io/2018/02/02/lets-build-a-simple-interpreter-part-07/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="fengqi">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="feng 言 feng 语">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/02/02/lets-build-a-simple-interpreter-part-07/" itemprop="url">
+                  [译]Let’s Build A Simple Interpreter. Part 7.
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2018-02-02 17:16:00" itemprop="dateCreated datePublished" datetime="2018-02-02T17:16:00+08:00">2018-02-02</time>
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <div id="content">
+<p>
+&#x539F;&#x6587;&#x5730;&#x5740;&#xFF1A;<a href="https://ruslanspivak.com/lsbasi-part7/" target="_blank" rel="noopener">Let&#x2019;s Build A Simple Interpreter. Part 7.</a>
+</p>
+
+<p>
+&#x50CF;&#x6211;&#x4E0A;&#x6B21;&#x627F;&#x8BFA;&#x7684;&#x90A3;&#x6837;&#xFF0C;&#x4ECA;&#x5929;&#x6211;&#x4F1A;&#x8BA8;&#x8BBA;&#x4E00;&#x4E2A;&#x672C;&#x7CFB;&#x5217;&#x4F59;&#x4E0B;&#x6587;&#x7AE0;&#x4E2D;&#x90FD;&#x4F1A;&#x7528;&#x5230;&#x7684;&#x91CD;&#x8981;&#x6570;&#x636E;&#x7ED3;&#x6784;&#xFF0C;&#x7CFB;&#x597D;
+&#x5B89;&#x5168;&#x5E26;&#x8BA9;&#x6211;&#x4EEC;&#x51FA;&#x53D1;&#x3002;
+</p>
+
+<p>
+&#x76F4;&#x5230;&#x73B0;&#x5728;&#xFF0C;&#x6211;&#x4EEC;&#x90FD;&#x628A; interpreter &#x7684;&#x4EE3;&#x7801;&#x548C; parser &#x7684;&#x4EE3;&#x7801;&#x6DF7;&#x5728;&#x4E00;&#x8D77;&#xFF0C;&#x4E14; interpreter &#x5728;
+parser &#x8BC6;&#x522B;&#x51FA;&#x4E00;&#x4E2A;&#x5982;&#x52A0;&#x51CF;&#x4E58;&#x9664;&#x4E4B;&#x7C7B;&#x7684;&#x8BED;&#x8A00;&#x7ED3;&#x6784;&#x4E4B;&#x540E;&#x4F1A;&#x7ACB;&#x523B;&#x5BF9;&#x5B83;&#x8FDB;&#x884C;&#x6C42;&#x503C;&#x3002;&#x8FD9;&#x79CD;
+interpreter &#x88AB;&#x79F0;&#x4E3A; <b>&#x8BED;&#x6CD5;&#x5BFC;&#x5411;&#x89E3;&#x91CA;&#x5668;</b> (syntax-directed interpreter)&#x3002;&#x4ED6;&#x4EEC;&#x901A;&#x5E38;&#x5728;&#x8F93;
+&#x5165;&#x4E0A;&#x505A;&#x4E00;&#x4E2A; pass &#x4E14;&#x53EA;&#x9002;&#x5408;&#x57FA;&#x7840;&#x7684;&#x8BED;&#x8A00;&#x5E94;&#x7528;&#x3002;&#x4E3A;&#x4E86;&#x5206;&#x6790;&#x66F4;&#x590D;&#x6742;&#x7684;&#x7F16;&#x7A0B;&#x8BED;&#x8A00; Pascal &#x7684;&#x7ED3;&#x6784;&#xFF0C;
+&#x6211;&#x4EEC;&#x9700;&#x8981;&#x5EFA;&#x7ACB;&#x4E00;&#x4E2A; <b>&#x4E2D;&#x95F4;&#x8868;&#x793A;</b> (intermediate representation, IR)&#x3002;&#x6211;&#x4EEC;&#x7684; parser &#x4F1A;
+&#x8D1F;&#x8D23;&#x6784;&#x5EFA; IR &#x800C; interpreter &#x4F1A;&#x7528;&#x6765;&#x89E3;&#x91CA;&#x7531; IR &#x6240;&#x4EE3;&#x8868;&#x7684;&#x8F93;&#x5165;&#x3002;
+</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/02/02/lets-build-a-simple-interpreter-part-07/" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://feng-qi.github.io/2018/02/01/lets-build-a-simple-interpreter-part-06/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1681,165 +1838,6 @@ GNOME &#x6269;&#x5C55;&#x662F; GNOME &#x684C;&#x9762;&#x73AF;&#x5883;&#x6700;&#x
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://feng-qi.github.io/2017/07/28/c++-unit-testing-with-boost.test/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="fengqi">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="feng 言 feng 语">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/07/28/c++-unit-testing-with-boost.test/" itemprop="url">
-                  [译]C++ Unit Testing With Boost.Test
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-
-              
-                
-              
-
-              <time title="Created: 2017-07-28 22:17:00" itemprop="dateCreated datePublished" datetime="2017-07-28T22:17:00+08:00">2017-07-28</time>
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <div id="content">
-<p>
-&#x539F;&#x6587;&#x4E3A;<a href="http://www.alittlemadness.com/2009/03/31/c-unit-testing-with-boosttest/" target="_blank" rel="noopener">&#x8FD9;&#x7BC7;&#x6587;&#x7AE0;</a>&#xFF0C;&#x7B2C;&#x4E00;&#x6BB5;&#x89C9;&#x5F97;&#x6CA1;&#x4EC0;&#x4E48;&#x7528;&#xFF0C;&#x5C31;&#x6CA1;&#x6709;&#x7FFB;&#x8BD1;&#x3002;&#x5B89;&#x88C5;&#x90E8;&#x5206;&#x4E5F;&#x6709;&#x90E8;&#x5206;&#x6CA1;&#x6709;&#x7FFB;&#x8BD1;&#xFF0C;&#x5176;&#x4F59;&#x57FA;
-&#x672C;&#x90FD;&#x7FFB;&#x8BD1;&#x4E86;&#x3002;
-</p>
-
-<div id="outline-container-orgc4bb923" class="outline-2">
-<h2 id="orgc4bb923">&#x5B89;&#x88C5;</h2>
-<div class="outline-text-2" id="text-orgc4bb923">
-<p>
-&#x5728; Linux &#x4E0B;&#x6700;&#x7B80;&#x5355;&#x7684;&#x65B9;&#x5F0F;&#x662F;&#x4F7F;&#x7528;&#x5305;&#x7BA1;&#x7406;&#x7CFB;&#x7EDF;&#xFF0C;Ubuntu &#x4E0B;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;&#x5982;&#x4E0B;&#x547D;&#x4EE4;&#xFF1A;
-</p>
-
-<div class="org-src-container">
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install libboost-test-dev</span><br></pre></td></tr></table></figure>
-</div>
-
-<p>
-&#x8FD9;&#x79CD;&#x65B9;&#x6CD5;&#x7684;&#x7F3A;&#x70B9;&#x5C31;&#x662F;&#x7248;&#x672C;&#x53EF;&#x80FD;&#x6709;&#x4E9B;&#x8001;&#x65E7;&#x3002;
-</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/07/28/c++-unit-testing-with-boost.test/" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1891,7 +1889,7 @@ GNOME &#x6269;&#x5C55;&#x662F; GNOME &#x684C;&#x9762;&#x73AF;&#x5883;&#x6700;&#x
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">75</span>
+                    <span class="site-state-item-count">76</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -2022,7 +2020,9 @@ GNOME &#x6269;&#x5C55;&#x662F; GNOME &#x684C;&#x9762;&#x73AF;&#x5883;&#x6700;&#x
                     
                       
                     
-                    <span class="site-state-item-count">55</span>
+                      
+                    
+                    <span class="site-state-item-count">56</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>
