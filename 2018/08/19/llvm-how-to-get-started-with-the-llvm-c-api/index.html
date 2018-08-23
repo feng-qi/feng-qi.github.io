@@ -1,0 +1,1319 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.3.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.3.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.3.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '6.3.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="&amp;#x539F;&amp;#x6587;&amp;#x5730;&amp;#x5740;&amp;#xFF1A;How to get started with the LLVM C API&amp;#x3002;    &amp;#x6211;&amp;#x559C;&amp;#x6B22;&amp;#x505A;&amp;#x4E00;&amp;#x4E9B;&amp;#x73A9;&amp;#x5177;&amp;#x7F16;&amp;#x7A0B;&amp;#x8BED;&amp;#x8A00;&amp;#x6765;&amp;#x7">
+<meta name="keywords" content="llvm,compiler">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何开始使用 LLVM C API">
+<meta property="og:url" content="http://feng-qi.github.io/2018/08/19/llvm-how-to-get-started-with-the-llvm-c-api/index.html">
+<meta property="og:site_name" content="feng 言 feng 语">
+<meta property="og:description" content="&amp;#x539F;&amp;#x6587;&amp;#x5730;&amp;#x5740;&amp;#xFF1A;How to get started with the LLVM C API&amp;#x3002;    &amp;#x6211;&amp;#x559C;&amp;#x6B22;&amp;#x505A;&amp;#x4E00;&amp;#x4E9B;&amp;#x73A9;&amp;#x5177;&amp;#x7F16;&amp;#x7A0B;&amp;#x8BED;&amp;#x8A00;&amp;#x6765;&amp;#x7">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2018-08-23T17:21:18.320Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="如何开始使用 LLVM C API">
+<meta name="twitter:description" content="&amp;#x539F;&amp;#x6587;&amp;#x5730;&amp;#x5740;&amp;#xFF1A;How to get started with the LLVM C API&amp;#x3002;    &amp;#x6211;&amp;#x559C;&amp;#x6B22;&amp;#x505A;&amp;#x4E00;&amp;#x4E9B;&amp;#x73A9;&amp;#x5177;&amp;#x7F16;&amp;#x7A0B;&amp;#x8BED;&amp;#x8A00;&amp;#x6765;&amp;#x7">
+
+
+
+
+
+
+  <link rel="canonical" href="http://feng-qi.github.io/2018/08/19/llvm-how-to-get-started-with-the-llvm-c-api/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>如何开始使用 LLVM C API | feng 言 feng 语</title>
+  
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-116135841-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-116135841-1');
+</script>
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?78d4d070f33fe0f3b3b515cf9dcf714a";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">feng 言 feng 语</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />Home</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+  
+  
+  
+    
+      
+    
+    <a href="https://github.com/feng-qi" class="github-corner" target="_blank" title="Follow me on GitHub" aria-label="Follow me on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#222; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg>
+    
+      </a>
+    
+
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://feng-qi.github.io/2018/08/19/llvm-how-to-get-started-with-the-llvm-c-api/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="fengqi">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="feng 言 feng 语">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">如何开始使用 LLVM C API
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2018-08-19 23:51:00" itemprop="dateCreated datePublished" datetime="2018-08-19T23:51:00+08:00">2018-08-19</time>
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/08/19/llvm-how-to-get-started-with-the-llvm-c-api/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">Comments: </span> <span class="post-comments-count gitment-comments-count" data-xid="/2018/08/19/llvm-how-to-get-started-with-the-llvm-c-api/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <div id="content">
+<p>
+&#x539F;&#x6587;&#x5730;&#x5740;&#xFF1A;<a href="https://pauladamsmith.com/blog/2015/01/how-to-get-started-with-llvm-c-api.html" target="_blank" rel="noopener">How to get started with the LLVM C API</a>&#x3002;
+</p>
+
+<p>
+&#x6211;&#x559C;&#x6B22;&#x505A;&#x4E00;&#x4E9B;&#x73A9;&#x5177;&#x7F16;&#x7A0B;&#x8BED;&#x8A00;&#x6765;&#x7406;&#x89E3;&#x7F16;&#x8BD1;&#x5668;&#xFF08;&#x548C;&#x6700;&#x5E95;&#x5C42;&#x7684;&#xFF0C;&#x673A;&#x5668;&#xFF09;&#x5982;&#x4F55;&#x5DE5;&#x4F5C;&#x4EE5;&#x53CA;&#x6D4B;&#x8BD5;&#x4E00;&#x4E9B;&#x6211;&#x6CA1;
+&#x6709;&#x638C;&#x63E1;&#x7684;&#x6280;&#x672F;&#x3002;LLVM &#x5F88;&#x68D2;&#xFF0C;&#x56E0;&#x4E3A;&#x6211;&#x53EF;&#x4EE5;&#x4FEE;&#x4FEE;&#x6539;&#x6539;&#xFF0C;&#x7136;&#x540E;&#x5C06;&#x5B83;&#x4F5C;&#x4E3A;&#x540E;&#x7AEF;&#x6765;&#x751F;&#x6210;&#x53EF;&#x4EE5;&#x5728;&#x5927;&#x591A;&#x6570;
+&#x5E73;&#x53F0;&#x8FD0;&#x884C;&#x7684;&#x6548;&#x7387;&#x5F88;&#x9AD8;&#x7684;&#x4EE3;&#x7801;&#x3002;&#x5982;&#x679C;&#x6211;&#x53EA;&#x662F;&#x60F3;&#x8BA9;&#x6211;&#x7684;&#x4EE3;&#x7801;&#x80FD;&#x6267;&#x884C;&#xFF0C;&#x53EF;&#x4EE5;&#x7B80;&#x5355;&#x5730;&#x624B;&#x5199;&#x4E00;&#x4E2A;&#x89E3;&#x91CA;&#x5668;&#xFF0C;
+&#x4F46;&#x6709;&#x4E86; LLVM &#x7684; JIT&#xFF0C;&#x4F18;&#x5316;&#x5957;&#x4EF6;&#x548C;&#x5E73;&#x53F0;&#x652F;&#x6301;&#x5C31;&#x50CF;&#x6709;&#x4E86;&#x8D85;&#x80FD;&#x529B;&#x2500;&#x2500;&#x4F60;&#x7684;&#x5C0F;&#x5C0F;&#x7684;&#x73A9;&#x5177;&#x4E5F;&#x53EF;&#x4EE5;&#x6709;&#x975E;
+&#x5E38;&#x4E0D;&#x9519;&#x7684;&#x6027;&#x80FD;&#x3002;&#x800C;&#x4E14;&#xFF0C;LLVM &#x662F;&#x50CF; <a href="https://github.com/kripken/emscripten/wiki" target="_blank" rel="noopener">Emscripten</a> &#x548C; <a href="http://www.rust-lang.org/" target="_blank" rel="noopener">Rust</a> &#x7684;&#x57FA;&#x7840;&#xFF0C;&#x6211;&#x559C;&#x6B22;&#x8BA9;&#x81EA;&#x5DF1;&#x5BF9;&#x6211;&#x611F;&#x5174;&#x8DA3;
+&#x7684;&#x6280;&#x672F;&#x5982;&#x4F55;&#x5B9E;&#x73B0;&#x6709;&#x4E00;&#x4E9B;&#x76F4;&#x89C9;&#x4E0A;&#x7684;&#x8BA4;&#x8BC6;&#x3002;
+</p>
+
+<a id="more"></a>
+
+<p>
+&#x6211;&#x5C06;&#x4F1A;&#x5411;&#x4F60;&#x5C55;&#x793A;&#x5982;&#x4F55;&#x5728;&#x7A0B;&#x5E8F;&#x4E2D;&#x4F7F;&#x7528; LLVM API &#x6765;&#x6784;&#x5EFA;&#x4E00;&#x4E2A;&#x51FD;&#x6570;&#xFF0C;&#x4F60;&#x53EF;&#x4EE5;&#x50CF;&#x5176;&#x4ED6;&#xFF08;&#x51FD;&#x6570;&#xFF09;&#x4E00;&#x6837;
+&#x88AB;&#x8C03;&#x7528;&#xFF0C;&#x5E76;&#x8BA9;&#x5B83;&#x53D8;&#x6210;&#x673A;&#x5668;&#x8BED;&#x8A00;&#x76F4;&#x63A5;&#x8FD0;&#x884C;&#x5728;&#x4F60;&#x7684;&#x5E73;&#x53F0;&#x4E0A;&#x3002;
+</p>
+
+<p>
+&#x5728;&#x8FD9;&#x4E2A;&#x4F8B;&#x5B50;&#x4E2D;&#xFF0C;&#x6211;&#x4F1A;&#x4F7F;&#x7528; <a href="http://llvm.org/docs/doxygen/html/group__LLVMC.html" target="_blank" rel="noopener">C API</a>&#xFF0C;&#x56E0;&#x4E3A;&#x5B83;&#x548C; C++ API &#x4E00;&#x8D77;&#x90FD;&#x5305;&#x542B;&#x5728;&#x4E86; LLVM &#x7684;&#x53D1;&#x884C;&#x7248;&#x4E2D;&#xFF0C;
+&#x6240;&#x4EE5;&#x7531;&#x6B64;&#x5F00;&#x59CB;&#x662F;&#x6700;&#x5BB9;&#x6613;&#x7684;&#x3002;&#x5176;&#x4ED6;&#x8BED;&#x8A00;&#x4E5F;&#x6709; LLVM API &#x7684;&#x7ED1;&#x5B9A;&#x2500;&#x2500;Python, OCaml, Go, Rust&#x2500;&#x2500;
+&#x4F46;&#x80CC;&#x540E;&#x4F7F;&#x7528; LLVM &#x6765;&#x751F;&#x6210;&#x4EE3;&#x7801;&#x7684;&#x6982;&#x5FF5;&#x662F;&#x4E00;&#x6837;&#x7684;&#x3002;
+</p>
+
+<p>
+&#x8FD9;&#x4E2A;&#x4F8B;&#x5B50;&#x4ECE;&#x67D0;&#x79CD;&#x7A0B;&#x5EA6;&#x4E0A;&#x8BF4;&#x662F;&#x76F4;&#x63A5;&#x8DF3;&#x5230;&#x4E86;&#x7F16;&#x8BD1;&#x5668;&#x6784;&#x5EFA;&#x8FC7;&#x7A0B;&#x4E2D;&#x7684;&#x67D0;&#x4E00;&#x9636;&#x6BB5;&#x3002;&#x5047;&#x8BBE;&#x524D;&#x7AEF;&#xFF08;&#x8BB0;&#x6CD5;&#x5206;&#x6790;
+&#x5668;&#xFF0C;&#x89E3;&#x6790;&#x5668;&#xFF0C;&#x7C7B;&#x578B;&#x68C0;&#x67E5;&#x5668;&#xFF09;&#x5DF2;&#x7ECF;&#x6784;&#x5EFA;&#x597D;&#x4E86;&#x4E00;&#x4E2A; AST&#xFF0C;&#x6211;&#x4EEC;&#x73B0;&#x5728;&#x53EA;&#x9700;&#x8981;&#x904D;&#x5386;&#x5B83;&#x6765;&#x751F;&#x6210;&#x4EE3;&#x7801;&#x7684;&#x4E2D;
+&#x95F4;&#x8868;&#x793A;&#xFF0C;&#x5E76;&#x4EA4;&#x7ED9;&#x540E;&#x7AEF;&#x6765;&#x4F18;&#x5316;&#x5E76;&#x751F;&#x6210;&#x673A;&#x5668;&#x4EE3;&#x7801;&#x3002;
+</p>
+
+<p>
+&#x8FD9;&#x91CC;&#xFF0C;&#x6211;&#x4EEC;&#x5C06;&#x53EA;&#x76F4;&#x63A5;&#x5199;&#x51FA;&#x4E00;&#x4E2A;&#x7B80;&#x5355;&#x51FD;&#x6570;&#x7684;&#x8FC7;&#x7A0B;&#x4EE3;&#x7801;(procedural code)&#xFF0C;&#x800C;&#x6B63;&#x5E38;&#x60C5;&#x51B5;&#x4E0B;&#x5E94;&#x8BE5;
+&#x662F;&#x5728; AST &#x7684;&#x904D;&#x5386;&#x51FD;&#x6570;&#x4E2D;&#x5728;&#x9047;&#x5230;&#x7279;&#x5B9A;&#x7ED3;&#x70B9;&#x65F6;&#x8C03;&#x7528;&#x76F8;&#x5E94;&#x7684; API &#x52A8;&#x6001;&#x83B7;&#x5F97;&#x7684;&#x3002;
+</p>
+
+<p>
+&#x4E3A;&#x4E86;&#x4E3E;&#x4F8B;&#xFF0C;&#x6211;&#x4EEC;&#x4F1A;&#x5EFA;&#x7ACB;&#x4E00;&#x4E2A;&#x7B80;&#x5355;&#x7684;&#x52A0;&#x6CD5;&#x51FD;&#x6570;&#xFF0C;&#x5B83;&#x63A5;&#x53D7;&#x4E24;&#x4E2A;&#x6574;&#x578B;&#x4F5C;&#x4E3A;&#x53C2;&#x6570;&#x5E76;&#x8FD4;&#x56DE;&#x5B83;&#x4EEC;&#x7684;&#x548C;&#xFF0C;&#x5728;
+C &#x8BED;&#x8A00;&#x4E2D;&#x7B49;&#x4EF7;&#x4E8E;&#xFF1A;
+</p>
+
+<div class="org-src-container">
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sum</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span> </span>{</span><br><span class="line">    <span class="keyword">return</span> a + b;</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+</div>
+
+<p>
+&#x518D;&#x6F84;&#x6E05;&#x4E00;&#x4E0B;&#x6211;&#x4EEC;&#x8981;&#x505A;&#x7684;&#x4E8B;&#xFF1A;&#x4F7F;&#x7528; LLVM &#x52A8;&#x6001;&#x5730;&#x5728;&#x5185;&#x5B58;&#x4E2D;&#x6784;&#x5EFA;&#x8FD9;&#x4E2A;&#x51FD;&#x6570;&#x7684;&#x8868;&#x793A;&#xFF0C;&#x4F7F;&#x7528;&#x5B83;&#x7684; API
+&#x6765;&#x8BBE;&#x7F6E;&#x597D;&#x50CF;&#x51FD;&#x6570;&#x5165;&#x53E3;&#x548C;&#x51FA;&#x53E3;&#xFF0C;&#x8FD4;&#x56DE;&#x548C;&#x53C2;&#x6570;&#x7C7B;&#x578B;&#xFF0C;&#x4EE5;&#x53CA;&#x771F;&#x6B63;&#x7684;&#x6574;&#x6570;&#x76F8;&#x52A0;&#x6307;&#x4EE4;&#x7B49;&#x4E8B;&#x60C5;&#x3002;&#x4E00;&#x65E6;&#x8FD9;&#x4E2A;
+&#x8868;&#x793A;&#x5728;&#x5185;&#x5B58;&#x4E2D;&#x6784;&#x5EFA;&#x5B8C;&#x6210;&#xFF0C;&#x5C31;&#x53EF;&#x4EE5;&#x8BA9; LLVM &#x8DF3;&#x8F6C;&#x5230;&#x5B83;&#x5E76;&#x6839;&#x636E;&#x6211;&#x4EEC;&#x63D0;&#x4F9B;&#x7684;&#x53C2;&#x6570;&#x6765;&#x6267;&#x884C;&#xFF0C;&#x5C31;&#x8DDF;&#x5B83;&#x662F;
+&#x7531; C &#x8BED;&#x8A00;&#x7F16;&#x8BD1;&#x6210;&#x53EF;&#x6267;&#x884C;&#x6587;&#x4EF6;&#x4E00;&#x6837;&#x3002;
+</p>
+
+<p>
+<a href="https://github.com/paulsmith/getting-started-llvm-c-api/blob/master/sum.c" target="_blank" rel="noopener">&#x70B9;&#x51FB;&#x8FD9;&#x91CC;&#x67E5;&#x770B;&#x6700;&#x7EC8;&#x4EE3;&#x7801;&#x3002;</a>
+</p>
+
+<div id="outline-container-org606bcde" class="outline-2">
+<h2 id="org606bcde">Modules</h2>
+<div class="outline-text-2" id="text-org606bcde">
+<p>
+&#x7B2C;&#x4E00;&#x6B65;&#x5148;&#x521B;&#x5EFA;&#x4E00;&#x4E2A;&#x6A21;&#x5757;(module)&#x3002;&#x6A21;&#x5757;&#x5728; LLVM &#x4E2D;&#x662F;&#x5168;&#x5C40;&#x53D8;&#x91CF;&#xFF0C;&#x51FD;&#x6570;&#xFF0C;&#x5916;&#x90E8;&#x5F15;&#x7528;&#x548C;&#x5176;&#x4ED6;&#x6570;
+&#x636E;&#x7684;&#x96C6;&#x5408;&#x3002;&#x8FD9;&#x91CC;&#x7684;&#x6A21;&#x5757;&#x8DDF; Python &#x4E2D;&#x7684;&#x6A21;&#x5757;&#x4E0D;&#x592A;&#x4E00;&#x6837;&#xFF0C;&#x5B83;&#x4EEC;&#x5E76;&#x4E0D;&#x63D0;&#x4F9B;&#x72EC;&#x7ACB;&#x7684;&#x547D;&#x540D;&#x7A7A;&#x95F4;&#x3002;&#x4F46;
+&#x5B83;&#x4EEC;&#x662F;&#x5728; LLVM &#x4E2D;&#x521B;&#x5EFA;&#x7684;&#x6240;&#x6709;&#x4E1C;&#x897F;&#x7684;&#x9876;&#x5C42;&#x5BB9;&#x5668;&#xFF0C;&#x6240;&#x4EE5;&#x6211;&#x4EEC;&#x5C31;&#x4ECE;&#x521B;&#x5EFA;&#x5B83;&#x5F00;&#x59CB;&#x3002;
+</p>
+
+<div class="org-src-container">
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">LLVMModuleRef mod = LLVMModuleCreateWithName(<span class="string">&quot;my_module&quot;</span>);</span><br></pre></td></tr></table></figure>
+</div>
+
+<p>
+&#x4F20;&#x5165;&#x7ED9;&#x6A21;&#x5757;&#x7684;&#x5DE5;&#x5382;&#x51FD;&#x6570;&#x7684;&#x5B57;&#x7B26;&#x4E32;&#x662F;&#x4E00;&#x4E2A;&#x7531;&#x4F60;&#x7ED9;&#x5B9A;&#x7684;&#x6807;&#x8BC6;&#x7B26;(identifier)&#x3002;
+</p>
+
+<p>
+&#x6CE8;&#x610F;&#x5728;&#x4F60;&#x6D4F;&#x89C8; LLVM C API &#x6587;&#x6863;&#x7684;&#x65F6;&#x5019;&#xFF0C;&#x4E0D;&#x540C;&#x65B9;&#x9762;&#x7684;&#x5185;&#x5BB9;&#x88AB;&#x7EC4;&#x7EC7;&#x5728;&#x4E0D;&#x540C;&#x7684;&#x5934;&#x6587;&#x4EF6;&#x4E2D;&#x3002;&#x6211;&#x5728;
+&#x6B64;&#x8BE6;&#x8FF0;&#x7684;&#x5927;&#x90E8;&#x5206;&#x5185;&#x5BB9;&#xFF0C;&#x5982;&#x6A21;&#x5757;&#x548C;&#x51FD;&#x6570;&#xFF0C;&#x90FD;&#x5305;&#x542B;&#x5728;&#x4E86; <code>Core.h</code> &#x8FD9;&#x4E2A;&#x5934;&#x6587;&#x4EF6;&#x4E2D;&#xFF0C;&#x968F;&#x7740;&#x6211;&#x4EEC;&#x7EE7;
+&#x7EED;&#x6DF1;&#x5165;&#x6211;&#x4F1A;&#x518D;&#x5305;&#x542B;&#x5176;&#x4ED6;&#x7684;&#x3002;
+</p>
+</div>
+</div>
+
+<div id="outline-container-org87d4263" class="outline-2">
+<h2 id="org87d4263">Types</h2>
+<div class="outline-text-2" id="text-org87d4263">
+<p>
+&#x63A5;&#x4E0B;&#x6765;&#xFF0C;&#x6211;&#x521B;&#x5EFA;&#x4E86; <code>sum</code> &#x51FD;&#x6570;&#x5E76;&#x628A;&#x5B83;&#x52A0;&#x5165;&#x5230;&#x6A21;&#x5757;&#x4E2D;&#x3002;&#x4E00;&#x4E2A;&#x51FD;&#x6570;&#x5305;&#x542B;&#xFF1A;
+</p>
+
+<ul class="org-ul">
+<li>&#x5B83;&#x7684;&#x7C7B;&#x578B;&#xFF08;&#x8FD4;&#x56DE;&#x7C7B;&#x578B;&#xFF09;</li>
+<li>&#x4E00;&#x4E2A;&#x5305;&#x542B;&#x53C2;&#x6570;&#x7C7B;&#x578B;&#x7684; vector</li>
+<li>&#x4E00;&#x4E2A;&#x57FA;&#x672C;&#x5757;&#x7684;&#x96C6;&#x5408;</li>
+</ul>
+
+<p>
+&#x6211;&#x5F88;&#x5FEB;&#x4F1A;&#x518D;&#x7EC6;&#x8BF4;&#x57FA;&#x672C;&#x5757;&#x3002;&#x9996;&#x5148;&#xFF0C;&#x6211;&#x4EEC;&#x4F1A;&#x5904;&#x7406;&#x8FD9;&#x4E2A;&#x51FD;&#x6570;&#x7684;&#x7C7B;&#x578B;&#x548C;&#x53C2;&#x6570;&#x7C7B;&#x578B;&#x2500;&#x2500;&#x6216;&#x8005;&#x7528; C &#x7684;&#x672F;
+&#x8BED;&#x53EB;&#x539F;&#x578B;&#x2500;&#x2500;&#x5E76;&#x5C06;&#x5B83;&#x56DE;&#x5230;&#x6A21;&#x5757;&#x4E2D;&#x3002;
+</p>
+
+<div class="org-src-container">
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">LLVMTypeRef param_types[] = { LLVMInt32Type(), LLVMInt32Type() };</span><br><span class="line">LLVMTypeRef ret_type = LLVMFunctionType(LLVMInt32Type(), param_types, <span class="number">2</span>, <span class="number">0</span>);</span><br><span class="line">LLVMValueRef sum = LLVMAddFunction(mod, <span class="string">&quot;sum&quot;</span>, ret_type);</span><br></pre></td></tr></table></figure>
+</div>
+
+<p>
+LLVM &#x7C7B;&#x578B;&#x5BF9;&#x5E94;&#x4E8E;&#x4F60;&#x76EE;&#x6807;&#x5E73;&#x53F0;&#x7684;&#x539F;&#x59CB;&#x7C7B;&#x578B;&#xFF0C;&#x5982;&#x56FA;&#x5B9A;&#x4F4D;&#x5BBD;&#x7684;&#x6574;&#x578B;&#x548C;&#x6D6E;&#x70B9;&#x578B;&#xFF0C;&#x6307;&#x9488;&#xFF0C;&#x7ED3;&#x6784;&#x4F53;&#x548C;
+&#x6570;&#x7EC4;&#x3002;&#xFF08;&#x6CA1;&#x6709;&#x7C7B;&#x4F3C;&#x4E8E; C &#x4E2D;&#x5E73;&#x53F0;&#x76F8;&#x5173;&#x7684;&#x5B9E;&#x9645;&#x5927;&#x5C0F;&#x4F9D;&#x8D56;&#x4E8E;&#x5E95;&#x5C42;&#x67B6;&#x6784;&#x7684; <code>int</code> &#x7C7B;&#x578B;&#x3002;&#xFF09;
+</p>
+
+<p>
+LLVM &#x7C7B;&#x578B;&#x6709;&#x6784;&#x9020;&#x51FD;&#x6570;&#xFF0C;&#x5B83;&#x7684;&#x5F62;&#x5F0F;&#x9075;&#x4ECE;&#x4E8E; &#x201C;LLVM*TYPE*Type()&#x201D;&#x3002;&#x5728;&#x6211;&#x4EEC;&#x7684;&#x4F8B;&#x5B50;&#x4E2D;&#xFF0C;&#x4F20;&#x9012;&#x7ED9;
+<code>sum</code> &#x51FD;&#x6570;&#x7684;&#x53C2;&#x6570;&#x548C;&#x51FD;&#x6570;&#x7684;&#x7C7B;&#x578B;&#x672C;&#x8EAB;&#x90FD; 32-bit &#x6574;&#x578B;&#xFF0C;&#x56E0;&#x6B64;&#x6211;&#x4EEC;&#x90FD;&#x7528;&#x4E86; <code>LLVMInt32Type()</code>.
+</p>
+
+<p>
+<code>LLVMFunctionType()</code> &#x7684;&#x53C2;&#x6570;&#x4F9D;&#x6B21;&#x662F;&#xFF1A;
+</p>
+
+<ol class="org-ol">
+<li>&#x51FD;&#x6570;&#x7684;&#x7C7B;&#x578B;&#xFF08;&#x8FD4;&#x56DE;&#x7C7B;&#x578B;&#xFF09;</li>
+<li>&#x51FD;&#x6570;&#x7684;&#x53C2;&#x6570;&#x7C7B;&#x578B;&#x5411;&#x91CF;&#xFF08;&#x51FD;&#x6570;&#x7684;&#x53C2;&#x6570;&#x4E2A;&#x6570;&#x5E94;&#x8BE5;&#x548C;&#x6570;&#x7EC4;&#x4E2D;&#x7684;&#x7C7B;&#x578B;&#x4E2A;&#x6570;&#x5339;&#x914D;&#xFF09;</li>
+<li>&#x51FD;&#x6570;&#x7684;&#x53C2;&#x6570;&#x4E2A;&#x6570;(arity)</li>
+<li>&#x4E00;&#x4E2A; boolean &#x503C;&#x6765;&#x8868;&#x793A;&#x8BE5;&#x51FD;&#x6570;&#x662F;&#x5426;&#x662F; variadic&#xFF0C;&#x5373;&#x53C2;&#x6570;&#x6570;&#x91CF;&#x662F;&#x5426;&#x53EF;&#x53D8;</li>
+</ol>
+
+<p>
+&#x6CE8;&#x610F;&#x51FD;&#x6570;&#x7C7B;&#x578B;&#x7684;&#x6784;&#x9020;&#x51FD;&#x6570;&#x8FD4;&#x56DE;&#x4E86;&#x4E00;&#x4E2A;&#x7C7B;&#x578B;&#x5F15;&#x7528;&#x3002;&#x8FD9;&#x53C8;&#x52A0;&#x5F3A;&#x4E86;&#x6211;&#x4EEC;&#x8FD9;&#x91CC;&#x6240;&#x505A;&#x7684;&#x7B49;&#x4EF7;&#x4E8E; C &#x4E2D;
+&#x58F0;&#x660E;&#x4E00;&#x4E2A;&#x51FD;&#x6570;&#x539F;&#x578B;&#x7684;&#x6982;&#x5FF5;&#x3002;
+</p>
+
+<p>
+&#x7B2C;&#x4E09;&#x884C;&#x8868;&#x793A;&#x5C06;&#x8FD9;&#x4E2A;&#x51FD;&#x6570;&#x7C7B;&#x578B;&#x52A0;&#x5165;&#x5230;&#x6A21;&#x5757;&#x4E2D;&#xFF0C;&#x5E76;&#x53D6;&#x540D;&#x4E3A; <code>sum</code>. &#x6211;&#x4EEC;&#x5F97;&#x5230;&#x7684;&#x8FD4;&#x56DE;&#x503C;&#x662F;&#x4E00;&#x4E2A;&#x503C;
+&#x7684;&#x5F15;&#x7528;&#xFF0C;&#x53EF;&#x4EE5;&#x628A;&#x5B83;&#x7406;&#x89E3;&#x4E3A;&#x4EE3;&#x7801;&#x4E2D;&#xFF08;&#x6700;&#x7EC8;&#x662F;&#x5185;&#x5B58;&#x4E2D;&#xFF09;&#x7684;&#x67D0;&#x4E2A;&#x5177;&#x4F53;&#x4F4D;&#x7F6E;&#xFF0C;&#x6211;&#x4EEC;&#x628A;&#x4E0B;&#x9762;&#x5C06;&#x4F1A;&#x6784;&#x5EFA;
+&#x7684;&#x51FD;&#x6570;&#x4F53;&#x653E;&#x5728;&#x4E0A;&#x9762;&#x3002;
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgb37b7a8" class="outline-2">
+<h2 id="orgb37b7a8">Basic blocks</h2>
+<div class="outline-text-2" id="text-orgb37b7a8">
+<p>
+&#x4E0B;&#x4E00;&#x6B65;&#x662F;&#x5C06;&#x57FA;&#x7840;&#x5757;&#x52A0;&#x5230;&#x51FD;&#x6570;&#x4E2D;&#x3002;&#x57FA;&#x7840;&#x5757;&#x662F;&#x4EE3;&#x7801;&#x7684;&#x4E00;&#x90E8;&#x5206;&#xFF0C;&#x5B83;&#x53EA;&#x6709;&#x4E00;&#x4E2A;&#x5165;&#x53E3;&#x548C;&#x51FA;&#x53E3;&#x2500;&#x2500;&#x6362;&#x53E5;&#x8BDD;
+&#x8BF4;&#xFF0C;&#x6267;&#x884C;&#x7684;&#x8FC7;&#x7A0B;&#x53EA;&#x53EF;&#x80FD;&#x662F;&#x4E00;&#x6B65;&#x6B65;&#x8D70;&#x8FC7;&#x4E00;&#x7CFB;&#x5217;&#x6307;&#x4EE4;&#x3002;&#x6CA1;&#x6709; if/else, while, loops, &#x6216;&#x8005;&#x4EFB;
+&#x4F55;&#x79CD;&#x7C7B;&#x7684;&#x8DF3;&#x8F6C;&#x3002;&#x57FA;&#x7840;&#x5757;&#x662F;&#x5BF9;&#x63A7;&#x5236;&#x6D41;&#x5EFA;&#x6A21;&#x548C;&#x8FDB;&#x884C;&#x540E;&#x7EED;&#x4F18;&#x5316;&#x7684;&#x5173;&#x952E;&#xFF0C;&#x56E0;&#x6B64; LLVM &#x5BF9;&#x6DFB;&#x52A0;&#x6211;&#x4EEC;&#x7684;&#x8FDB;
+&#x884C;&#x4E2D;&#x7684;&#x6A21;&#x5757;&#x6709;&#x4E00;&#x7B49;&#x7684;&#x652F;&#x6301;&#x3002;
+</p>
+
+<div class="org-src-container">
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">LLVMBasicBlockRef entry = LLVMAppendBasicBlock(sum, <span class="string">&quot;entry&quot;</span>)</span><br></pre></td></tr></table></figure>
+</div>
+
+<p>
+&#x6CE8;&#x610F;&#x51FD;&#x6570;&#x540D;&#x5B57;&#x4E2D;&#x7684;&#x201C;append&#x201D;&#xFF1A;&#x5B83;&#x6709;&#x52A9;&#x4E8E;&#x5E2E;&#x52A9;&#x6211;&#x4EEC;&#x5C06;&#x6B63;&#x5728;&#x505A;&#x7684;&#x4E8B;&#x770B;&#x4F5C;&#x662F;&#x4E0D;&#x65AD;&#x5730;&#x5411;&#x8FD9;&#x4E2A;&#x6A21;&#x5757;&#x589E;
+&#x52A0;&#x4EE3;&#x7801;&#x5757;&#xFF0C;&#x800C;&#x6211;&#x4EEC;&#x7684;&#x57FA;&#x7840;&#x5757;&#x662F;&#x9644;&#x52A0;&#x5728;&#x4E4B;&#x524D;&#x52A0;&#x5165;&#x5230;&#x8BE5;&#x6A21;&#x5757;&#x7684;&#x51FD;&#x6570;&#x540E;&#x9762;&#x7684;&#x3002;
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgf6724eb" class="outline-2">
+<h2 id="orgf6724eb">Instruction builders</h2>
+<div class="outline-text-2" id="text-orgf6724eb">
+<p>
+&#x4E0D;&#x65AD;&#x6DFB;&#x52A0;&#x4EE3;&#x7801;&#x5757;&#x8FD9;&#x79CD;&#x8BB0;&#x6CD5;&#x4E0E;&#x6307;&#x4EE4;&#x6784;&#x5EFA;&#x5668;(instruction builder)&#x76F8;&#x5339;&#x914D;&#xFF0C;&#x6784;&#x5EFA;&#x5668;&#x662F;&#x5411;&#x6211;&#x4EEC;
+&#x51FD;&#x6570;&#x552F;&#x4E00;&#x7684;&#x57FA;&#x7840;&#x5757;&#x6DFB;&#x52A0;&#x6307;&#x4EE4;&#x7684;&#x65B9;&#x5F0F;&#x3002;
+</p>
+
+<div class="org-src-container">
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">LLVMBuilderRef builder = LLVMCreateBuilder();</span><br><span class="line">LLVMPositionBuilderAtEnd(builder, entry);</span><br></pre></td></tr></table></figure>
+</div>
+
+<p>
+&#x8DDF;&#x5411;&#x51FD;&#x6570;&#x4E2D;&#x9644;&#x52A0;&#x57FA;&#x7840;&#x5757;&#x7C7B;&#x4F3C;&#xFF0C;&#x6211;&#x4EEC;&#x628A;&#x6784;&#x5EFA;&#x5668;&#x5B89;&#x88C5;&#x597D;&#xFF0C;&#x8FD9;&#x6837;&#x5C31;&#x53EF;&#x4EE5;&#x63A5;&#x7740;&#x521A;&#x624D;&#x7684;&#x57FA;&#x7840;&#x5757;&#x7684;&#x5165;&#x53E3;
+&#x5199;&#x6307;&#x4EE4;&#x4E86;&#x3002;
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgd0ec8ab" class="outline-2">
+<h2 id="orgd0ec8ab">LLVM IR</h2>
+<div class="outline-text-2" id="text-orgd0ec8ab">
+<p>
+LLVM &#x7684;&#x4E3B;&#x8981;&#x5356;&#x70B9;&#x662F; LLVM &#x7684;&#x4E2D;&#x95F4;&#x8868;&#x793A;&#xFF0C;&#x6216;&#x8005;&#x53EB; IR&#x3002;&#x6211;&#x89C1;&#x8FC7;&#x5B83;&#x88AB;&#x8BA4;&#x4E3A;&#x662F;&#x4ECB;&#x4E8E;&#x6C47;&#x7F16;&#x548C; C &#x4E4B;
+&#x95F4;&#x7684;&#x4E00;&#x4E2A;&#x4E2D;&#x95F4;&#x70B9;&#x3002;LLVM IR &#x662F;&#x4E00;&#x4E2A;&#x975E;&#x5E38;&#x4E25;&#x683C;&#x5B9A;&#x4E49;&#x7684;&#x8BED;&#x8A00;&#xFF0C;&#x4E3A;&#x4E86;&#x7ED9; LLVM &#x4E3A;&#x4EBA;&#x4EEC;&#x6240;&#x5B70;&#x77E5;&#x7684;&#x4F18;
+&#x5316;&#x548C;&#x5E73;&#x53F0;&#x95F4;&#x7684;&#x79FB;&#x690D;&#x6027;&#x63D0;&#x4F9B;&#x4FBF;&#x5229;&#x3002;&#x5982;&#x679C;&#x4F60;&#x89C2;&#x5BDF; IR&#xFF0C;&#x5C31;&#x80FD;&#x770B;&#x5230;&#x5355;&#x72EC;&#x7684;&#x6307;&#x4EE4;&#x5982;&#x4F55;&#x88AB;&#x7FFB;&#x8BD1;&#x4E3A;&#x6700;&#x7EC8;
+&#x88AB;&#x751F;&#x6210;&#x7684;&#x6C47;&#x7F16;&#x6307;&#x4EE4;&#x4E2D;&#x7684; load, store, &#x548C; jump&#x3002;&#x8BE5; IR &#x6709; 3 &#x79CD;&#x8868;&#x793A;&#xFF1A;
+</p>
+
+<ul class="org-ul">
+<li>&#x8868;&#x793A;&#x4E3A;&#x5185;&#x5B58;&#x4E2D;&#x7684;&#x4E00;&#x7EC4;&#x5BF9;&#x8C61;&#x7684;&#x96C6;&#x5408;&#xFF0C;&#x8FD9;&#x6B63;&#x662F;&#x6211;&#x4EEC;&#x5728;&#x4F8B;&#x5B50;&#x4E2D;&#x7528;&#x5230;&#x7684;</li>
+<li>&#x8868;&#x793A;&#x4E3A;&#x7C7B;&#x4F3C;&#x4E8E;&#x6C47;&#x7F16;&#x7684;&#x6587;&#x672C;&#x8BED;&#x8A00;(textual language)</li>
+<li>&#x8868;&#x793A;&#x4E3A;&#x7D27;&#x51D1;&#x7684;&#x4E8C;&#x8FDB;&#x5236;&#x7F16;&#x7801;&#x7684;&#x5B57;&#x8282;&#x4E32;&#xFF0C;&#x79F0;&#x8C13; bitcode</li>
+</ul>
+
+<p>
+&#x4F60;&#x53EF;&#x4EE5;&#x770B;&#x5230; clang &#x6216;&#x5176;&#x4ED6;&#x5DE5;&#x5177;&#x5C06; LLVM IR &#x8F93;&#x51FA;&#x4E3A;&#x6587;&#x672C;&#x6216; bitcode&#x3002;
+</p>
+
+<p>
+&#x56DE;&#x5230;&#x6211;&#x4EEC;&#x7684;&#x4F8B;&#x5B50;&#x4E2D;&#x3002;&#x73B0;&#x5728;&#x662F;&#x6211;&#x4EEC;&#x51FD;&#x6570;&#x7684;&#x5173;&#x952E;&#x70B9;&#xFF0C;&#x771F;&#x6B63;&#x5C06;&#x4E24;&#x4E2A;&#x4F5C;&#x4E3A;&#x53C2;&#x6570;&#x4F20;&#x5165;&#x7684;&#x6574;&#x6570;&#x76F8;&#x52A0;&#x5E76;&#x5C06;
+&#x5F97;&#x5230;&#x7684;&#x503C;&#x8FD4;&#x56DE;&#x7ED9;&#x8C03;&#x7528;&#x8005;&#x7684;&#x6307;&#x4EE4;&#x3002;
+</p>
+
+<div class="org-src-container">
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">LLVMValueRef tmp = LLVMBuildAdd(builder, LLVMGetParam(sum, <span class="number">0</span>), LLVMGetParam(sum, <span class="number">1</span>), <span class="string">&quot;tmp&quot;</span>);</span><br><span class="line">LLVMBuildRet(builder, tmp);</span><br></pre></td></tr></table></figure>
+</div>
+
+<p>
+<code>LLVMBuildAdd()</code> &#x9700;&#x8981;&#x4E00;&#x4E2A;&#x6307;&#x5411;&#x67D0;&#x4E2A;&#x6784;&#x5EFA;&#x5668;&#x7684;&#x5F15;&#x7528;&#xFF0C;&#x8981;&#x76F8;&#x52A0;&#x7684;&#x6574;&#x6570;&#xFF0C;&#x4EE5;&#x53CA;&#x4E00;&#x4E2A;&#x540D;&#x5B57;&#x6765;&#x4FDD;
+&#x5B58;&#x7ED3;&#x679C;&#x3002;&#xFF08;&#x540D;&#x5B57;&#x662F;&#x5FC5;&#x987B;&#x7684;&#xFF0C;&#x56E0;&#x4E3A; LLVM IR &#x8981;&#x6C42;&#x6240;&#x6709;&#x7684;&#x6307;&#x4EE4;&#x90FD;&#x751F;&#x6210;&#x4E2D;&#x95F4;&#x7ED3;&#x679C;&#x3002;&#x8FD9;&#x53EF;&#x4EE5;&#x5728;&#x4EE5;
+&#x540E;&#x88AB; LLVM &#x5316;&#x7B80;&#x6216;&#x4F18;&#x5316;&#x6389;&#xFF0C;&#x4F46;&#x5728;&#x751F;&#x6210; IR &#x65F6;&#xFF0C;&#x6211;&#x4EEC;&#x9075;&#x5FAA;&#x5B83;&#x7684;&#x8981;&#x6C42;&#x3002;&#xFF09;&#x56E0;&#x4E3A;&#x8981;&#x76F8;&#x52A0;&#x7684;&#x6570;&#x5B57;&#x662F;
+&#x7531;&#x8C03;&#x7528;&#x8005;&#x63D0;&#x4F9B;&#x7ED9;&#x51FD;&#x6570;&#x7684;&#x53C2;&#x6570;&#xFF0C;&#x6211;&#x4EEC;&#x53EF;&#x4EE5;&#x4F7F;&#x7528; <code>LLVMGetParam()</code> &#x4EE5;&#x51FD;&#x6570;&#x53C2;&#x6570;&#x7684;&#x5F62;&#x5F0F;&#x628A;&#x5B83;&#x4EEC;
+&#x53D6;&#x56DE;&#xFF1A;&#x7B2C;&#x4E8C;&#x4E2A;&#x53C2;&#x6570;&#x662F;&#x6211;&#x4EEC;&#x8981;&#x4ECE;&#x51FD;&#x6570;&#x4E2D;&#x67E5;&#x627E;&#x7684;&#x53C2;&#x6570;&#x7684;&#x7D22;&#x5F15;&#x3002;
+</p>
+
+<p>
+&#x8C03;&#x7528; <code>LLVMBuildRet()</code> &#x6765;&#x751F;&#x6210;&#x8FD4;&#x56DE;&#x8BED;&#x53E5;&#xFF0C;&#x5E76;&#x628A;&#x52A0;&#x6CD5;&#x6307;&#x4EE4;&#x7684;&#x4E34;&#x65F6;&#x7ED3;&#x679C;&#x4F5C;&#x4E3A;&#x8981;&#x8FD4;&#x56DE;&#x7684;&#x503C;&#x3002;
+</p>
+</div>
+</div>
+
+<div id="outline-container-org3ffd7c6" class="outline-2">
+<h2 id="org3ffd7c6">Analysis &amp; execution</h2>
+<div class="outline-text-2" id="text-org3ffd7c6">
+<p>
+&#x521B;&#x5EFA;&#x51FD;&#x6570;&#x4E2D;&#x7684;&#x6784;&#x5EFA;&#x6307;&#x4EE4;&#x9636;&#x6BB5;&#x5230;&#x6B64;&#x7ED3;&#x675F;&#xFF1B;&#x8BE5;&#x6A21;&#x5757;&#x73B0;&#x5728;&#x5DF2;&#x7ECF;&#x5B8C;&#x6210;&#x4E86;&#x3002;&#x4F8B;&#x5B50;&#x7684;&#x4E0B;&#x4E00;&#x6B65;&#x5C31;&#x8981;&#x4E3A;&#x6267;&#x884C;
+&#x8FDB;&#x884C;&#x8BBE;&#x7F6E;&#x3002;
+</p>
+
+<p>
+&#x9996;&#x5148;&#xFF0C;&#x8BA9;&#x6211;&#x4EEC;&#x9A8C;&#x8BC1;&#x4E00;&#x4E0B;&#x8FD9;&#x4E2A;&#x6A21;&#x5757;&#x3002;&#x8FD9;&#x53EF;&#x4EE5;&#x786E;&#x4FDD;&#x6A21;&#x5757;&#x88AB;&#x6B63;&#x786E;&#x6784;&#x5EFA;&#xFF0C;&#x5982;&#x679C;&#x7F3A;&#x5C11;&#x6216;&#x5F04;&#x4E71;&#x4E86;&#x67D0;&#x4E9B;&#x6B65;
+&#x9AA4;&#x5C31;&#x4F1A;&#x9000;&#x51FA;&#x3002;
+</p>
+
+<div class="org-src-container">
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> *error = <span class="literal">NULL</span>;</span><br><span class="line">LLVMVerifModule(mod, LLVMAboartProcessAction, &amp;error);</span><br><span class="line">LLVMDisposeMessage(error);</span><br></pre></td></tr></table></figure>
+</div>
+
+<p>
+LLVM &#x4F1A;&#x63D0;&#x4F9B;&#x4E00;&#x4E2A; JIT &#x6216;&#x4E00;&#x4E2A;&#x89E3;&#x91CA;&#x5668;&#x6765;&#x6267;&#x884C;&#x6211;&#x4EEC;&#x6784;&#x5EFA;&#x597D;&#x7684; IR&#x3002;&#x5982;&#x679C;&#x5B83;&#x4F1A;&#x5148;&#x5C1D;&#x8BD5;&#x4E3A;&#x76EE;&#x6807;&#x5E73;
+&#x53F0;&#x6784;&#x5EFA;&#x4E00;&#x4E2A; JIT&#xFF0C;&#x5982;&#x679C;&#x505A;&#x4E0D;&#x5230;&#x5C31;&#x518D;&#x5C1D;&#x8BD5;&#x89E3;&#x91CA;&#x5668;&#x3002;&#x4E0D;&#x7BA1;&#x54EA;&#x79CD;&#x60C5;&#x51B5;&#xFF0C;&#x8FD0;&#x884C;&#x6211;&#x4EEC;&#x4EE3;&#x7801;&#x7684;&#x4E1C;&#x897F;&#x90FD;&#x88AB;
+&#x79F0;&#x4F5C;&#x6267;&#x884C;&#x5F15;&#x64CE;(execution engine)&#x3002;
+</p>
+
+<div class="org-src-container">
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">LLVMExecutionEngineRef engine;</span><br><span class="line">error = <span class="literal">NULL</span>;</span><br><span class="line">LLVMLinkInJIT();</span><br><span class="line">LLVMInitializeNativeTarget();</span><br><span class="line"><span class="keyword">if</span> (LLVMCreateExecutionEngineForModule(&amp;engine, mod, &amp;error) != <span class="number">0</span>) {</span><br><span class="line">    <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">&quot;failed to create execution engine\n&quot;</span>);</span><br><span class="line">    <span class="built_in">abort</span>();</span><br><span class="line">}</span><br><span class="line"><span class="keyword">if</span> (error) {</span><br><span class="line">    <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">&quot;error: %s\n&quot;</span>, error);</span><br><span class="line">    LLVMDisposeMessage(error);</span><br><span class="line">    <span class="built_in">exit</span>(EXIT_FAILURE);</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+</div>
+
+<p>
+&#x6211;&#x4EEC;&#x53EF;&#x4EE5;&#x786C;&#x7F16;&#x7801;&#x4E00;&#x4E9B;&#x6574;&#x6570;&#x6765;&#x8FDB;&#x884C;&#x6C42;&#x548C;&#xFF0C;&#x4F46;&#x8BA9;&#x6211;&#x4EEC;&#x7684;&#x7A0B;&#x5E8F;&#x4ECE;&#x547D;&#x4EE4;&#x884C;&#x63A5;&#x6536;&#x53C2;&#x6570;&#x4E5F;&#x5F88;&#x5BB9;&#x6613;&#x3002;
+</p>
+
+<div class="org-src-container">
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (argc &lt; <span class="number">3</span>) {</span><br><span class="line">    <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">&quot;usage: %s x y\n&quot;</span>, argv[<span class="number">0</span>]);</span><br><span class="line">    <span class="built_in">exit</span>(EXIT_FAILURE);</span><br><span class="line">}</span><br><span class="line"><span class="keyword">long</span> <span class="keyword">long</span> x = strtoll(argv[<span class="number">1</span>], <span class="literal">NULL</span>, <span class="number">10</span>);</span><br><span class="line"><span class="keyword">long</span> <span class="keyword">long</span> y = strtoll(argv[<span class="number">2</span>], <span class="literal">NULL</span>, <span class="number">10</span>);</span><br></pre></td></tr></table></figure>
+</div>
+
+<p>
+&#x73B0;&#x5728;&#x6211;&#x4EEC;&#x6709;&#x4E86;&#x4E24;&#x4E2A;&#x5728;&#x5BBF;&#x4E3B;&#x8BED;&#x8A00;&#x4E2D;&#x8868;&#x793A;&#x7684;&#x6574;&#x6570;&#xFF0C;&#x8FD8;&#x9700;&#x8981;&#x628A;&#x5B83;&#x4EEC;&#x8F6C;&#x6362;&#x4E3A; LLVM &#x4E2D;&#x7C7B;&#x4F3C;&#x7684;&#x8868;&#x793A;&#x3002;
+LLVM &#x63D0;&#x4F9B;&#x4E86;&#x5DE5;&#x5382;&#x65B9;&#x6CD5;&#x53EF;&#x4EE5;&#x5C06;&#x8FD9;&#x4E9B;&#x503C;&#x8F6C;&#x6362;&#x4E3A;&#x6211;&#x4EEC;&#x9700;&#x8981;&#x4F20;&#x9012;&#x7ED9;&#x51FD;&#x6570;&#x7684;&#x7C7B;&#x578B;&#xFF1A;
+</p>
+
+<div class="org-src-container">
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">LLVMGenericValueRef args[] = {</span><br><span class="line">    LLVMCreateGenericValueOfInt(LLVMInt32Type(), x, <span class="number">0</span>),</span><br><span class="line">    LLVMCreateGenericValueOfInt(LLVMInt32Type(), y, <span class="number">0</span>)</span><br><span class="line">};</span><br></pre></td></tr></table></figure>
+</div>
+
+<p>
+&#x73B0;&#x5728;&#x5230;&#x4E86;&#x88AB;&#x4E8B;&#x5B9E;&#x68C0;&#x9A8C;&#x7684;&#x65F6;&#x523B;&#xFF1A;&#x8C03;&#x7528;&#x6211;&#x4EEC;&#x7684;(JIT&apos;d)&#x51FD;&#x6570;&#xFF01;
+</p>
+
+<div class="org-src-container">
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">LLVMGenericValueRef res = LLVMRunFunction(engine, sum, <span class="number">2</span>, args);</span><br></pre></td></tr></table></figure>
+</div>
+
+<p>
+&#x6211;&#x4EEC;&#x5F97;&#x5230;&#x4E86;&#x4E00;&#x4E2A;&#x7ED3;&#x679C;&#xFF0C;&#x4E0D;&#x8FC7;&#x5B83;&#x8FD8;&#x662F;&#x7531; LLVM &#x8868;&#x793A;&#x7684;&#x3002;&#x6211;&#x4EEC;&#x5C06;&#x57FA;&#x6062;&#x590D;&#x4E3A; C &#x7C7B;&#x578B;&#xFF0C;&#x4E5F;&#x5C31;&#x662F;&#x4E0A;
+&#x9762;&#x64CD;&#x4F5C;&#x7684;&#x9006;&#x64CD;&#x4F5C;&#xFF0C;&#x5E76;&#x6253;&#x5370;&#x76F8;&#x52A0;&#x7ED3;&#x679C;&#xFF1A;
+</p>
+
+<div class="org-src-container">
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, (<span class="keyword">int</span>)LLVMGenericValueToInt(res, <span class="number">0</span>));</span><br></pre></td></tr></table></figure>
+</div>
+
+<p>
+&#x8FD9;&#x6837;&#x5C31;&#x5B8C;&#x6210;&#x4E86;&#x3002;&#x6211;&#x4EEC;&#x5DF2;&#x7ECF;&#x901A;&#x8FC7;&#x7F16;&#x7A0B;&#x4ECE;&#x5934;&#x6784;&#x5EFA;&#x4E86;&#x4E00;&#x4E2A;&#x51FD;&#x6570;&#xFF0C;&#x5E76;&#x8BA9;&#x5B83;&#x76F4;&#x63A5;&#x4EE5;&#x539F;&#x751F;&#x4E8E;&#x6211;&#x4EEC;&#x4F7F;&#x7528;&#x7684;
+&#x5E73;&#x53F0;&#x7684;&#x673A;&#x5668;&#x7801;&#x8FD0;&#x884C;&#x4E86;&#x3002;LLVM &#x8FD8;&#x6709;&#x5F88;&#x591A;&#x5185;&#x5BB9;&#xFF0C;&#x5305;&#x62EC;&#x6D41;&#x7A0B;&#x63A7;&#x5236;&#xFF08;&#x4F8B;&#x5982;&#xFF0C;&#x5B9E;&#x73B0; if/else&#xFF09;&#x548C;&#x4F18;
+&#x5316; pass&#xFF0C;&#x4F46;&#x6211;&#x4EEC;&#x5DF2;&#x7ECF;&#x8986;&#x76D6;&#x4E86;&#x6240;&#x6709; LLVM-IR-to-code &#x7A0B;&#x5E8F;&#x90FD;&#x4F1A;&#x7528;&#x5230;&#x7684;&#x57FA;&#x7840;&#x77E5;&#x8BC6;&#x3002;
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgdfe91e4" class="outline-2">
+<h2 id="orgdfe91e4">Compiling</h2>
+<div class="outline-text-2" id="text-orgdfe91e4">
+<p>
+&#x4E3A;&#x4E86;&#x7F16;&#x8BD1;&#x8FD9;&#x4E2A;&#x7A0B;&#x5E8F;&#xFF0C;&#x6211;&#x4EEC;&#x9700;&#x8981;&#x5F15;&#x7528; LLVM &#x7684;&#x5934;&#x6587;&#x4EF6;&#x5E76;&#x94FE;&#x63A5;&#x5230;&#x5B83;&#x7684;&#x5E93;&#x3002;&#x5C3D;&#x7BA1;&#x6211;&#x4EEC;&#x5199;&#x7684;&#x662F; C
+&#x7A0B;&#x5E8F;&#xFF0C;&#x94FE;&#x63A5;&#x65F6;&#x8FD8;&#x662F;&#x9700;&#x8981;&#x4E00;&#x4E2A; C++ &#x94FE;&#x63A5;&#x5668;&#x3002;&#xFF08;LLVM &#x662F;&#x4E00;&#x4E2A; C++ &#x9879;&#x76EE;&#xFF0C;C API &#x53EA;&#x662F;&#x5B83;&#x7684;&#x4E00;
+&#x5C42;&#x5C01;&#x88C5;&#x3002;&#xFF09;
+</p>
+
+<div class="org-src-container">
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ cc `llvm-config --cflags` -c sum.c</span><br><span class="line">$ c++ `llvm-config --cxxflags --ldflags --libs core executionengine jit interpreter analysis native bitwriter --system-libs` sum.o -o sum</span><br><span class="line">$ ./sum <span class="number">42</span> <span class="number">99</span></span><br><span class="line"><span class="number">141</span></span><br></pre></td></tr></table></figure>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgd175f02" class="outline-2">
+<h2 id="orgd175f02">Bitcode</h2>
+<div class="outline-text-2" id="text-orgd175f02">
+<p>
+&#x6700;&#x540E;&#x4E00;&#x4EF6;&#x4E8B;&#x3002;&#x6211;&#x524D;&#x9762;&#x63D0;&#x5230; LLVM IR &#x6709;&#x4E09;&#x79CD;&#x8868;&#x793A;&#x65B9;&#x5F0F;&#xFF0C;&#x5176;&#x4E2D;&#x6709; bitcode&#x3002;&#x5F53;&#x4F60;&#x6709;&#x4E00;&#x4E2A;&#x5B8C;&#x6574;
+&#x7684;&#x6A21;&#x5757;&#x65F6;&#xFF0C;&#x5C31;&#x53EF;&#x4EE5;&#x8F93;&#x51FA; bitcode &#x5E76;&#x5199;&#x5230;&#x4E00;&#x4E2A;&#x6587;&#x4EF6;&#x4E2D;&#x3002;
+</p>
+
+<div class="org-src-container">
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (LLVMWriteBitcodeToFile(mod, <span class="string">&quot;sum.bc&quot;</span>) != <span class="number">0</span>) {</span><br><span class="line">    <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">&quot;error writing bitcode to file, skipping\n&quot;</span>);</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+</div>
+
+<p>
+&#x8FD9;&#x6837;&#xFF0C;&#x4F60;&#x5C31;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;&#x5DE5;&#x5177;&#x6765;&#x5904;&#x7406;&#x5B83;&#xFF0C;&#x50CF;&#x7528; <code>llvm-dis</code> &#x628A; bitcode &#x53CD;&#x6C47;&#x7F16;&#x4E3A; LLVM IR &#x6C47;
+&#x7F16;&#x8BED;&#x8A00;&#x3002;
+</p>
+
+<div class="org-src-container">
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ llvm-dis sum.bc</span><br><span class="line">$ cat sum.ll</span><br><span class="line">; ModuleId = <span class="string">&apos;sum.bc&apos;</span></span><br><span class="line">target datalayout = <span class="string">&quot;e-m:o-i64:64-f80:128-n8:16:32:64-S128&quot;</span></span><br><span class="line"></span><br><span class="line">define i32 @sum(i32, i32) {</span><br><span class="line">entry:</span><br><span class="line">  %tmp = add i32 %<span class="number">0</span>, %<span class="number">1</span></span><br><span class="line">  ret i32 %tmp</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org2e14a53" class="outline-2">
+<h2 id="org2e14a53">Source code of example</h2>
+<div class="outline-text-2" id="text-org2e14a53">
+<p>
+&#x4EE5;&#x4E0B;&#x662F;&#x524D;&#x9762;&#x7A0B;&#x5E8F;&#x7684;&#x5B8C;&#x6574;&#x6E90;&#x7801;&#xFF1A;
+</p>
+
+<div class="org-src-container">
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line"> * LLVM equivlent of:</span><br><span class="line"> *</span><br><span class="line"> * int sum(int a, int b) {</span><br><span class="line"> *     return a + b;</span><br><span class="line"> * }</span><br><span class="line"> */</span></span><br><span class="line"></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;llvm-c/Core.h&gt;</span></span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;llvm-c/ExecutionEngine.h&gt;</span></span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;llvm-c/Target.h&gt;</span></span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;llvm-c/Analysis.h&gt;</span></span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;llvm-c/BitWriter.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;inttypes.h&gt;</span></span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> *argv[])</span> </span>{</span><br><span class="line">    LLVMModuleRef mod = LLVMModuleCreateWithName(<span class="string">&quot;my_module&quot;</span>);</span><br><span class="line"></span><br><span class="line">    LLVMTypeRef param_types[] = { LLVMInt32Type(), LLVMInt32Type() };</span><br><span class="line">    LLVMTypeRef ret_type = LLVMFunctionType(LLVMInt32Type(), param_types, <span class="number">2</span>, <span class="number">0</span>);</span><br><span class="line">    LLVMValueRef sum = LLVMAddFunction(mod, <span class="string">&quot;sum&quot;</span>, ret_type);</span><br><span class="line"></span><br><span class="line">    LLVMBasicBlockRef entry = LLVMAppendBasicBlock(sum, <span class="string">&quot;entry&quot;</span>);</span><br><span class="line"></span><br><span class="line">    LLVMBuilderRef builder = LLVMCreateBuilder();</span><br><span class="line">    LLVMPositionBuilderAtEnd(builder, entry);</span><br><span class="line">    LLVMValueRef tmp = LLVMBuildAdd(builder, LLVMGetParam(sum, <span class="number">0</span>), LLVMGetParam(sum, <span class="number">1</span>), <span class="string">&quot;tmp&quot;</span>);</span><br><span class="line">    LLVMBuildRet(builder, tmp);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">char</span> *error = <span class="literal">NULL</span>;</span><br><span class="line">    LLVMVerifyModule(mod, LLVMAbortProcessAction, &amp;error);</span><br><span class="line">    LLVMDisposeMessage(error);</span><br><span class="line"></span><br><span class="line">    LLVMExecutionEngineRef engine;</span><br><span class="line">    error = <span class="literal">NULL</span>;</span><br><span class="line">    LLVMLinkInMCJIT();</span><br><span class="line">    LLVMInitializeNativeTarget();</span><br><span class="line">    LLVMInitializeNativeAsmPrinter();</span><br><span class="line">    LLVMInitializeNativeAsmParser();</span><br><span class="line">    <span class="keyword">if</span> (LLVMCreateExecutionEngineForModule(&amp;engine, mod, &amp;error) != <span class="number">0</span>) {</span><br><span class="line">	<span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">&quot;failed to create execution engine\n&quot;</span>);</span><br><span class="line">	<span class="built_in">abort</span>();</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">if</span> (error) {</span><br><span class="line">	<span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">&quot;error: %s\n&quot;</span>, error);</span><br><span class="line">	LLVMDisposeMessage(error);</span><br><span class="line">	<span class="built_in">exit</span>(EXIT_FAILURE);</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (argc &lt; <span class="number">3</span>) {</span><br><span class="line">	<span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">&quot;usage: %s x y\n&quot;</span>, argv[<span class="number">0</span>]);</span><br><span class="line">	<span class="built_in">exit</span>(EXIT_FAILURE);</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">long</span> <span class="keyword">long</span> x = strtoll(argv[<span class="number">1</span>], <span class="literal">NULL</span>, <span class="number">10</span>);</span><br><span class="line">    <span class="keyword">long</span> <span class="keyword">long</span> y = strtoll(argv[<span class="number">2</span>], <span class="literal">NULL</span>, <span class="number">10</span>);</span><br><span class="line"></span><br><span class="line">    LLVMGenericValueRef args[] = {</span><br><span class="line">	LLVMCreateGenericValueOfInt(LLVMInt32Type(), x, <span class="number">0</span>),</span><br><span class="line">	LLVMCreateGenericValueOfInt(LLVMInt32Type(), y, <span class="number">0</span>)</span><br><span class="line">    };</span><br><span class="line">    LLVMGenericValueRef res = LLVMRunFunction(engine, sum, <span class="number">2</span>, args);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, (<span class="keyword">int</span>)LLVMGenericValueToInt(res, <span class="number">0</span>));</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Write out bitcode to file</span></span><br><span class="line">    <span class="keyword">if</span> (LLVMWriteBitcodeToFile(mod, <span class="string">&quot;sum.bc&quot;</span>) != <span class="number">0</span>) {</span><br><span class="line">	<span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">&quot;error writing bitcode to file, skipping\n&quot;</span>);</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    LLVMDisposeBuilder(builder);</span><br><span class="line">    LLVMDisposeExecutionEngine(engine);</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+</div>
+
+<p>
+&#x60F3;&#x4E86;&#x89E3;&#x5982;&#x4F55;&#x5728;&#x4F60;&#x7684;&#x673A;&#x5668;&#x4E0A;&#x6784;&#x5EFA;&#x8FD9;&#x4E2A;&#x4F8B;&#x5B50;&#xFF0C;&#x8BF7;&#x67E5;&#x770B; <a href="https://github.com/paulsmith/getting-started-llvm-c-api" target="_blank" rel="noopener">GitHub &#x4ED3;&#x5E93;</a>&#x4E2D;&#x7684; Makefile &#x53CA;&#x5176;&#x4ED6;&#x7EC6;&#x8282;&#x3002;
+</p>
+
+<p>
+&#x8BD1;&#x6CE8;&#xFF1A;&#x539F;&#x6587;&#x53D1;&#x8868;&#x5728; 2015 &#x5E74;&#xFF0C;&#x6211;&#x672C;&#x673A;&#x4E0B;&#x8F7D;&#x7684; LLVM &#x6E90;&#x7801;&#x81EA;&#x5DF1;&#x7F16;&#x8BD1;&#x51FA;&#x7684; clang 7.0 &#x53EA;&#x80FD;&#x7F16;
+&#x8BD1;&#x901A;&#x8FC7;&#x5E76;&#x4E0D;&#x80FD;&#x6B63;&#x5E38;&#x8FD0;&#x884C;&#x3002;&#x4E3A;&#x4E86;&#x7F16;&#x8BD1;&#x901A;&#x8FC7;&#x53CA;&#x5C1D;&#x8BD5;&#x4FEE;&#x6539;&#x4F7F;&#x5176;&#x80FD;&#x591F;&#x8FD0;&#x884C;&#xFF0C;&#x5BF9;&#x4EE3;&#x7801;&#x505A;&#x4E86;&#x90E8;&#x5206;&#xFF0C;&#x4F46;&#x8FD8;
+&#x662F;&#x4E0D;&#x80FD;&#x8FD0;&#x884C;&#xFF0C;&#x539F;&#x4EE3;&#x7801;&#x8BF7;&#x53C2;&#x8003;&#x539F;&#x6587;&#x3002;
+</p>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+Last Updated 2018-08-24 Fri 01:21.<br>Render by <a href="https://github.com/coldnew/hexo-renderer-org" target="_blank" rel="noopener">hexo-renderer-org</a> with <a href="https://www.gnu.org/software/emacs/" target="_blank" rel="noopener">Emacs</a> 25.2.2 (<a href="https://orgmode.org" target="_blank" rel="noopener">Org</a> mode 9.1.13)
+</div>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/llvm/" rel="tag"># llvm</a>
+          
+            <a href="/tags/compiler/" rel="tag"># compiler</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/05/the-annotated-stl-sources-3-2-iterator-example/" rel="next" title="STL 源码剖析 3.2 节中的 iterator 例子">
+                <i class="fa fa-chevron-left"></i> STL 源码剖析 3.2 节中的 iterator 例子
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/uploads/avatar.jpg"
+                alt="fengqi" />
+            
+              <p class="site-author-name" itemprop="name">fengqi</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">77</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">56</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/feng-qi" target="_blank" title="GitHub"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://stackoverflow.com/users/7961156/fengqi" target="_blank" title="StackOverflow"><i class="fa fa-fw fa-stack-overflow"></i>StackOverflow</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#org606bcde"><span class="nav-number">1.</span> <span class="nav-text">Modules</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#org87d4263"><span class="nav-number">2.</span> <span class="nav-text">Types</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#orgb37b7a8"><span class="nav-number">3.</span> <span class="nav-text">Basic blocks</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#orgf6724eb"><span class="nav-number">4.</span> <span class="nav-text">Instruction builders</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#orgd0ec8ab"><span class="nav-number">5.</span> <span class="nav-text">LLVM IR</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#org3ffd7c6"><span class="nav-number">6.</span> <span class="nav-text">Analysis &amp; execution</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#orgdfe91e4"><span class="nav-number">7.</span> <span class="nav-text">Compiling</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#orgd175f02"><span class="nav-number">8.</span> <span class="nav-text">Bitcode</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#org2e14a53"><span class="nav-number">9.</span> <span class="nav-text">Source code of example</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">fengqi</span>
+
+  
+
+  
+</div>
+
+
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> v3.7.1</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/theme-next/hexo-theme-next">NexT.Pisces</a> v6.3.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.3.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.3.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.3.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.3.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.3.0"></script>
+
+
+
+  
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+<!-- LOCAL: You can save these files to your site and update links -->
+    
+        
+        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
+        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
+    
+<!-- END LOCAL -->
+
+    
+
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: '1534693860000',
+            owner: 'feng-qi',
+            repo: 'gitment-comments',
+            
+            lang: "" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: '0888b012b697a98831fa02f2df30e0b2d098d611',
+            
+                client_id: '95e0371ecb66982715e0'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      renderGitment();
+      
+      </script>
+    
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
