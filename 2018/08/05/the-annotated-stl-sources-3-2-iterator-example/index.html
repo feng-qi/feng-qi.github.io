@@ -116,7 +116,7 @@
 <meta property="og:site_name" content="feng 言 feng 语">
 <meta property="og:description" content="&amp;#x5728;&amp;#x770B;&amp;#x300A;STL &amp;#x6E90;&amp;#x7801;&amp;#x5256;&amp;#x6790;&amp;#x300B;&amp;#x8FD9;&amp;#x672C;&amp;#x4E66;&amp;#x7B2C; 3.2 &amp;#x8282; iterator &amp;#x7684;&amp;#x65F6;&amp;#x5019;&amp;#xFF0C;&amp;#x60F3;&amp;#x8981;&amp;#x5C1D;&amp;#x8BD5;&amp;#x5B9E;&amp;#x">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2018-08-05T15:39:50.289Z">
+<meta property="og:updated_time" content="2018-08-27T15:25:06.997Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="STL 源码剖析 3.2 节中的 iterator 例子">
 <meta name="twitter:description" content="&amp;#x5728;&amp;#x770B;&amp;#x300A;STL &amp;#x6E90;&amp;#x7801;&amp;#x5256;&amp;#x6790;&amp;#x300B;&amp;#x8FD9;&amp;#x672C;&amp;#x4E66;&amp;#x7B2C; 3.2 &amp;#x8282; iterator &amp;#x7684;&amp;#x65F6;&amp;#x5019;&amp;#xFF0C;&amp;#x60F3;&amp;#x8981;&amp;#x5C1D;&amp;#x8BD5;&amp;#x5B9E;&amp;#x">
@@ -469,9 +469,87 @@ mylist-test.cc:
 <p>
 &#x7ED3;&#x679C;&#x76F4;&#x63A5;&#x7F16;&#x8BD1;&#x6210;&#x529F;&#x4E86;&#x3002;&#x5176;&#x4E2D;&#x7684;&#x539F;&#x56E0;&#x8FD8;&#x4E0D;&#x6E05;&#x695A;&#x3002;
 </p>
+
+
+<p>
+2018-08-27:
+</p>
+
+<p>
+g++ &#x7F16;&#x8BD1;&#x4E0D;&#x901A;&#x8FC7;&#x7684;&#x539F;&#x56E0;&#x5E94;&#x8BE5;&#x662F; <code>ListIter</code> &#x6CA1;&#x6709;&#x5B9A;&#x4E49;&#x4E94;&#x79CD;&#x76F8;&#x5E94;&#x7684;&#x7C7B;&#x578B;&#xFF0C;&#x5373;<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup>
+</p>
+
+<style>table th:first-of-type { width: 250px; }</style>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col class="org-left">
+
+<col class="org-left">
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Member type</th>
+<th scope="col" class="org-left">Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">iterator_category</td>
+<td class="org-left">Category</td>
+</tr>
+
+<tr>
+<td class="org-left">value_type</td>
+<td class="org-left">T</td>
+</tr>
+
+<tr>
+<td class="org-left">difference_type</td>
+<td class="org-left">Distance</td>
+</tr>
+
+<tr>
+<td class="org-left">pointer</td>
+<td class="org-left">Pointer</td>
+</tr>
+
+<tr>
+<td class="org-left">reference</td>
+<td class="org-left">Reference</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+&#x4E66;&#x4E2D; 3.5 &#x8282;&#x7ED9;&#x51FA;&#x4E86;&#x6B63;&#x786E;&#x7684;&#x65B9;&#x6CD5;&#xFF0C;&#x5373;&#x4ECE; <code>std::iterator</code> &#x7EE7;&#x627F;&#xFF1A;
+</p>
+
+<div class="org-src-container">
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">class</span> Item&gt;</span><br><span class="line"><span class="keyword">struct</span> ListIter :</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">std</span>::iterator&lt;<span class="built_in">std</span>::forward_iterator_tag, Item&gt;</span><br><span class="line">{</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">}</span><br></pre></td></tr></table></figure>
 </div>
+
+<p>
+&#x6211;&#x81EA;&#x5DF1;&#x5C1D;&#x8BD5;&#x5728;&#x7C7B;&#x4E2D;&#x624B;&#x5DE5;&#x5B9A;&#x4E49;&#x4E00;&#x4E0B;&#x8FD9;&#x51E0;&#x4E2A;&#x7C7B;&#x578B;&#xFF0C;&#x4E5F;&#x53EF;&#x4EE5;&#x4F7F; g++ &#x901A;&#x8FC7;&#x7F16;&#x8BD1;&#x3002;
+</p>
+
+<p>
+clang++ &#x5728;&#x4E0D;&#x5B9A;&#x4E49;&#x8FD9;&#x51E0;&#x4E2A;&#x7C7B;&#x578B;&#x65F6;&#x4E5F;&#x80FD;&#x7F16;&#x8BD1;&#x901A;&#x8FC7;&#x7684;&#x539F;&#x56E0;&#x8FD8;&#x662F;&#x4E0D;&#x6E05;&#x695A;&#x3002;&#x3002;&#x3002;
+</p>
+<div id="footnotes">
+<h2 class="footnotes">Footnotes: </h2>
+<div id="text-footnotes">
+
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1">1</a></sup> <div class="footpara"><p class="footpara">
+<a href="https://en.cppreference.com/w/cpp/iterator/iterator" target="_blank" rel="noopener">https://en.cppreference.com/w/cpp/iterator/iterator</a>
+</p></div></div>
+
+
+</div>
+</div></div>
 <div id="postamble" class="status">
-Last Updated 2018-08-24 Fri 01:12.<br>Render by <a href="https://github.com/coldnew/hexo-renderer-org" target="_blank" rel="noopener">hexo-renderer-org</a> with <a href="https://www.gnu.org/software/emacs/" target="_blank" rel="noopener">Emacs</a> 25.2.2 (<a href="https://orgmode.org" target="_blank" rel="noopener">Org</a> mode 9.1.13)
+Last Updated 2018-08-27 Mon 23:25.<br>Render by <a href="https://github.com/coldnew/hexo-renderer-org" target="_blank" rel="noopener">hexo-renderer-org</a> with <a href="https://www.gnu.org/software/emacs/" target="_blank" rel="noopener">Emacs</a> 25.2.2 (<a href="https://orgmode.org" target="_blank" rel="noopener">Org</a> mode 9.1.13)
 </div>
 
       
@@ -576,8 +654,17 @@ Last Updated 2018-08-24 Fri 01:12.<br>Render by <a href="https://github.com/cold
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -769,6 +856,22 @@ Last Updated 2018-08-24 Fri 01:12.<br>Render by <a href="https://github.com/cold
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">1.</span> <span class="nav-text">Footnotes: </span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
